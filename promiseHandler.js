@@ -85,6 +85,6 @@ const toWriteData = (name, link, isCreateData) => {
 }
 const a = ['A', 'B', 'C']
 const b = ['1', '2', '3']
-console.log(inlineKeyboard(a,b)
+console.log(inlineKeyboard(a,b))
 
 module.exports = { scrapePromiseHandler, findPromiseHandler, errorHandler, isMainPageUrl };
