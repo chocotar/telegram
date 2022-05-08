@@ -9,7 +9,16 @@ const PORT = process.env.PORT || 8000
 const bot = new TelegramBot(token, {polling: true});
 const opts = {
   reply_markup:{
-    inline_keyboard: [ ['FAQ'], ['Buy'] ] // add keyboard response text
+    inline_keyboard: [[
+      {
+        "text": "1",
+        "callback_data": "ONE"
+      },
+      {
+        "text": "2",
+        "callback_data": "TWO"
+      }
+      ]] // add keyboard response text
   },
   parse_mode: 'HTML'
 };
