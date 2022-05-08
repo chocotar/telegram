@@ -1,14 +1,7 @@
-const inlineKeyboard = (text, callback) => {
-  const query = text.map( (e, i) => {
-      return {
-        'text': e,
-        'callback_data': callback[i]
-      }
-  })
-  return JSON.stringify(query)
+const inlineKeyboard = (text) => {
+  return text.map( (e) => e.split(','))
 }
 
-const a = ['A', 'B', 'C']
-const b = ['1', '2', '3']
+const a = ["YouMi Vol.753: Zhu Ke Er (朱可儿Flora) (86 ảnh)", "XIUREN No.4272: Zhu Ke Er (朱可儿Flora) (58 ảnh)", "XIUREN No.4402: 李雅柔182CM (64 ảnh)"]
 
-console.log(inlineKeyboard(a,b))
+console.log(inlineKeyboard(a))
