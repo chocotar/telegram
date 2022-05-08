@@ -1,11 +1,9 @@
 const inlineKeyboard = (text, callback) => {
-  const query = text.map( (textEl) => {
-    callback.map( (callbackEl) => {
-        return JSON.stringify({
-          'text': textEl,
-          'callback_data': callbackEl
-        })
-    })
+  const query = text.map( (e, i) => {
+      return JSON.stringify({
+        'text': e,
+        'callback_data': callback[i]
+      })
   })
 }
 
