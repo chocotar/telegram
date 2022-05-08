@@ -1,11 +1,12 @@
 const inlineKeyboard = (text, callback) => {
   const query = text.map( (e, i) => {
-      return JSON.stringify({
-        text: e,
-        callback_data: callback[i]
-      })
+      return {
+        'text': e,
+        'callback_data': callback[i]
+      }
   })
-  return query
+  const obj = Object.fromEntries(query)
+  return JSON.stringify(obj)
 }
 
 const a = ['A', 'B', 'C']
