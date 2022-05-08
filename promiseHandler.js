@@ -5,8 +5,8 @@ const inlineKeyboard = (text, callback) => {
         'callback_data': callback[i]
       }
   })
-  const obj = Object.fromEntries(query)
-  return JSON.stringify(obj)
+  console.log(JSON.stringify(query))
+  return query
 }
 
 const a = ['A', 'B', 'C']
