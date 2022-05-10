@@ -56,7 +56,7 @@ const puppeteer = require('puppeteer');
     const linksArr = await page.evaluate( () => {
       const links = document.querySelectorAll('.post-box-title a')
       let arr = []
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < links.length; i++) {
           arr.push({
             name: links[i].innerText,
             link: links[i].href
