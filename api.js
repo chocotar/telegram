@@ -58,7 +58,7 @@ async function search(url) {
         return { name: e.innerText, link: e.href }
       })
       return detail
-    }
+    })
     return linksArr
     // await page.screenshot({path: 'test.png', fullPage: true})
     await browser.close();
