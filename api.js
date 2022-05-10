@@ -17,7 +17,7 @@ req
     response => {
       const html = response.data
       const $ = cheerio.load(html)
-      const name = $('h2.post-box-title a')
+      const name = $('h2.post-box-title a').text()
       const link = $('h2.post-box-title a')
       console.log(name, link)
     }
