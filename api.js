@@ -51,9 +51,11 @@ const puppeteer = require('puppeteer');
     await page.setDefaultNavigationTimeout(0);
 
     await page.goto(url);
+    await page.waitForTimeout(1000)
 
     const linksArr = await page.evaluate( () => {
       const element = document.querySelectorAll('h2.post-box-title a')
+      console.log(element)
       const detail = element.map( (e) => {
         return { name: e.innerText, link: e.href }
       })
