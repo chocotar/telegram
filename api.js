@@ -56,10 +56,10 @@ const puppeteer = require('puppeteer');
     const linksArr = await page.evaluate( () => {
       const links = document.querySelectorAll('.footer-widget-container a')
       let arr = []
-        for (let i = 0; i < links.length; i++) {
+        for (const element of links) {
           arr.push({
-            name: links[i].innerText,
-            link: links[i].href
+            name: element.innerText,
+            link: element.href
            })
          }
         return arr
