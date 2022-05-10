@@ -1,26 +1,70 @@
-const https = require('node:https');
-const axios = require('axios');
-const cheerio = require('cheerio');
+const puppeteer = require('puppeteer');
+const { isMainPageUrl } = require('./promiseHandler');
 
-const agent = new https.Agent({  
-  rejectUnauthorized: false
-});
-const getLink = async url => {
-  const promise = await axios.get(url, {httpsAgent: agent})
-  return promise
-}
+async function search(url) {
+  try {
+    const minimal_args = [
+      '--autoplay-policy=user-gesture-required',
+      '--disable-background-networking',
+      '--disable-background-timer-throttling',
+      '--disable-backgrounding-occluded-windows',
+      '--disable-breakpad',
+      '--disable-client-side-phishing-detection',
+      '--disable-component-update',
+      '--disable-default-apps',
+      '--disable-dev-shm-usage',
+      '--disable-domain-reliability',
+      '--disable-extensions',
+      '--disable-features=AudioServiceOutOfProcess',
+      '--disable-hang-monitor',
+      '--disable-ipc-flooding-protection',
+      '--disable-notifications',
+      '--disable-offer-store-unmasked-wallet-cards',
+      '--disable-popup-blocking',
+      '--disable-print-preview',
+      '--disable-prompt-on-repost',
+      '--disable-renderer-backgrounding',
+      '--disable-setuid-sandbox',
+      '--disable-speech-api',
+      '--disable-sync',
+      '--hide-scrollbars',
+      '--ignore-gpu-blacklist',
+      '--metrics-recording-only',
+      '--mute-audio',
+      '--no-default-browser-check',
+      '--no-first-run',
+      '--no-pings',
+      '--no-sandbox',
+      '--no-zygote',
+      '--password-store=basic',
+      '--use-gl=swiftshader',
+      '--use-mock-keychain',
+    ];
 
-const req = getLink('https://mrcong.com/tag/djawa/page/1/')
+    const browser = await puppeteer.launch({
+      args: minimal_args,
+      executablePath: '/usr/bin/chromium'
+    });
+    const page = await browser.newPage();
+ 
+    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36')
+    await page.setDefaultNavigationTimeout(0);
 
-req
-  .then(
-    response => {
-      const html = response.data
-      const $ = cheerio.load(html)
-      const name = $('h2.post-box-title a').text()
-      const link = $('h2.post-box-title a')
-      console.log(name, link)
+    await page.goto(url);
+
+    const linksArr = await page.evaluate( () => {
+      const element = document.querySelectorAll('h2.post-box-title a')
+      const detail = element.map( (e) => {
+        return { name: e.innerText, link: e.href }
+      })
+      return detail
     }
-  )
+    return linksArr
+    // await page.screenshot({path: 'test.png', fullPage: true})
+    await browser.close();
+  } catch (error) {
+    console.log(error)
+  }
+};
 
-module.exports.getLink = getLink
+console.log(search('https://mrcong.com/tag/djawa/page/1/'))
