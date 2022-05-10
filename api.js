@@ -56,10 +56,10 @@ const puppeteer = require('puppeteer');
     const linksArr = await page.evaluate( () => {
       const element = document.querySelectorAll('h2.post-box-title a')
       console.log(element)
-      const detail = element.map( (e) => {
-        return { name: e.innerText, link: e.href }
-      })
-      return detail
+      //const detail = element.map( (e) => {
+      // return { name: e.innerText, link: e.href }
+      // })
+      // return detail
     })
     console.log(linksArr)
     // await page.screenshot({path: 'test.png', fullPage: true})
