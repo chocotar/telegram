@@ -1,7 +1,8 @@
 const puppeteer = require('puppeteer');
 
-async function search(url) {
+(async () => {
   try {
+    const url = 'https://mrcong.com/tag/djawa/page/1/'
     const minimal_args = [
       '--autoplay-policy=user-gesture-required',
       '--disable-background-networking',
@@ -58,12 +59,10 @@ async function search(url) {
       })
       return detail
     })
-    return linksArr
+    console.log(linksArr)
     // await page.screenshot({path: 'test.png', fullPage: true})
     await browser.close();
   } catch (error) {
     console.log(error)
   }
-};
-
-console.log(search('https://mrcong.com/tag/djawa/page/1/'))
+}();
