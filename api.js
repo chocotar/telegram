@@ -54,7 +54,7 @@ const puppeteer = require('puppeteer');
     await page.waitForTimeout(1000)
 
     const linksArr = await page.evaluate( () => {
-      const links = document.querySelectorAll('.post-box-title a')
+      const links = document.querySelectorAll('.footer-widget-container a')
       let arr = []
         for (let i = 0; i < links.length; i++) {
           arr.push({
