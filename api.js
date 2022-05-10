@@ -65,4 +65,4 @@ const puppeteer = require('puppeteer');
   } catch (error) {
     console.log(error)
   }
-}();
+})();
