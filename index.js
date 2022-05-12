@@ -28,6 +28,7 @@ bot.onText(/\/find (.+)/, (msg, match) => {
   if (args.length == 1) {
     for (const element of tag) {
       if (element.name.toLowerCase() == args[0].toLowerCase()) {
+        console.log(true)
         tagSearch(element.link).then(tagHandler(bot, chatId)).catch(errorHandler(bot, chatId))
         return
       }
