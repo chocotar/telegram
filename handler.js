@@ -84,8 +84,8 @@ const inlineKeyboardBuilder = (data, index=0) => {
   for( i = index; i < index + 5; i++) {
     str.push(`${i+1}. ${data[i].name}`)
     keyboardBuilder.push({
-      'text': i+1,
-      'callback_query': i
+      'text': new String(i+1),
+      'callback_query': new String(i)
     })
   }
   const textBuilder = str.join('\n\n')
