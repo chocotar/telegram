@@ -33,8 +33,8 @@ bot.onText(/\/find (.+)/, (msg, match) => {
       }
     }
   }
-// start to find
-search(resp).then(findPromiseHandler(bot, chatId, messageId, resp)).catch(errorHandler(bot, chatId))
+  // start to find
+  search(resp).then(findPromiseHandler(bot, chatId, messageId, resp)).catch(errorHandler(bot, chatId))
 });
 
 bot.onText(/\/scrape (.+)/, (msg, match) => {
