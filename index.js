@@ -4,40 +4,50 @@ const TelegramBot = require('node-telegram-bot-api');
 const express = require('express');
 const token = process.env.TOKEN
 const PORT = process.env.PORT || 8000
+const { tag, tagHandler, findPromiseHandler, scrapePromiseHandler, errorHandler } = require('./handler');
+const { search } = require('./finder');
+const { getLink } = require('./api');
+const { tagSearch } = require('./tag');
 
 // Create a bot that uses 'polling' to fetch new updates
 const bot = new TelegramBot(token, {polling: true});
-const opts = {
-  reply_markup:{
-    inline_keyboard: [[
-      {
-        "text": "1",
-        "callback_data": "ONE"
-      },
-      {
-        "text": "2",
-        "callback_data": "TWO"
-      }
-      ]] // add keyboard response text
-  },
-  parse_mode: 'HTML'
-};
+const htmlParse = { parse_mode: 'HTML' }
+
 const app = express()
 
 // Matches "/find [whatever]"
 bot.onText(/\/find (.+)/, (msg, match) => {
 
   const chatId = msg.chat.id;
-  const resp = match[1]; // the captured "whatever"
-
-  bot.sendMessage(chatId, `<b>Finding:</b> <i>${resp}</i>`, opts);
+  const messageId = msg.message_id
+  const resp = match[1];
+  const args = resp.split(' ')
+  
+  bot.sendMessage(chatId, `<b>Finding:</b> <i>${resp}</i>`, htmlParse);
+  
+  if (args.length == 1) {
+    for (const element of tag) {
+      if (element.name.toLowerCase() == args[0].toLowerCase()) {
+        tagSearch(element.link).then(tagHandler(bot, chatId)).catch(errorHandler(bot, chatId))
+        return
+      }
+    }
+  }
+// start to find
+search(resp).then(findPromiseHandler(bot, chatId, messageId, resp)).catch(errorHandler(bot, chatId))
 });
 
 bot.onText(/\/scrape (.+)/, (msg, match) => {
+  
   const chatId = msg.chat.id;
+  const messageId = msg.message_id
   const resp = match[1]
 
-  bot.sendMessage(chatId, `<b>Scraping:</b> <i>${resp}</i>`, opts);
+  bot.sendMessage(chatId, `<b>Scraping:</b> <i>${resp}</i>`, htmlParse);
+
+  getLink(resp)
+    .then(scrapePromiseHandler(bot, chatId, messageId, resp))
+    .catch(errorHandler(bot, chatId))
 });
 
 bot.on('polling_error', (error) => {
