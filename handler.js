@@ -73,7 +73,6 @@ const scrapePromiseHandler = (bot, chatId, messageId, url) => {
 
 const tagHandler = (bot, chatId) => {
   return ( response => {
-    console.log(response)
     const res = inlineKeyboardBuilder(response)
     bot.sendMessage(chatId, res[0], opts(true, res[1]))
     }
@@ -91,6 +90,7 @@ const inlineKeyboardBuilder = (data, index=0) => {
   }
   const textBuilder = str.join('\n')
   const toJson = JSON.stringify(keyboardBuilder)
+  console.log(toJson)
   return [textBuilder, toJson]
 }
 const opts = (isKeyboard=false, query=null) => {
