@@ -84,20 +84,20 @@ const inlineKeyboardBuilder = (data, index=0) => {
   for( i = index; i < index + 5; i++) {
     str.push(`${i+1}. ${data[i].name}`)
     keyboardBuilder.push({
-      text: i+1,
-      callback_query: i
+      'text': i+1,
+      'callback_query': i
     })
   }
-  const textBuilder = str.join('\n')
+  const textBuilder = str.join('\n\n')
   const toJson = JSON.stringify(keyboardBuilder)
   console.log(toJson)
-  return [textBuilder, [keyboardBuilder]]
+  return [textBuilder, [toJson]]
 }
 const opts = (isKeyboard=false, query=null) => {
   if (isKeyboard) {
     return {
       reply_markup:{
-        inline_keyboard: [query],
+        inline_keyboard: query,
       },
         parse_mode: 'HTML'
     };
