@@ -85,7 +85,7 @@ const inlineKeyboardBuilder = (data, index=0) => {
   for( i = index; i < index + 5; i++) {
     str.push(`${i+1}. ${data[i].name}`)
     keyboardBuilder.push({
-      text: i+1
+      text: i+1,
       callback_query: i
     })
   }
