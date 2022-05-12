@@ -97,7 +97,7 @@ const opts = (isKeyboard=false, query=null) => {
   if (isKeyboard) {
     return {
       reply_markup:{
-        inline_keyboard: [query],
+        inline_keyboard: query,
       },
         parse_mode: 'HTML'
     };
