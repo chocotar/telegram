@@ -96,13 +96,13 @@ const inlineKeyboardBuilder = (data, index=0) => {
 const opts = (isKeyboard=false, query=null) => {
   if (isKeyboard) {
     return {
-      reply_markup:{
-        inline_keyboard: query,
+      "reply_markup":{
+        "inline_keyboard": query,
       },
-        parse_mode: 'HTML'
+        "parse_mode": "HTML"
     };
   }
-  return { parse_mode: 'HTML'}
+  return { "parse_mode": "HTML"}
 }
 
 const isMainPageUrl = url => {
