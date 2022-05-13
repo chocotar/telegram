@@ -77,7 +77,7 @@ const tagHandler = (bot, chatId) => {
     const options = opts(true, res[1])
     console.log(options)
     bot.sendMessage(chatId, res[0], options)
-    };
+    }
   )
 }
 
