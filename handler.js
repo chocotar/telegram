@@ -74,8 +74,17 @@ const scrapePromiseHandler = (bot, chatId, messageId, url) => {
 const tagHandler = (bot, chatId) => {
   return ( response => {
     const res = inlineKeyboardBuilder(response)
-    const options = opts(true, res[1])
-    console.log(options)
+    const options = {
+  "reply_markup":{
+    "remove_keyboard": true,
+    "inline_keyboard": [[
+     { "text": "Yes", 
+       "callback": "y"
+     }
+     ]]
+  },
+    "parse_mode": "HTML"
+};
     bot.sendMessage(chatId, res[0], options)
     }
   )
