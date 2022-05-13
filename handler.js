@@ -91,13 +91,13 @@ const inlineKeyboardBuilder = (data, index=0) => {
     })
   }
   const textBuilder = str.join('\n\n')
-  return [textBuilder, [keyboardBuilder]]
+  return [textBuilder, JSON.stringify(keyboardBuilder)]
 }
 const opts = (isKeyboard=false, query=null) => {
   if (isKeyboard) {
     return {
       "reply_markup":{
-        "inline_keyboard": JSON.stringify(query)
+        "inline_keyboard": [query]
       },
         "parse_mode": "HTML"
     };
