@@ -75,7 +75,7 @@ const tagHandler = (bot, chatId) => {
   return ( response => {
     const res = inlineKeyboardBuilder(response)
     const options = opts(true, res[1])
-    console.log(options)
+    console.log(options[0])
     bot.sendMessage(chatId, res[0], options)
     }
   )
