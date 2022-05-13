@@ -74,18 +74,9 @@ const scrapePromiseHandler = (bot, chatId, messageId, url) => {
 const tagHandler = (bot, chatId) => {
   return ( response => {
     const res = inlineKeyboardBuilder(response)
-    const options = {
-  "reply_markup":{
-    "remove_keyboard": true,
-    "inline_keyboard": [[
-     { "text": "Yes", 
-       "callback": "y"
-     }
-     ]]
-  }
-};
+    const options = opts(true, res[1])
     bot.sendMessage(chatId, res[0], options)
-    }
+    };
   )
 }
 
@@ -105,10 +96,7 @@ const opts = (isKeyboard=false, query=null) => {
   if (isKeyboard) {
     return {
       "reply_markup":{
-        "inline_keyboard": [[
-         { "text": "Yes", "callback": "y"
-        }]],
-        "one_time_keyboard": true
+        "inline_keyboard": JSON.stringify(query)
       },
         "parse_mode": "HTML"
     };
