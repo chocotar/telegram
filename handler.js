@@ -82,8 +82,7 @@ const tagHandler = (bot, chatId) => {
        "callback": "y"
      }
      ]]
-  },
-    "parse_mode": "HTML"
+  }
 };
     bot.sendMessage(chatId, res[0], options)
     }
