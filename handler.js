@@ -85,13 +85,13 @@ const inlineKeyboardBuilder = (data, index=0) => {
   const str = [], keyboardBuilder = []
   for( i = index; i < index + 5; i++) {
     str.push(`${i+1}. ${data[i].name}`)
-    keyboardBuilder.push({
-      'text': new String(i+1),
-      'callback_query': new String(i)
-    })
+    keyboardBuilder.push(JSON.stringify({
+      text: new String(i+1),
+      callback_query: new String(i)
+    }))
   }
   const textBuilder = str.join('\n\n')
-  return [textBuilder, JSON.stringify(keyboardBuilder)]
+  return [textBuilder, keyboardBuilder]
 }
 const opts = (isKeyboard=false, query=null) => {
   if (isKeyboard) {
