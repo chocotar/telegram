@@ -4,7 +4,7 @@ const TelegramBot = require('node-telegram-bot-api');
 const express = require('express');
 const token = process.env.TOKEN
 const PORT = process.env.PORT || 8000
-const { tagHandler, findPromiseHandler, scrapePromiseHandler, errorHandler } = require('./handler');
+const { tagHandler, findPromiseHandler, scrapePromiseHandler, errorHandler, isMainPageUrl } = require('./handler');
 const { tag } = require('./utilities')
 const { search } = require('./finder');
 const { getLink } = require('./api');
@@ -50,7 +50,12 @@ bot.onText(/\/scrape (.+)/, (msg, match) => {
 });
 
 bot.on('callback_query', callbackQuery => {
-  console.log(callbackQuery)
+  const chatId = callbackQuery.message.chat.id
+  const botMsg = callbackQuery.message.message_id
+  const query = callbackQuery.data
+  if (isMainPageUrl(query)) {
+    scrapePromiseHandler(bot, chatId, botMsg, query)
+  }
 });
 
 bot.on('polling_error', (error) => {
