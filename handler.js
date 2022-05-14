@@ -92,12 +92,11 @@ const deleteMessageHandler = (bot) => {
 
 const inlineKeyboardBuilder = (data, index=0) => {
   const str = [], keyboardBuilder = [],
-  parse = JSON.parse(data)
   for( i = index; i < index + 5; i++) {
     str.push(`${i+1}. ${data[i].name}`)
     keyboardBuilder.push({
       text: i+1,
-      callback_data: parse[i].link
+      callback_data: data[i].link
     })
   }
   const textBuilder = str.join('\n\n')
