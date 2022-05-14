@@ -18,7 +18,7 @@ const findPromiseHandler = (bot, chatId, botMsg, query) => {
       } else {
         console.log(`Got: ${url.result}`)
         getLink(url.result)
-          .then(scrapePromiseHandler(bot, chatId, url.result))
+          .then(scrapePromiseHandler(bot, chatId, botMsg, url.result))
           .catch(errorHandler(bot, chatId))
       }
     } else {
@@ -28,7 +28,7 @@ const findPromiseHandler = (bot, chatId, botMsg, query) => {
   });
 };
 
-const scrapePromiseHandler = (bot, chatId, messageId, url) => {
+const scrapePromiseHandler = (bot, chatId, botMsg, url) => {
   const mainPageCheck = isMainPageUrl(url)
   const isCreateData = process.env.CREATE_DATA || false
   let str
@@ -54,17 +54,19 @@ const scrapePromiseHandler = (bot, chatId, messageId, url) => {
         toWriteData(name, links, isCreateData)
         const rLinks = links.join(`\n\n<b>Another part:</b> `)
         str = `<b>Name:</b> ${name}\n\n<b>Link part 1:</b> ${rLinks}`
-        bot.deleteMessage(chatId, messageId)
+        botMsg.then(deleteMessageHandler(bot)).catch(errorHandler(bot, chatId))
         bot.sendMessage(chatId, str, opts());
       }else {
         console.log(link)
         toWriteData(name, link, isCreateData)
         str = `<b>Name:</b> ${name}\n\n<b>Link:</b> ${link}`
+        botMsg.then(deleteMessageHandler(bot)).catch(errorHandler(bot, chatId))
         bot.sendMessage(chatId, str, opts());
       }
     })
   }else {
     str = `<i>${url}</i> is not main page`
+    botMsg.then(deleteMessageHandler(bot)).catch(errorHandler(bot, chatId))
     bot.sendMessage(chatId, str, opts());
   }
 };
@@ -72,6 +74,7 @@ const scrapePromiseHandler = (bot, chatId, messageId, url) => {
 const tagHandler = (bot, chatId, botMsg) => {
   return ( response => {
     const res = inlineKeyboardBuilder(response)
+    console.log(res[0])
     const options = opts(true, res[1])
     botMsg.then(deleteMessageHandler(bot)).catch(errorHandler(bot, chatId))
     bot.sendMessage(chatId, res[0], options)
