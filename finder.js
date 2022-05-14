@@ -60,12 +60,9 @@ async function search(query) {
           const newRegEx = new RegExp(strRegEx, "i")
           
           const isFound = linkText.search(newRegEx)
-          console.log(isFound)
           if (isFound !== -1) {
-            console.log(true)
             isTrue.push(pageUrl)  
           } else {
-            console.log(false)
             isTrue.push(undefined)
           }
         }
