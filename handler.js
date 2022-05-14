@@ -96,11 +96,11 @@ const inlineKeyboardBuilder = (data, index=0) => {
     str.push(`${i+1}. ${data[i].name}`)
     keyboardBuilder.push({
       text: i+1,
-      callback_data: data[i].link
+      callback_data: JSON.parse(data[i].link)
     })
   }
   const textBuilder = str.join('\n\n')
-  return [textBuilder, JSON.stringify(keyboardBuilder)]
+  return [textBuilder, keyboardBuilder]
 }
 
 const opts = (isKeyboard=false, query=null) => {
