@@ -95,7 +95,7 @@ const inlineKeyboardBuilder = (data, index=0) => {
     str.push(`${i+1}. ${data[i].name}`)
     keyboardBuilder.push({
       'text': i+1,
-      'callback_data': i
+      'callback_data': data[i].link
     })
   }
   const textBuilder = str.join('\n\n')
