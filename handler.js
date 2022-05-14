@@ -91,7 +91,7 @@ const inlineKeyboardBuilder = (data, index=0) => {
     })
   }
   const textBuilder = str.join('\n\n')
-  return [textBuilder, JSON.eval(keyboardBuilder)]
+  return [textBuilder, JSON.stringify(keyboardBuilder)]
 }
 const opts = (isKeyboard=false, query=null) => {
   if (isKeyboard) {
