@@ -75,10 +75,10 @@ const tagHandler = (bot, chatId) => {
   return ( response => {
     const res = inlineKeyboardBuilder(response)
     const options =  {
+        parse_mode: "HTML"
         reply_markup: {
           inline_keyboard: [res[1]]
-        },
-        parse_mode: "HTML"
+        }
       };
     console.log(options.reply_markup.inline_keyboard)
     bot.sendMessage(chatId, res[0], options)
