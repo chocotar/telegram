@@ -85,8 +85,8 @@ const inlineKeyboardBuilder = (data, index=0) => {
   for( i = index; i < index + 5; i++) {
     str.push(`${i+1}. ${data[i].name}`)
     keyboardBuilder.push({
-      text: i+1,
-      callback_data: i
+      'text': i+1,
+      'callback_data': i
     })
   }
   const textBuilder = str.join('\n\n')
@@ -94,15 +94,14 @@ const inlineKeyboardBuilder = (data, index=0) => {
 }
 const opts = (isKeyboard=false, query=null) => {
   if (isKeyboard) {
-    return 
-    {
-      parse_mode: "HTML",
-      reply_markup: {
-        inline_keyboard: [query]
-      }
-    }
+    return {
+      "reply_markup":{
+        "inline_keyboard": [query]
+      },
+        "parse_mode": "HTML"
+    };
   }
-  return { parse_mode: "HTML"}
+  return { "parse_mode": "HTML"}
 }
 
 const isMainPageUrl = url => {
