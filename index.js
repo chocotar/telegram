@@ -53,7 +53,8 @@ bot.on('callback_query', callbackQuery => {
   const chatId = callbackQuery.message.chat.id
   const botMsg = callbackQuery.message.message_id
   const query = callbackQuery.data
-  console.log(query, messageId)
+  console.log(query)
+  messageId.then( res => console.log(res)).catch(errorHandler(bot, chatId))
   if (isMainPageUrl(query)) {
     //getLink(query).then(scrapePromiseHandler(bot, chatId, botMsg, query)).catch(errorHandler(bot, chatId))
   }
