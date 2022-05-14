@@ -75,7 +75,7 @@ const tagHandler = (bot, chatId, botMsg) => {
   return ( response => {
     const res = inlineKeyboardBuilder(response)
     const options = opts(true, res[1])
-    console.log(options)
+    console.log(options.reply_markup.inline_keyboard)
     if (botMsg) botMsg.then(deleteMessageHandler(bot)).catch(errorHandler(bot, chatId))
     const msg = bot.sendMessage(chatId, res[0], options)
     }
