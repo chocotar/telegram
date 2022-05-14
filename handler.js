@@ -13,7 +13,7 @@ const findPromiseHandler = (bot, chatId, botMsg, query) => {
     if (url.result) {
       if (url.reason == 'keyboard') {
         const sendKeyboard = inlineKeyboard(url.result)
-        botMsg.then(deleteMessageHandler(bot)).catch(errorHandler(bot, chatId))
+        if (botMsg) botMsg.then(deleteMessageHandler(bot)).catch(errorHandler(bot, chatId))
         bot.sendMessage(chatId, query, opts(true, url.result));
       } else {
         console.log(`Got: ${url.result}`)
@@ -22,7 +22,7 @@ const findPromiseHandler = (bot, chatId, botMsg, query) => {
           .catch(errorHandler(bot, chatId))
       }
     } else {
-      botMsg.then(deleteMessageHandler(bot)).catch(errorHandler(bot, chatId))
+      if (botMsg) botMsg.then(deleteMessageHandler(bot)).catch(errorHandler(bot, chatId))
       bot.sendMessage(chatId, url.reason, opts());
     }
   });
@@ -54,19 +54,19 @@ const scrapePromiseHandler = (bot, chatId, botMsg, url) => {
         toWriteData(name, links, isCreateData)
         const rLinks = links.join(`\n\n<b>Another part:</b> `)
         str = `<b>Name:</b> ${name}\n\n<b>Link part 1:</b> ${rLinks}`
-        botMsg.then(deleteMessageHandler(bot)).catch(errorHandler(bot, chatId))
+        if (botMsg) botMsg.then(deleteMessageHandler(bot)).catch(errorHandler(bot, chatId))
         bot.sendMessage(chatId, str, opts());
       }else {
         console.log(link)
         toWriteData(name, link, isCreateData)
         str = `<b>Name:</b> ${name}\n\n<b>Link:</b> ${link}`
-        botMsg.then(deleteMessageHandler(bot)).catch(errorHandler(bot, chatId))
+        if (botMsg) botMsg.then(deleteMessageHandler(bot)).catch(errorHandler(bot, chatId))
         bot.sendMessage(chatId, str, opts());
       }
     })
   }else {
     str = `<i>${url}</i> is not main page`
-    botMsg.then(deleteMessageHandler(bot)).catch(errorHandler(bot, chatId))
+    if (botMsg) botMsg.then(deleteMessageHandler(bot)).catch(errorHandler(bot, chatId))
     bot.sendMessage(chatId, str, opts());
   }
 };
@@ -75,7 +75,7 @@ const tagHandler = (bot, chatId, botMsg) => {
   return ( response => {
     const res = inlineKeyboardBuilder(response)
     const options = opts(true, res[1])
-    botMsg.then(deleteMessageHandler(bot)).catch(errorHandler(bot, chatId))
+    if (botMsg) botMsg.then(deleteMessageHandler(bot)).catch(errorHandler(bot, chatId))
     const msg = bot.sendMessage(chatId, res[0], options)
     messageId.id = msg
     }
