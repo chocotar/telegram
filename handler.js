@@ -91,7 +91,7 @@ const deleteMessageHandler = (bot) => {
 }
 
 const inlineKeyboardBuilder = (data, index=0) => {
-  const str = [], keyboardBuilder = [],
+  const str = [], keyboardBuilder = []
   for( i = index; i < index + 5; i++) {
     str.push(`${i+1}. ${data[i].name}`)
     keyboardBuilder.push({
