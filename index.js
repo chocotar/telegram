@@ -17,13 +17,17 @@ const app = express()
 
 // Matches "/find [whatever]"
 bot.onText(/\/find (.+)/, (msg, match) => {
+const options = { reply_markup: 
+                   { inline_keyboard: [[{"text": "Hello", "callback": "YES"}]]
+                   }
+                 }
 
   const chatId = msg.chat.id;
   const messageId = msg.message_id
   const resp = match[1];
   const args = resp.split(' ')
   
-  bot.sendMessage(chatId, `<b>Finding:</b> <i>${resp}</i>`, htmlParse);
+  bot.sendMessage(chatId, `<b>Finding:</b> <i>${resp}</i>`, options);
   
   if (args.length == 1) {
     for (const element of tag) {
