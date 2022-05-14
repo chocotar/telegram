@@ -74,13 +74,7 @@ const scrapePromiseHandler = (bot, chatId, messageId, url) => {
 const tagHandler = (bot, chatId) => {
   return ( response => {
     const res = inlineKeyboardBuilder(response)
-    const options =  {
-        parse_mode: "HTML",
-        reply_markup: {
-          inline_keyboard: [res[1]]
-        }
-      };
-    console.log(options.reply_markup.inline_keyboard)
+    const options = opts(true, res[1])
     bot.sendMessage(chatId, res[0], options)
     }
   )
@@ -90,10 +84,9 @@ const inlineKeyboardBuilder = (data, index=0) => {
   const str = [], keyboardBuilder = []
   for( i = index; i < index + 5; i++) {
     str.push(`${i+1}. ${data[i].name}`)
-    const txt = i+1, callback = i
     keyboardBuilder.push({
-      text: txt.toString(),
-      callback_query: callback.toString()
+      text: i+1,
+      callback_data: i
     })
   }
   const textBuilder = str.join('\n\n')
@@ -103,9 +96,9 @@ const opts = (isKeyboard=false, query=null) => {
   if (isKeyboard) {
     return 
     {
-      reply_markup: JSON.stringify({
+      reply_markup: {
         inline_keyboard: [query]
-      }),
+      },
         parse_mode: "HTML"
     };
   }
