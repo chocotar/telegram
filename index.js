@@ -4,7 +4,7 @@ const TelegramBot = require('node-telegram-bot-api');
 const express = require('express');
 const token = process.env.TOKEN
 const PORT = process.env.PORT || 8000
-const { tagHandler, findPromiseHandler, scrapePromiseHandler, errorHandler, isMainPageUrl } = require('./handler');
+const { tagHandler, findPromiseHandler, scrapePromiseHandler, errorHandler, isMainPageUrl, messageId } = require('./handler');
 const { tag } = require('./utilities')
 const { search } = require('./finder');
 const { getLink } = require('./api');
@@ -53,9 +53,9 @@ bot.on('callback_query', callbackQuery => {
   const chatId = callbackQuery.message.chat.id
   const botMsg = callbackQuery.message.message_id
   const query = callbackQuery.data
-  console.log(query)
+  console.log(query, messageId)
   if (isMainPageUrl(query)) {
-    getLink(query).then(scrapePromiseHandler(bot, chatId, botMsg, query)).catch(errorHandler(bot, chatId))
+    //getLink(query).then(scrapePromiseHandler(bot, chatId, botMsg, query)).catch(errorHandler(bot, chatId))
   }
 });
 
