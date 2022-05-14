@@ -20,7 +20,6 @@ const app = express()
 bot.onText(/\/find (.+)/, (msg, match) => {
 
   const chatId = msg.chat.id;
-  const messageId = msg.message_id
   const resp = match[1];
   const args = resp.split(' ')
   
@@ -41,13 +40,12 @@ bot.onText(/\/find (.+)/, (msg, match) => {
 bot.onText(/\/scrape (.+)/, (msg, match) => {
   
   const chatId = msg.chat.id;
-  const messageId = msg.message_id
   const resp = match[1]
 
   const botMsg = bot.sendMessage(chatId, `<b>Scraping:</b> <i>${resp}</i>`, htmlParse);
 
   getLink(resp)
-    .then(scrapePromiseHandler(bot, chatId, messageId, resp))
+    .then(scrapePromiseHandler(bot, chatId, botMsg, resp))
     .catch(errorHandler(bot, chatId))
 });
 
