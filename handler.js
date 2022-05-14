@@ -81,7 +81,6 @@ const tagHandler = (bot, chatId) => {
         parse_mode: "HTML"
     };
   }
-    console.log(options.reply_markup.inline_keyboard)
     bot.sendMessage(chatId, res[0], options)
     }
   )
