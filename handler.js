@@ -76,7 +76,8 @@ const tagHandler = (bot, chatId, botMsg) => {
     const res = inlineKeyboardBuilder(response)
     const options = opts(true, res[1])
     botMsg.then(deleteMessageHandler(bot)).catch(errorHandler(bot, chatId))
-    bot.sendMessage(chatId, res[0], options)
+    const msg = bot.sendMessage(chatId, res[0], options)
+    messageId.id = msg
     }
   )
 }
@@ -125,4 +126,6 @@ const toWriteData = (name, link, isCreateData) => {
   return
 }
 
-module.exports = { scrapePromiseHandler, tagHandler, deleteMessageHandler, findPromiseHandler, errorHandler, isMainPageUrl };
+const messageId = {}
+
+module.exports = { scrapePromiseHandler, tagHandler, deleteMessageHandler, findPromiseHandler, errorHandler, isMainPageUrl, messageId };
