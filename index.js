@@ -19,23 +19,22 @@ const app = express()
 bot.onText(/\/find (.+)/, (msg, match) => {
 
   const chatId = msg.chat.id;
-  const messageId = msg.message_id
   const resp = match[1];
   const args = resp.split(' ')
   
-  bot.sendMessage(chatId, `<b>Finding:</b> <i>${resp}</i>`, htmlParse);
+  const botMessage = bot.sendMessage(chatId, `<b>Finding:</b> <i>${resp}</i>`, htmlParse);
   
   if (args.length == 1) {
     for (const element of tag) {
       if (element.name.toLowerCase() == args[0].toLowerCase()) {
         console.log(true)
-        tagSearch(element.link).then(tagHandler(bot, chatId)).catch(errorHandler(bot, chatId))
+        tagSearch(element.link).then(tagHandler(bot, chatId, botMessage)).catch(errorHandler(bot, chatId))
         return
       }
     }
   }
   // start to find
-  search(resp).then(findPromiseHandler(bot, chatId, messageId, resp)).catch(errorHandler(bot, chatId))
+  search(resp).then(findPromiseHandler(bot, chatId, botMessage, resp)).catch(errorHandler(bot, chatId))
 });
 
 bot.onText(/\/scrape (.+)/, (msg, match) => {
@@ -44,10 +43,10 @@ bot.onText(/\/scrape (.+)/, (msg, match) => {
   const messageId = msg.message_id
   const resp = match[1]
 
-  bot.sendMessage(chatId, `<b>Scraping:</b> <i>${resp}</i>`, htmlParse);
+  const botMessage = bot.sendMessage(chatId, `<b>Scraping:</b> <i>${resp}</i>`, htmlParse);
 
   getLink(resp)
-    .then(scrapePromiseHandler(bot, chatId, messageId, resp))
+    .then(scrapePromiseHandler(bot, chatId, , botMessage, resp))
     .catch(errorHandler(bot, chatId))
 });
 
