@@ -17,7 +17,7 @@ const app = express()
 
 // Matches "/find [whatever]"
 bot.onText(/\/find (.+)/, (msg, match) => {
-const options = { reply_markup: { inline_keyboard: [[{"text": "Hello", "callback": "YES"}]] } }
+const options = { "reply_markup": { "inline_keyboard": [[{text: "Hello", callback: "YES"}]] } }
  
 
   const chatId = msg.chat.id;
