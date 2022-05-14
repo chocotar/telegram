@@ -73,12 +73,11 @@ const scrapePromiseHandler = (bot, chatId, botMsg, url) => {
 
 const tagHandler = (bot, chatId, botMsg) => {
   return ( response => {
-    console.log(response)
     const res = inlineKeyboardBuilder(response)
     const options = opts(true, res[1])
+    console.log(options)
     if (botMsg) botMsg.then(deleteMessageHandler(bot)).catch(errorHandler(bot, chatId))
     const msg = bot.sendMessage(chatId, res[0], options)
-    messageId.id = msg
     }
   )
 }
@@ -127,6 +126,4 @@ const toWriteData = (name, link, isCreateData) => {
   return
 }
 
-const messageId = {}
-
-module.exports = { scrapePromiseHandler, tagHandler, deleteMessageHandler, findPromiseHandler, errorHandler, isMainPageUrl, messageId };
+module.exports = { scrapePromiseHandler, tagHandler, deleteMessageHandler, findPromiseHandler, errorHandler, isMainPageUrl };
