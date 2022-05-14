@@ -53,7 +53,7 @@ bot.on('callback_query', callbackQuery => {
   const chatId = callbackQuery.message.chat.id
   const botMsg = callbackQuery.message.message_id
   const query = callbackQuery.data
-  bot.deleteMessgae(chatId, botMsg)
+  bot.deleteMessage(chatId, botMsg)
   if (isMainPageUrl(query)) {
     getLink(query).then(scrapePromiseHandler(bot, chatId, null, query)).catch(errorHandler(bot, chatId))
   }
