@@ -96,11 +96,11 @@ const opts = (isKeyboard=false, query=null) => {
   if (isKeyboard) {
     return 
     {
+      parse_mode: "HTML",
       reply_markup: {
         inline_keyboard: [query]
-      },
-        parse_mode: "HTML"
-    };
+      }
+    }
   }
   return { parse_mode: "HTML"}
 }
