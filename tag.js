@@ -16,7 +16,7 @@ const tagSearch = async url => {
     await page.waitForTimeout(1000)
 
     const linksArr = await page.evaluate( () => {
-      const links = document.querySelectorAll('.footer-widget-container a')
+      const links = document.querySelectorAll('.post-box-title a')
       let arr = []
         for (const element of links) {
           arr.push({
