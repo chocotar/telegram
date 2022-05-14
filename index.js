@@ -49,6 +49,10 @@ bot.onText(/\/scrape (.+)/, (msg, match) => {
     .catch(errorHandler(bot, chatId))
 });
 
+bot.on('callback_query', callbackQuery => {
+  console.log(callbackQuery)
+});
+
 bot.on('polling_error', (error) => {
   console.log(error);  // => 'EFATAL'
 });
