@@ -57,9 +57,8 @@ bot.on('callback_query', callbackQuery => {
   const keyboardBuild = inlineKeyboardBuilder(data, index)
   const options = opts(true, keyboardBuild[1])
 
-  bot.deleteMessage(chatId, botMsg)
-
   if (query == index) {
+    bot.deleteMessage(chatId, botMsg)
     bot.sendMessage(keyboardBuild[0], chatId, options)
     return
   }
