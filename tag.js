@@ -1,8 +1,11 @@
 const puppeteer = require('puppeteer');
 const { minimal_args } = require('./utilities');
+const { getPageNumber } = require('./helper')
+const { dataUrl } = require('./handler')
 
 const tagSearch = async url => {
   try {
+    const dataUrl.page = getPageNumber(url)
     const browser = await puppeteer.launch({
       args: minimal_args,
       executablePath: '/usr/bin/chromium'

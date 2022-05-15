@@ -4,7 +4,8 @@ const TelegramBot = require('node-telegram-bot-api');
 const express = require('express');
 const token = process.env.TOKEN
 const PORT = process.env.PORT || 8000
-const { tagHandler, deleteMessageHandler, findPromiseHandler, scrapePromiseHandler, errorHandler, isMainPageUrl, dataUrl, inlineKeyboardBuilder, opts } = require('./handler');
+const { tagHandler, deleteMessageHandler, findPromiseHandler, scrapePromiseHandler, errorHandle, dataUrl } = require('./handler');
+onst { isTagUrl, isMainPageUrl, getPageNumber, inlineKeyboardBuilder, opts } = require('./helper')
 const { tag } = require('./utilities')
 const { search } = require('./finder');
 const { getLink } = require('./api');
@@ -29,7 +30,9 @@ bot.onText(/\/find (.+)/, (msg, match) => {
   if (args.length == 1) {
     for (const element of tag) {
       if (element.name.toLowerCase() == args[0].toLowerCase()) {
-        tagSearch(element.link).then(tagHandler(bot, chatId, botMsg)).catch(errorHandler(bot, chatId))
+        dataUrl.url = element.link
+        const addPage = `${element.link}page/1/`
+        tagSearch(addPage).then(tagHandler(bot, chatId, botMsg)).catch(errorHandler(bot, chatId))
         return
       }
     }
@@ -58,7 +61,7 @@ bot.on('callback_query', callbackQuery => {
 
   // Next button
   if (query == nextIndex) {
-    const keyboardBuild = inlineKeyboardBuilder(data, nextIndex)
+    const keyboardBuild = inlineKeyboardBuilder(data, nextIndex, isTag=true)
     const { reply_markup, parse_mode } = opts(true, keyboardBuild[1])
 
     btn.nextMsg = bot.editMessageText(keyboardBuild[0], { chat_id: chatId, message_id, reply_markup, parse_mode })
@@ -81,15 +84,25 @@ bot.on('callback_query', callbackQuery => {
     bot.deleteMessage(nChatId, nMessageId)
     btn.prevMsg = bot.sendMessage(nChatId, keyboardBuild[0], options)
     return
+  } else if (query == 'nextPage') {
+    const { url, page } = dataUrl
+    const link = `${url}page/${page+1}/`
+    
+    bot.deleteMessage(chatId, message_id)
+    tagSearch(link).then(tagHandler(bot, chatId, null)).catch(errorHandler(bot, chatId))
+    return
   }
   
   bot.deleteMessage(chatId, message_id)
+  
   if (isMainPageUrl(data[query].link)) {
     getLink(data[query].link)
       .then(scrapePromiseHandler(bot, chatId, null, data[query].link))
       .catch(errorHandler(bot, chatId))
-  } else {
+  } else if (isTagUrl(data[query].link)) {
     tagSearch(data[query].link).then(tagHandler(bot, chatId, null)).catch(errorHandler(bot, chatId))
+  } else {
+    bot.sendMessage(chatId, '<b>Can\'t continue to find</b>', htmlParse)
   }
 });
 

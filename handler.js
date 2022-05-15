@@ -1,7 +1,7 @@
 const cheerio = require('cheerio');
 const { getLink } = require('./api');
-
-let dataUrl = {}
+const { isMainPageUrl, inlineKeyboardBuilder, opts, toWriteData } = require('./helper')
+const dataUrl = {}
 
 const errorHandler = (bot, chatId) => {
   return (err => {
@@ -76,7 +76,7 @@ const scrapePromiseHandler = (bot, chatId, botMsg, url) => {
 const tagHandler = (bot, chatId, botMsg) => {
   return ( response => {
     dataUrl.data = response
-    const res = inlineKeyboardBuilder(response)
+    const res = inlineKeyboardBuilder(response, isTag=true)
     const options = opts(true, res[1])
     if (botMsg) botMsg.then(deleteMessageHandler(bot)).catch(errorHandler(bot, chatId))
     const msg = bot.sendMessage(chatId, res[0], options)
@@ -90,49 +90,6 @@ const deleteMessageHandler = (bot) => {
     const chatId = msg.chat.id
     bot.deleteMessage(chatId, messageId)
   })
-}
-
-const inlineKeyboardBuilder = (data, index=0, page=2) => {
-  const str = [], keyboardBuilder = []
-  for( i = index; i < index + 5; i++) {
-    str.push(`${i+1}. ${data[i].name}`)
-    keyboardBuilder.push({
-      text: i+1,
-      callback_data: i
-    })
-  }
-  dataUrl.nextIndex = index+5
-  const arr = dataUrl.data
-  const textBuilder = str.join('\n\n')
-
-  if (index >= 5) keyboardBuilder.unshift({ text: '<<', callback_data: 'prev' })
-  if (index < arr.length-5)keyboardBuilder.push({ text: '>>', callback_data: index+5 })
-  if (index == arr.length-5)keyboardBuilder.push({ text: `Page ${page}`, callback_data: page })
-
-  return [textBuilder, keyboardBuilder]
-}
-
-const opts = (isKeyboard=false, query=null) => {
-  if (isKeyboard) {
-    return {
-      "reply_markup":{
-        "inline_keyboard": [query]
-      },
-        "parse_mode": "HTML"
-    };
-  }
-  return { "parse_mode": "HTML"}
-}
-
-const isMainPageUrl = url => {
-  return url.match(/.+(anh\/|videos\/|video\/)$/i)
-};
-
-const toWriteData = (name, link, isCreateData) => {
-  if (isCreateData) {
-   return writeData({name, link})
-  }
-  return
 }
 
 module.exports = { dataUrl, opts, inlineKeyboardBuilder, scrapePromiseHandler, tagHandler, deleteMessageHandler, findPromiseHandler, errorHandler, isMainPageUrl };
