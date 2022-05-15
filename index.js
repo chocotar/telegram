@@ -70,10 +70,8 @@ bot.on('callback_query', callbackQuery => {
     const { nextMsg } = btn
     const nChatId = nextMsg._rejectionHandler0.chat.id
     const nMessageId = nextMsg._rejectionHandler0.message_id
-
-    console.log(nChatId, nMessageId)
   
-    //btn.prevMsg = bot.editMessageText(keyboardBuild[0], { chat_id: chatId, message_id, reply_markup, parse_mode })
+    btn.prevMsg = bot.editMessageText(keyboardBuild[0], { chat_id: nChatId, message_id: nMessageId, reply_markup, parse_mode })
     return
   }
   
