@@ -1,8 +1,6 @@
 const cheerio = require('cheerio');
 const { getLink } = require('./api');
 
-const dataUrl = url => return url
-
 const errorHandler = (bot, chatId) => {
   return (err => {
     console.log(err)
@@ -75,7 +73,6 @@ const scrapePromiseHandler = (bot, chatId, botMsg, url) => {
 
 const tagHandler = (bot, chatId, botMsg) => {
   return ( response => {
-    dataUrl(response)
     const res = inlineKeyboardBuilder(response)
     const options = opts(true, res[1])
     if (botMsg) botMsg.then(deleteMessageHandler(bot)).catch(errorHandler(bot, chatId))
@@ -134,4 +131,4 @@ const toWriteData = (name, link, isCreateData) => {
   return
 }
 
-module.exports = { dataUrl, dataHandler, scrapePromiseHandler, tagHandler, deleteMessageHandler, findPromiseHandler, errorHandler, isMainPageUrl };
+module.exports = { dataHandler, scrapePromiseHandler, tagHandler, deleteMessageHandler, findPromiseHandler, errorHandler, isMainPageUrl };
