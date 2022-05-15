@@ -1,5 +1,5 @@
 const puppeteer = require('puppeteer');
-const { isMainPageUrl } = require('./handler');
+const { isMainPageUrl, dataUrl } = require('./handler');
 const { minimal_args } = require('./utilities');
 
 async function search(query) {
@@ -73,6 +73,7 @@ async function search(query) {
           if (isMainPageUrl(linkResult)) {
             return found(linkResult, "Success")
           } else {
+            dataUrl.data = linksArr
             return found(linksArr, "keyboard")
           }
         }
