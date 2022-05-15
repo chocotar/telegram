@@ -1,7 +1,7 @@
 const cheerio = require('cheerio');
 const { getLink } = require('./api');
 
-let dataUrl
+const dataUrl = url => return url
 
 const errorHandler = (bot, chatId) => {
   return (err => {
@@ -75,7 +75,7 @@ const scrapePromiseHandler = (bot, chatId, botMsg, url) => {
 
 const tagHandler = (bot, chatId, botMsg) => {
   return ( response => {
-    dataUrl = response
+    dataUrl(response)
     const res = inlineKeyboardBuilder(response)
     const options = opts(true, res[1])
     if (botMsg) botMsg.then(deleteMessageHandler(bot)).catch(errorHandler(bot, chatId))
