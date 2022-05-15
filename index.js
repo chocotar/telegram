@@ -85,23 +85,25 @@ bot.on('callback_query', callbackQuery => {
     const link = `${url}page/${page+1}/`
     
     bot.deleteMessage(chatId, message_id)
-    const botMsg = bot.sendMessage(chatId, '<i>Getting next page</i>', htmlParse)
+    const botMsg = bot.sendMessage(chatId, '<i>Getting next page...</i>', htmlParse)
     tagSearch(link).then(tagHandler(bot, chatId, botMsg)).catch(errorHandler(bot, chatId))
   } else if (query == 'prevPage') {
     const { url, page } = dataUrl
     const link = `${url}page/${page-1}/`
     
     bot.deleteMessage(chatId, message_id)
-    tagSearch(link).then(tagHandler(bot, chatId, null)).catch(errorHandler(bot, chatId))
+    const botMsg = bot.sendMessage(chatId, '<i>Getting previous page...</i>', htmlParse)
+    tagSearch(link).then(tagHandler(bot, chatId, botMsg)).catch(errorHandler(bot, chatId))
   } else {
     bot.deleteMessage(chatId, message_id)
+    const botMsg = bot.sendMessage(chatId, '<i>Getting link...</i>', htmlParse)
   
     if (isMainPageUrl(data[query].link)) {
       getLink(data[query].link)
-        .then(scrapePromiseHandler(bot, chatId, null, data[query].link))
+        .then(scrapePromiseHandler(bot, chatId, botMsg, data[query].link))
         .catch(errorHandler(bot, chatId))
     } else if (isTagUrl(data[query].link)) {
-      tagSearch(data[query].link).then(tagHandler(bot, chatId, null)).catch(errorHandler(bot, chatId))
+      tagSearch(data[query].link).then(tagHandler(bot, chatId, botMsg)).catch(errorHandler(bot, chatId))
     } else {
       bot.sendMessage(chatId, '<b>Can\'t continue to find</b>', htmlParse)
     }
