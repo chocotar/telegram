@@ -69,6 +69,7 @@ async function search(query) {
             isTrue.push(undefined)
           }
         }
+        console.log(isTrue)
         if (isTrue.every(Boolean)) {
           linkResult = isTrue[i]
           console.log(linkResult)
@@ -80,6 +81,7 @@ async function search(query) {
             return found(linksArr, "keyboard")
           }
         }
+        return found(undefined, `<i>${query}</i> is <b>Not Found</b>`)
       }
       return found(undefined, `<i>${query}</i> is <b>Not Found</b>`)
     }
