@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 const { minimal_args } = require('./utilities');
 
-let dataUrl = {}
+let dataUrl
 
 const tagSearch = async url => {
   try {
@@ -28,7 +28,7 @@ const tagSearch = async url => {
          }
         return arr
     })
-    dataUrl.data = linksArr
+    dataUrl = linksArr
     return linksArr
     // await page.screenshot({path: 'test.png', fullPage: true})
     await browser.close();
