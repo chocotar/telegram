@@ -50,15 +50,23 @@ bot.onText(/\/scrape (.+)/, (msg, match) => {
 });
 
 bot.on('callback_query', callbackQuery => {
+  console.log(callbackQuery)
   const chatId = callbackQuery.message.chat.id
   const { message_id } = callbackQuery.message
   const query = callbackQuery.data
-  const { data, nextIndex, prevIndex } = dataUrl
-  const keyboardBuild = inlineKeyboardBuilder(data, index)
-  const { reply_markup, parse_mode } = opts(true, keyboardBuild[1])
+  const { data, nextIndex } = dataUrl
 
   // Next button
   if (query == nextIndex) {
+    const keyboardBuild = inlineKeyboardBuilder(data, nextIndex)
+    const { reply_markup, parse_mode } = opts(true, keyboardBuild[1])
+
+    bot.editMessageText(keyboardBuild[0], { chat_id: chatId, message_id, reply_markup, parse_mode })
+    return
+  } else if (query == 'prev') { // prev button
+    const keyboardBuild = inlineKeyboardBuilder(data, nextIndex-5)
+    const { reply_markup, parse_mode } = opts(true, keyboardBuild[1])
+
     bot.editMessageText(keyboardBuild[0], { chat_id: chatId, message_id, reply_markup, parse_mode })
     return
   }
