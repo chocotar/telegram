@@ -85,6 +85,13 @@ bot.on('callback_query', callbackQuery => {
     const link = `${url}page/${page+1}/`
     
     bot.deleteMessage(chatId, message_id)
+    const botMsg = bot.sendMessage(chatId, '<i>Getting next page</i>', htmlParse)
+    tagSearch(link).then(tagHandler(bot, chatId, botMsg)).catch(errorHandler(bot, chatId))
+  } else if (query == 'prevPage') {
+    const { url, page } = dataUrl
+    const link = `${url}page/${page-1}/`
+    
+    bot.deleteMessage(chatId, message_id)
     tagSearch(link).then(tagHandler(bot, chatId, null)).catch(errorHandler(bot, chatId))
   } else {
     bot.deleteMessage(chatId, message_id)
