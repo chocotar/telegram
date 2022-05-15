@@ -1,6 +1,8 @@
 const puppeteer = require('puppeteer');
 const { minimal_args } = require('./utilities');
 
+let dataUrl
+
 const tagSearch = async url => {
   try {
     const browser = await puppeteer.launch({
@@ -26,6 +28,7 @@ const tagSearch = async url => {
          }
         return arr
     })
+    dataUrl = linksArr
     return linksArr
     // await page.screenshot({path: 'test.png', fullPage: true})
     await browser.close();
