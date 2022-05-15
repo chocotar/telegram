@@ -1,6 +1,8 @@
 const cheerio = require('cheerio');
 const { getLink } = require('./api');
 
+let dataUrl
+
 const errorHandler = (bot, chatId) => {
   return (err => {
     console.log(err)
@@ -73,6 +75,7 @@ const scrapePromiseHandler = (bot, chatId, botMsg, url) => {
 
 const tagHandler = (bot, chatId, botMsg) => {
   return ( response => {
+    dataUrl = response
     const res = inlineKeyboardBuilder(response)
     const options = opts(true, res[1])
     console.log(options.reply_markup.inline_keyboard)
@@ -96,7 +99,7 @@ const inlineKeyboardBuilder = (data, index=0) => {
     str.push(`${i+1}. ${data[i].name}`)
     keyboardBuilder.push({
       text: i+1,
-      callback_data: data[i].link
+      callback_data: i
     })
   }
   const textBuilder = str.join('\n\n')
@@ -126,4 +129,4 @@ const toWriteData = (name, link, isCreateData) => {
   return
 }
 
-module.exports = { scrapePromiseHandler, tagHandler, deleteMessageHandler, findPromiseHandler, errorHandler, isMainPageUrl };
+module.exports = { dataUrl, scrapePromiseHandler, tagHandler, deleteMessageHandler, findPromiseHandler, errorHandler, isMainPageUrl };
