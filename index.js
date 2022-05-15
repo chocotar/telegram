@@ -64,7 +64,6 @@ bot.on('callback_query', callbackQuery => {
     const { reply_markup, parse_mode } = opts(true, keyboardBuild[1])
 
     btn.nextMsg = bot.editMessageText(keyboardBuild[0], { chat_id: chatId, message_id, reply_markup, parse_mode })
-    return
   } else if (query == 'prev') { // prev button
     const keyboardBuild = inlineKeyboardBuilder(data, nextIndex-10)
     const options  = opts(true, keyboardBuild[1])
@@ -80,7 +79,6 @@ bot.on('callback_query', callbackQuery => {
     } else {
       bot.deleteMessage(nChatId, nMessageId)
       btn.prevMsg = bot.sendMessage(nChatId, keyboardBuild[0], options)
-      return
     }
   } else if (query == 'nextPage') {
     const { url, page } = dataUrl
@@ -88,19 +86,18 @@ bot.on('callback_query', callbackQuery => {
     
     bot.deleteMessage(chatId, message_id)
     tagSearch(link).then(tagHandler(bot, chatId, null)).catch(errorHandler(bot, chatId))
-    return
-  }
-  
-  bot.deleteMessage(chatId, message_id)
-  
-  if (isMainPageUrl(data[query].link)) {
-    getLink(data[query].link)
-      .then(scrapePromiseHandler(bot, chatId, null, data[query].link))
-      .catch(errorHandler(bot, chatId))
-  } else if (isTagUrl(data[query].link)) {
-    tagSearch(data[query].link).then(tagHandler(bot, chatId, null)).catch(errorHandler(bot, chatId))
   } else {
-    bot.sendMessage(chatId, '<b>Can\'t continue to find</b>', htmlParse)
+    bot.deleteMessage(chatId, message_id)
+  
+    if (isMainPageUrl(data[query].link)) {
+      getLink(data[query].link)
+        .then(scrapePromiseHandler(bot, chatId, null, data[query].link))
+        .catch(errorHandler(bot, chatId))
+    } else if (isTagUrl(data[query].link)) {
+      tagSearch(data[query].link).then(tagHandler(bot, chatId, null)).catch(errorHandler(bot, chatId))
+    } else {
+      bot.sendMessage(chatId, '<b>Can\'t continue to find</b>', htmlParse)
+    }
   }
 });
 
