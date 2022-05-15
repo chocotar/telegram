@@ -65,8 +65,7 @@ bot.on('callback_query', callbackQuery => {
     btn.nextMsg = bot.editMessageText(keyboardBuild[0], { chat_id: chatId, message_id, reply_markup, parse_mode })
     return
   } else if (query == 'prev') { // prev button
-    console.log(typeof nextIndex, nextIndex-5)
-    const keyboardBuild = inlineKeyboardBuilder(data, nextIndex-5)
+    const keyboardBuild = inlineKeyboardBuilder(data, nextIndex-10)
     const options  = opts(true, keyboardBuild[1])
     const { nextMsg } = btn
     const nChatId = nextMsg._rejectionHandler0.chat.id
