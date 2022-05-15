@@ -67,11 +67,17 @@ bot.on('callback_query', callbackQuery => {
   } else if (query == 'prev') { // prev button
     const keyboardBuild = inlineKeyboardBuilder(data, nextIndex-10)
     const options  = opts(true, keyboardBuild[1])
-    const { nextMsg } = btn
+    const { nextMsg, prevMsg } = btn
     const nChatId = nextMsg._rejectionHandler0.chat.id
     const nMessageId = nextMsg._rejectionHandler0.message_id
+    const pChatId = prevMsg._rejectionHandler0.chat.id
+    const pMessageId = prevMsg._rejectionHandler0.message_id
     
-    bot.deleteMessage(nChatId, nMessageId)
+    if (btn.prevMsg) {
+      bot.deleteMessage(pChatId, pMessageId)
+    } else {
+      bot.deleteMessage(nChatId, nMessageId)
+    }
   
     btn.prevMsg = bot.sendMessage(nChatId, keyboardBuild[0], options)
     return
