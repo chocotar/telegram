@@ -53,9 +53,9 @@ bot.on('callback_query', callbackQuery => {
   const chatId = callbackQuery.message.chat.id
   const botMsg = callbackQuery.message.message_id
   const query = callbackQuery.data
-  console.log(query)
+  console.log(datUrl)
   bot.deleteMessage(chatId, botMsg)
-  dataUrl.then(dataHandler(bot, chatId, query)).catch(errorHandler(bot, chatId))
+  //dataUrl.then(dataHandler(bot, chatId, query)).catch(errorHandler(bot, chatId))
 });
 
 bot.on('polling_error', (error) => {
