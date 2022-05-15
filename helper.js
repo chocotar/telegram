@@ -1,4 +1,4 @@
-const inlineKeyboardBuilder = (data, index=0, isTag=false, page=2) => {
+const inlineKeyboardBuilder = (data, index=0, isTag=false) => {
   const str = [], keyboardBuilder = []
   for( i = index; i < index + 5; i++) {
     str.push(`${i+1}. ${data[i].name}`)
@@ -14,7 +14,7 @@ const inlineKeyboardBuilder = (data, index=0, isTag=false, page=2) => {
 
   if (index >= 5) keyboardBuilder.unshift({ text: '<<', callback_data: 'prev' })
   if (index < arr.length-5)keyboardBuilder.push({ text: '>>', callback_data: index+5 })
-  if (index == arr.length-5 && isTag )keyboardBuilder.push({ text: `Page ${page}`, callback_data: 'nextPage' })
+  if (index == arr.length-5 && isTag )keyboardBuilder.push({ text: `Page ${page+1}`, callback_data: 'nextPage' })
   if (index >= 5 && page > 1) keyboardBuilder.unshift({ text: `$Page {page-1}`, callback_data: 'prevPage' })
 
   return [textBuilder, keyboardBuilder]
