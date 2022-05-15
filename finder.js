@@ -50,7 +50,7 @@ async function search(query) {
     // find best result
     if (linksArr) {
       const args = query.split(' ')
-      let bestResult
+      let linkResult
       
       for (let i = 0; i < linksArr.length; i++) {
         const linkText = linksArr[i].name
@@ -69,14 +69,12 @@ async function search(query) {
           }
           if (j == args.length - 1) {
             if (isTrue.every(Boolean)) {
-              bestResult = isTrue[j]
+              linkResult = isTrue[j]
             }
           }
         }
       }
-      console.log(bestResult)
-     if (bestResult) {
-        const linkResult = isTrue[0]
+     if (linkResult) {
         if (isMainPageUrl(linkResult)) {
           return found(linkResult, "Success")
         } else {
