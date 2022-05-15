@@ -101,7 +101,8 @@ const inlineKeyboardBuilder = (data, index=0) => {
       callback_data: i
     })
   }
-  dataUrl.index = index+5
+  dataUrl.nextIndex = index+5
+  dataUrl.prevIndex = index-5
   const arr = dataUrl.data
   const textBuilder = str.join('\n\n')
   if (index >= 5) keyboardBuilder.unshift({ text: '<<', callback_data: index-5 })
