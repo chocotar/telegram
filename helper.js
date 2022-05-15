@@ -1,3 +1,5 @@
+const { dataUrl } = require('./handler')
+
 const inlineKeyboardBuilder = (data, index=0) => {
   const str = [], keyboardBuilder = []
   for( i = index; i < index + 5; i++) {
