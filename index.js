@@ -51,7 +51,7 @@ bot.onText(/\/scrape (.+)/, (msg, match) => {
 
 bot.on('callback_query', callbackQuery => {
   const chatId = callbackQuery.message.chat.id
-  const message_id = callbackQuery.message
+  const { message_id } = callbackQuery.message
   const query = callbackQuery.data
   const { data, index } = dataUrl
   const keyboardBuild = inlineKeyboardBuilder(data, index)
