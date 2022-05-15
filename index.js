@@ -51,18 +51,18 @@ bot.onText(/\/scrape (.+)/, (msg, match) => {
 
 bot.on('callback_query', callbackQuery => {
   const chatId = callbackQuery.message.chat.id
-  const botMsg = callbackQuery.message.message_id
+  const message_id = callbackQuery.message
   const query = callbackQuery.data
   const { data, index } = dataUrl
   const keyboardBuild = inlineKeyboardBuilder(data, index)
   const options = opts(true, keyboardBuild[1])
 
   if (query == index) {
-    bot.editMessageText(keyboardBuild[0], { chat_id: chatId }, options)
+    bot.editMessageText(keyboardBuild[0], { message_id }, options)
     return
   }
   
-  bot.deleteMessage(chatId, botMsg)
+  bot.deleteMessage(chatId, message_id)
 
   getLink(data[query].link)
     .then(scrapePromiseHandler(bot, chatId, null, data[query].link))
