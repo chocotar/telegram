@@ -4,7 +4,7 @@ const TelegramBot = require('node-telegram-bot-api');
 const express = require('express');
 const token = process.env.TOKEN
 const PORT = process.env.PORT || 8000
-const { tagHandler, findPromiseHandler, scrapePromiseHandler, errorHandler, isMainPageUrl, dataUrl, inlineKeyboardBuilder } = require('./handler');
+const { tagHandler, findPromiseHandler, scrapePromiseHandler, errorHandler, isMainPageUrl, dataUrl, inlineKeyboardBuilder, opts } = require('./handler');
 const { tag } = require('./utilities')
 const { search } = require('./finder');
 const { getLink } = require('./api');
@@ -55,9 +55,11 @@ bot.on('callback_query', callbackQuery => {
   const botMsg = callbackQuery.message.message_id
   const query = callbackQuery.data
   const { data, index } = dataUrl
+  const keyboardBuild = inlineKeyboardBuilder(data, index)
+  const options = opts(true, keyboardBuild[1])
 
   if (query == index) {
-    return bot.editMessageText(inlineKeyboardBuilder(data, index), chatId)
+    return bot.editMessageText(keyboardBuild[0], chatId, options)
   }
 
   bot.deleteMessage(chatId, botMsg)
