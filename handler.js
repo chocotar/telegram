@@ -76,7 +76,7 @@ const scrapePromiseHandler = (bot, chatId, botMsg, url) => {
 const tagHandler = (bot, chatId, botMsg) => {
   return ( response => {
     dataUrl.data = response
-    const res = inlineKeyboardBuilder(response, isTag=true)
+    const res = inlineKeyboardBuilder(response)
     const options = opts(true, res[1])
     if (botMsg) botMsg.then(deleteMessageHandler(bot)).catch(errorHandler(bot, chatId))
     const msg = bot.sendMessage(chatId, res[0], options)
