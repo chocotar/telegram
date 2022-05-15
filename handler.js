@@ -130,4 +130,4 @@ const toWriteData = (name, link, isCreateData) => {
   return
 }
 
-module.exports = { dataUrl, scrapePromiseHandler, tagHandler, deleteMessageHandler, findPromiseHandler, errorHandler, isMainPageUrl };
+module.exports = { dataUrl, opts, scrapePromiseHandler, tagHandler, deleteMessageHandler, findPromiseHandler, errorHandler, isMainPageUrl };
