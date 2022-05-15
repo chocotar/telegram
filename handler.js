@@ -1,6 +1,5 @@
 const cheerio = require('cheerio');
 const { getLink } = require('./api');
-const { isMainPageUrl, inlineKeyboardBuilder, opts, toWriteData } = require('./helper')
 const dataUrl = {}
 
 const errorHandler = (bot, chatId) => {
