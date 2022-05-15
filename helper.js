@@ -41,7 +41,7 @@ const isTagUrl = url => {
 }
 
 const getPageNumber = url => {
-  const regExp url.match(/(\/\d\/)$/)
+  const regExp = url.match(/(\/\d\/)$/)
   if (regExp) {
     return Number(regExp[0].split('/')[1])
   }
