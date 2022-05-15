@@ -58,10 +58,11 @@ bot.on('callback_query', callbackQuery => {
   const options = opts(true, keyboardBuild[1])
 
   if (query == index) {
-    bot.deleteMessage(chatId, botMsg)
-    bot.sendMessage(keyboardBuild[0], chatId, options)
+    bot.editMessageText(keyboardBuild[0], { chat_id: chatId }, options)
     return
   }
+  
+  bot.deleteMessage(chatId, botMsg)
 
   getLink(data[query].link)
     .then(scrapePromiseHandler(bot, chatId, null, data[query].link))
