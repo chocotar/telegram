@@ -77,12 +77,11 @@ bot.on('callback_query', callbackQuery => {
       const pMessageId = prevMsg._rejectionHandler0.message_id
       bot.deleteMessage(pChatId, pMessageId)
       btn.prevMsg = bot.sendMessage(pChatId, keyboardBuild[0], options)
+    } else {
+      bot.deleteMessage(nChatId, nMessageId)
+      btn.prevMsg = bot.sendMessage(nChatId, keyboardBuild[0], options)
       return
     }
-
-    bot.deleteMessage(nChatId, nMessageId)
-    btn.prevMsg = bot.sendMessage(nChatId, keyboardBuild[0], options)
-    return
   } else if (query == 'nextPage') {
     const { url, page } = dataUrl
     const link = `${url}page/${page+1}/`
