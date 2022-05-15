@@ -68,6 +68,7 @@ async function search(query) {
           }
         }
       }
+     console.log(isTrue)
      if (isTrue.every(Boolean)) {
         const linkResult = isTrue[0]
         if (isMainPageUrl(linkResult)) {
