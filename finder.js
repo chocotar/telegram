@@ -69,7 +69,7 @@ async function search(query) {
           }
           if (j == args.length - 1) {
             if (isTrue.every(Boolean)) {
-              bestResult = isTrue[i]
+              bestResult = isTrue[j]
             }
           }
         }
