@@ -70,6 +70,8 @@ bot.on('callback_query', callbackQuery => {
     const { nextMsg } = btn
     const nChatId = nextMsg._rejectionHandler0.chat.id
     const nMessageId = nextMsg._rejectionHandler0.message_id
+    
+    bot.deleteMessage(nChatId, nMessageId)
   
     btn.prevMsg = bot.sendMessage(nChatId, keyboardBuild[0], options)
     return
