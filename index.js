@@ -84,10 +84,13 @@ bot.on('callback_query', callbackQuery => {
   }
   
   bot.deleteMessage(chatId, message_id)
-
-  getLink(data[query].link)
-    .then(scrapePromiseHandler(bot, chatId, null, data[query].link))
-    .catch(errorHandler(bot, chatId))
+  if (isMainPageUrl(data[query].link)) {
+    getLink(data[query].link)
+      .then(scrapePromiseHandler(bot, chatId, null, data[query].link))
+      .catch(errorHandler(bot, chatId))
+  } else {
+    tagSearch(data[query].link).then(tagHandler(bot, chatId, null)).catch(errorHandler(bot, chatId))
+  }
 });
 
 bot.on('polling_error', (error) => {
