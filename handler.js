@@ -107,7 +107,7 @@ const inlineKeyboardBuilder = (data, index=0, page=2) => {
 
   if (index >= 5) keyboardBuilder.unshift({ text: '<<', callback_data: 'prev' })
   if (index < arr.length-5)keyboardBuilder.push({ text: '>>', callback_data: index+5 })
-  if (index == arr.length-5)keyboardBuilder.push([{ text: `Page ${page}`, callback_data: page }])
+  if (index == arr.length-5)keyboardBuilder.push({ text: `Page ${page}`, callback_data: page })
 
   return [textBuilder, keyboardBuilder]
 }
