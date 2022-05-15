@@ -48,6 +48,7 @@ async function search(query) {
     }
 
     // find best result
+    console.log(linksArr)
     if (linksArr) {
       const args = query.split(' ')
       let linkResult
@@ -68,7 +69,7 @@ async function search(query) {
             isTrue.push(undefined)
           }
         }
-        console.log(isTrue)
+
         if (isTrue.every(Boolean)) {
           linkResult = isTrue[i]
           if (isMainPageUrl(linkResult)) {
