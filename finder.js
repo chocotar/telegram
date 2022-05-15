@@ -25,7 +25,7 @@ async function search(query) {
       try {
         const links = document.querySelectorAll('div.gs-title a.gs-title')
         let arr = []
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < links.length; i++) {
           arr.push({
             name: links[i].innerText,
             link: links[i].href
