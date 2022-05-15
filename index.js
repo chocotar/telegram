@@ -53,11 +53,12 @@ bot.on('callback_query', callbackQuery => {
   const chatId = callbackQuery.message.chat.id
   const { message_id } = callbackQuery.message
   const query = callbackQuery.data
-  const { data, index } = dataUrl
+  const { data, nextIndex, prevIndex } = dataUrl
   const keyboardBuild = inlineKeyboardBuilder(data, index)
   const { reply_markup, parse_mode } = opts(true, keyboardBuild[1])
 
-  if (query == index) {
+  // Next button
+  if (query == nextIndex) {
     bot.editMessageText(keyboardBuild[0], { chat_id: chatId, message_id, reply_markup, parse_mode })
     return
   }
