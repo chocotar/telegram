@@ -9,7 +9,7 @@ const { tag } = require('./utilities')
 const { search } = require('./finder');
 const { getLink } = require('./api');
 const { tagSearch } = require('./tag');
-const nextBtn = {}
+const btn = {}
 
 // Create a bot that uses 'polling' to fetch new updates
 const bot = new TelegramBot(token, {polling: true});
@@ -62,16 +62,18 @@ bot.on('callback_query', callbackQuery => {
     const keyboardBuild = inlineKeyboardBuilder(data, nextIndex)
     const { reply_markup, parse_mode } = opts(true, keyboardBuild[1])
 
-    nextBtn.msg = bot.editMessageText(keyboardBuild[0], { chat_id: chatId, message_id, reply_markup, parse_mode })
+    btn.nextMsg = bot.editMessageText(keyboardBuild[0], { chat_id: chatId, message_id, reply_markup, parse_mode })
     return
   } else if (query == 'prev') { // prev button
     const keyboardBuild = inlineKeyboardBuilder(data, nextIndex-5)
-    const options  = opts(true, keyboardBuild[1])
-    const { msg } = nextBtn
-    console.log(msg)
-   
-    //msg.then(deleteMessageHandler(bot)).catch(errorHandler(bot, chatId))
-    //bot.sendMessage(chatId, keyboardBuild[0], options)
+    const { reply_markup, parse_mode } = opts(true, keyboardBuild[1])
+    const { nextMsg } = btn
+    const nChatId = nextMsg._rejectionHandler0.chat.id
+    const nMessageId = nextMsg._rejectionHandler0.message_id
+
+    console.log(nChatId, nMessageId)
+  
+    //btn.prevMsg = bot.editMessageText(keyboardBuild[0], { chat_id: chatId, message_id, reply_markup, parse_mode })
     return
   }
   
