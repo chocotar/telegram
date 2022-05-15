@@ -69,9 +69,10 @@ bot.on('callback_query', callbackQuery => {
     const keyboardBuild = inlineKeyboardBuilder(data, nextIndex-5)
     const options  = opts(true, keyboardBuild[1])
     const { msg } = nextBtn
+    console.log(msg)
    
-    msg.then(deleteMessageHandler(bot)).catch(errorHandler(bot, chatId))
-    bot.sendMessage(chatId, keyboardBuild[0], options)
+    //msg.then(deleteMessageHandler(bot)).catch(errorHandler(bot, chatId))
+    //bot.sendMessage(chatId, keyboardBuild[0], options)
     return
   }
   
