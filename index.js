@@ -56,20 +56,21 @@ bot.on('callback_query', callbackQuery => {
   const query = callbackQuery.data
   const { data, nextIndex } = dataUrl
 
-  let nextBtn
+  const nextBtn = {}
 
   // Next button
   if (query == nextIndex) {
     const keyboardBuild = inlineKeyboardBuilder(data, nextIndex)
     const { reply_markup, parse_mode } = opts(true, keyboardBuild[1])
 
-    nextBtn = bot.editMessageText(keyboardBuild[0], { chat_id: chatId, message_id, reply_markup, parse_mode })
+    nextBtn.msg = bot.editMessageText(keyboardBuild[0], { chat_id: chatId, message_id, reply_markup, parse_mode })
     return
   } else if (query == 'prev') { // prev button
     const keyboardBuild = inlineKeyboardBuilder(data, nextIndex-5)
     const options  = opts(true, keyboardBuild[1])
+    const { msg } = nextBtn
    
-    nextBtn.then(deleteMessageHandler(bot)).catch(errorHandler(bot, chatId))
+    msg.then(deleteMessageHandler(bot)).catch(errorHandler(bot, chatId))
     bot.sendMessage(chatId, keyboardBuild[0], options)
     return
   }
