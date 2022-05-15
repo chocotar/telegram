@@ -4,11 +4,11 @@ const TelegramBot = require('node-telegram-bot-api');
 const express = require('express');
 const token = process.env.TOKEN
 const PORT = process.env.PORT || 8000
-const { dataUrl, dataHandler, tagHandler, findPromiseHandler, scrapePromiseHandler, errorHandler, isMainPageUrl } = require('./handler');
+const { dataHandler, tagHandler, findPromiseHandler, scrapePromiseHandler, errorHandler, isMainPageUrl } = require('./handler');
 const { tag } = require('./utilities')
 const { search } = require('./finder');
 const { getLink } = require('./api');
-const { tagSearch } = require('./tag');
+const { tagSearch, dataUrl } = require('./tag');
 
 // Create a bot that uses 'polling' to fetch new updates
 const bot = new TelegramBot(token, {polling: true});
