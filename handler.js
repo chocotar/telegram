@@ -92,7 +92,7 @@ const deleteMessageHandler = (bot) => {
 }
 
 ////////////////////////// Helper ////////////////////////
-// I put all helper requirements in one file to avoid circular dependency error though it was messed up :( //
+// I put all helper requirements in one file to avoid circular dependency error, though it was messed up :( //
 
 const inlineKeyboardBuilder = (data, index=0) => {
   const str = [], keyboardBuilder = []
