@@ -48,15 +48,13 @@ async function search(query) {
     }
 
     // find best result
-    console.log(linksArr)
     if (linksArr) {
       const args = query.split(' ')
-      let linkResult
+      const isTrue = []
       for (let i = 0; i < linksArr.length; i++) {
     
         const linkText = linksArr[i].name
         const pageUrl = linksArr[i].link
-        const isTrue = []
     
         for (let j = 0; j < args.length; j++) {
           const strRegEx = `${args[j]}`
@@ -69,18 +67,15 @@ async function search(query) {
             isTrue.push(undefined)
           }
         }
-
-        if (isTrue.every(Boolean)) {
-          linkResult = isTrue[i]
-          if (isMainPageUrl(linkResult)) {
-            return found(linkResult, "Success")
-          } else {
-            dataUrl.data = linksArr
-            return found(linksArr, "keyboard")
-          }
+      }
+     if (isTrue.every(Boolean)) {
+        const linkResult = isTrue[0]
+        if (isMainPageUrl(linkResult)) {
+          return found(linkResult, "Success")
+        } else {
+          dataUrl.data = linksArr
+          return found(linksArr, "keyboard")
         }
-
-        return found(undefined, `<i>${query}</i> is <b>Not Found</b>`)
       }
       return found(undefined, `<i>${query}</i> is <b>Not Found</b>`)
     }
