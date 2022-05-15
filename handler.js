@@ -99,6 +99,7 @@ const inlineKeyboardBuilder = (data, index=0) => {
     })
   }
   const textBuilder = str.join('\n\n')
+  keyboardBuilder.push({ text: '>>', callback_data: index+5 })
   return [textBuilder, keyboardBuilder]
 }
 
