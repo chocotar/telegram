@@ -69,10 +69,8 @@ async function search(query) {
             isTrue.push(undefined)
           }
         }
-        console.log(isTrue)
         if (isTrue.every(Boolean)) {
           linkResult = isTrue[i]
-          console.log(linkResult)
 
           if (isMainPageUrl(linkResult)) {
             return found(linkResult, "Success")
