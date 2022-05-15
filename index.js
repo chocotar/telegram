@@ -58,7 +58,7 @@ bot.on('callback_query', callbackQuery => {
   const options = opts(true, keyboardBuild[1])
 
   if (query == index) {
-    bot.editMessageText(keyboardBuild[0], { chat_id: chatId }, options)
+    bot.editMessageText(keyboardBuild[0], { chat_id: chatId, message_id }, options)
     return
   }
   
