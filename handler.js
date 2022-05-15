@@ -85,6 +85,12 @@ const tagHandler = (bot, chatId, botMsg) => {
   )
 }
 
+const dataHandler = (bot, chatId, index) => {
+  return ( data => {
+    getLink(data[index].link).then(scrapePromiseHandler(bot, chatId, null, data[index].link)).catch(errorHandler(bot, chatId))
+  })
+}
+
 const deleteMessageHandler = (bot) => {
   return ( msg => {
     const messageId = msg.message_id
