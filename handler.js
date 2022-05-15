@@ -104,7 +104,7 @@ const inlineKeyboardBuilder = (data, index=0) => {
   dataUrl.nextIndex = index+5
   const arr = dataUrl.data
   const textBuilder = str.join('\n\n')
-  if (index >= 5) keyboardBuilder.unshift({ text: '<<', callback_data: true })
+  if (index >= 5) keyboardBuilder.unshift({ text: '<<', callback_data: 'prev' })
   if (index < arr.length-5)keyboardBuilder.push({ text: '>>', callback_data: index+5 })
   return [textBuilder, keyboardBuilder]
 }
