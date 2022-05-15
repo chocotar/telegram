@@ -50,6 +50,7 @@ bot.onText(/\/scrape (.+)/, (msg, match) => {
 });
 
 bot.on('callback_query', callbackQuery => {
+  console.log(callbackQuery)
   const chatId = callbackQuery.message.chat.id
   const botMsg = callbackQuery.message.message_id
   const query = callbackQuery.data
