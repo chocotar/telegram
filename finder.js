@@ -26,11 +26,13 @@ async function search(query) {
         const links = document.querySelectorAll('div.gs-title a.gs-title')
         let arr = []
         for (let i = 0; i < links.length; i++) {
-          arr.push({
-            name: links[i].innerText,
-            link: links[i].href
-           })
-         }
+          if (links[i].innerText && links[i].href) {
+            arr.push({
+              name: links[i].innerText,
+              link: links[i].href
+             })
+           }
+        }
         return arr
       } catch (e) {
         return undefined
