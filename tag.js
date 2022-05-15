@@ -1,7 +1,6 @@
 const puppeteer = require('puppeteer');
 const { minimal_args } = require('./utilities');
-const { getPageNumber } = require('./helper')
-const { dataUrl } = require('./handler')
+const { dataUrl, getPageNumber } = require('./handler')
 
 const tagSearch = async url => {
   try {

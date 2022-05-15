@@ -1,6 +1,5 @@
 const puppeteer = require('puppeteer');
-const { dataUrl } = require('./handler');
-const { isMainPageUrl } = require('./helper')
+const { dataUrl, isMainPageUrl } = require('./handler');
 const { minimal_args } = require('./utilities');
 
 async function search(query) {
