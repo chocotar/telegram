@@ -9,6 +9,7 @@ const { tag } = require('./utilities')
 const { search } = require('./finder');
 const { getLink } = require('./api');
 const { tagSearch } = require('./tag');
+const nextBtn = {}
 
 // Create a bot that uses 'polling' to fetch new updates
 const bot = new TelegramBot(token, {polling: true});
@@ -55,8 +56,6 @@ bot.on('callback_query', callbackQuery => {
   const { message_id } = callbackQuery.message
   const query = callbackQuery.data
   const { data, nextIndex } = dataUrl
-
-  const nextBtn = {}
 
   // Next button
   if (query == nextIndex) {
