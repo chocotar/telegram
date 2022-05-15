@@ -60,18 +60,17 @@ async function search(query) {
         for (let j = 0; j < args.length; j++) {
           const strRegEx = `${args[j]}`
           const newRegEx = new RegExp(strRegEx, "i")
-          
           const isFound = linkText.search(newRegEx)
-          console.log(isFound)
+
           if (isFound !== -1) {
             isTrue.push(pageUrl)  
           } else {
             isTrue.push(undefined)
           }
         }
+
         if (isTrue.every(Boolean)) {
           linkResult = isTrue[i]
-
           if (isMainPageUrl(linkResult)) {
             return found(linkResult, "Success")
           } else {
@@ -79,6 +78,7 @@ async function search(query) {
             return found(linksArr, "keyboard")
           }
         }
+
         return found(undefined, `<i>${query}</i> is <b>Not Found</b>`)
       }
       return found(undefined, `<i>${query}</i> is <b>Not Found</b>`)
