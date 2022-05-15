@@ -67,7 +67,7 @@ async function search(query) {
           } else {
             isTrue.push(undefined)
           }
-          if (i == args.length - 1) {
+          if (j == args.length - 1) {
             if (isTrue.every(Boolean)) {
               bestResult = isTrue[i]
             }
