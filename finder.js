@@ -68,7 +68,7 @@ async function search(query) {
             isTrue.push(undefined)
           }
         }
-
+        console.log(isTrue)
         if (isTrue.every(Boolean)) {
           linkResult = isTrue[i]
           if (isMainPageUrl(linkResult)) {
