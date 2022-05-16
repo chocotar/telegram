@@ -15,7 +15,7 @@ const main = async () => {
 }
 
 const LinkSchema = new Schema({
-  no: { type: Number },
+  no: { type: Number, required: true },
   name: { type: String },
   link: Schema.Types.Mixed 
 })
