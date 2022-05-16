@@ -4,13 +4,13 @@ const URI = process.env.URI
 const insertData = obj => {
   mongoose.connect(URI, { 
     useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true
+    useUnifiedTopology: true
   }).then(() => {
     console.log('Connected to Mongodb')
     const Schema = mongoose.Schema
 
     const LinkSchema = new Schema({ 
+      index: true,
       name: String, 
       link: Schema.Types.Mixed 
     })
