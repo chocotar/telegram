@@ -30,7 +30,7 @@ const findPromiseHandler = (bot, chatId, botMsg, query) => {
   });
 };
 
-const scrapePromiseHandler = (bot, chatId, botMsg, url) => {
+const scrapePromiseHandler = async (bot, chatId, botMsg, url) => {
   const mainPageCheck = isMainPageUrl(url)
   const isWriteData = process.env.WRITE_DATA || false
   let str
@@ -53,26 +53,32 @@ const scrapePromiseHandler = (bot, chatId, botMsg, url) => {
           links.push(pageUrl)
         }
         console.log(links)
-
-        var db = new Link({ name, link: links })
-        db.save().then((result) => console.log(result)).catch((err) => console.log(err))
+  
+        const check = await Link.isDuplicate(name)
+        if (!check) {
+          var db = new Link({ name, link: links })
+          db.save().then((result) => console.log(result)).catch((err) => console.log(err))
+        }
 
         const rLinks = links.join(`\n\n<b>Another part:</b> `)
         str = `<b>Name:</b> ${name}\n\n<b>Link part 1:</b> ${rLinks}`
         if (botMsg) botMsg.then(deleteMessageHandler(bot)).catch(errorHandler(bot, chatId))
         bot.sendMessage(chatId, str, opts());
-      }else {
+      } else {
         console.log(link)
 
-        var db = new Link({ name, link })
-        db.save().then((result) => console.log(result)).catch((err) => console.log(err))
+        const check = await Link.isDuplicate(name)
+        if (!check) {
+          var db = new Link({ name, link})
+          db.save().then((result) => console.log(result)).catch((err) => console.log(err))
+        }
 
         str = `<b>Name:</b> ${name}\n\n<b>Link:</b> ${link}`
         if (botMsg) botMsg.then(deleteMessageHandler(bot)).catch(errorHandler(bot, chatId))
         bot.sendMessage(chatId, str, opts());
       }
     })
-  }else {
+  } else {
     str = `<i>${url}</i> is not main page`
     if (botMsg) botMsg.then(deleteMessageHandler(bot)).catch(errorHandler(bot, chatId))
     bot.sendMessage(chatId, str, opts());
