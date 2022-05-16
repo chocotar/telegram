@@ -14,8 +14,9 @@ const main = async () => {
     return mongoose
 }
 
-const LinkSchema = new Schema({ 
-  name: { type: String, index: true },
+const LinkSchema = new Schema({
+  no: { type: Number },
+  name: { type: String },
   link: Schema.Types.Mixed 
 })
 const Link = mongoose.model('link', LinkSchema)
