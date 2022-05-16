@@ -5,6 +5,7 @@ const express = require('express');
 const mongoose = require('mongoose')
 const token = process.env.TOKEN
 const PORT = process.env.PORT || 8000
+const URI = process.env.URI
 const { isTagUrl, isMainPageUrl, getPageNumber, inlineKeyboardBuilder, opts, tagHandler, deleteMessageHandler, findPromiseHandler, scrapePromiseHandler, errorHandler, dataUrl } = require('./handler');
 const { tag } = require('./utilities')
 const { search } = require('./finder');
