@@ -60,6 +60,8 @@ const scrapePromiseHandler = (bot, chatId, botMsg, url) => {
             if (!isDup) {
               var db = new Link({ name, link: links })
               db.save().then((result) => console.log(result)).catch((err) => console.log(err))
+            } else {
+              console.log('Data already inserted')
             }
           })
           .catch((err) => console.log(err))
@@ -77,6 +79,8 @@ const scrapePromiseHandler = (bot, chatId, botMsg, url) => {
             if (!isDup) {
               var db = new Link({ name, link })
               db.save().then((result) => console.log(result)).catch((err) => console.log(err))
+            } else {
+              console.log('Data already inserted')
             }
           })
           .catch((err) => console.log(err))
