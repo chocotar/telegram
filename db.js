@@ -5,7 +5,7 @@ const insertData = obj => {
   mongoose.connect(URI, { 
     useNewUrlParser: true,
     useUnifiedTopology: true
-  }, () => console.log('Connected to Mongodb'))
+  }, () => console.log('Connected to Mongodb'));
 
   (async () => {
     try {
@@ -20,16 +20,16 @@ const insertData = obj => {
       await linkDownload.save((err, result) => {
         if (err) {
           console.log(err)
-          return mongoose.disconnect()
+          return mongoose.disconnect();
         }
         console.log(result)
-        return mongoose.disconnect()
+        return mongoose.disconnect();
       })
     } catch (err) {
       console.log(err)
     }
   })();
-  mongoose.disconnect()
+  mongoose.disconnect();
 }
 
 module.exports.insertData = insertData
