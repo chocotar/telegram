@@ -48,6 +48,7 @@ async function search(query) {
     }
 
     if (linksArr) {
+      dataUrl.data = linksArr
       return found(linksArr, 'Success')
     } else {
       return found(undefined, `Your search <i>${query}</i> did not match any results`)
