@@ -1,5 +1,7 @@
 const cheerio = require('cheerio');
 const { getLink } = require('./api');
+const { isMainPageUrl, inlineKeyboardBuilder, opts, toWriteData } = require('./helper')
+const { insertData } = require('./db')
 const dataUrl = {}
 
 const errorHandler = (bot, chatId) => {
@@ -31,7 +33,7 @@ const findPromiseHandler = (bot, chatId, botMsg, query) => {
 
 const scrapePromiseHandler = (bot, chatId, botMsg, url) => {
   const mainPageCheck = isMainPageUrl(url)
-  const isCreateData = process.env.CREATE_DATA || false
+  const isWriteData = process.env.WRITE_DATA || false
   let str
   if (mainPageCheck) {
     return (response => {
@@ -52,14 +54,14 @@ const scrapePromiseHandler = (bot, chatId, botMsg, url) => {
           links.push(pageUrl)
         }
         console.log(links)
-        toWriteData(name, links, isCreateData)
+        insertData({ name, link: links })
         const rLinks = links.join(`\n\n<b>Another part:</b> `)
         str = `<b>Name:</b> ${name}\n\n<b>Link part 1:</b> ${rLinks}`
         if (botMsg) botMsg.then(deleteMessageHandler(bot)).catch(errorHandler(bot, chatId))
         bot.sendMessage(chatId, str, opts());
       }else {
         console.log(link)
-        toWriteData(name, link, isCreateData)
+        insertData({ name, link })
         str = `<b>Name:</b> ${name}\n\n<b>Link:</b> ${link}`
         if (botMsg) botMsg.then(deleteMessageHandler(bot)).catch(errorHandler(bot, chatId))
         bot.sendMessage(chatId, str, opts());
@@ -92,7 +94,6 @@ const deleteMessageHandler = (bot) => {
 }
 
 ////////////////////////// Helper ////////////////////////
-// I put all helper requirements in one file to avoid circular dependency error, though it was messed up :( //
 
 const inlineKeyboardBuilder = (data, index=0) => {
   const str = [], keyboardBuilder = []
@@ -111,7 +112,7 @@ const inlineKeyboardBuilder = (data, index=0) => {
   if (index >= 5) keyboardBuilder.unshift({ text: '<<', callback_data: 'prev' })
   if (index < arr.length-5)keyboardBuilder.push({ text: '>>', callback_data: index+5 })
   if (index == arr.length-5 && page )keyboardBuilder.push({ text: `Page ${page+1}`, callback_data: 'nextPage' })
-  if (index == 0 && page > 1) keyboardBuilder.unshift({ text: `Page ${page-1}`, callback_data: 'prevPage' })
+  if (index >= 5 && page > 1) keyboardBuilder.unshift({ text: `$Page {page-1}`, callback_data: 'prevPage' })
 
   return [textBuilder, keyboardBuilder]
 }
