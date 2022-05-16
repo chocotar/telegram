@@ -14,7 +14,6 @@ const findPromiseHandler = (bot, chatId, botMsg, query) => {
   return (url => {
     if (url.result) {
       console.log(true)
-      console.log(url.result)
       const keyboardBuild = inlineKeyboardBuilder(url.result)
       if (botMsg) botMsg.then(deleteMessageHandler(bot)).catch(errorHandler(bot, chatId))
       bot.sendMessage(chatId, keyboardBuild[0], opts(true, keyboardBuild[1]));
@@ -114,8 +113,10 @@ const deleteMessageHandler = (bot) => {
 ////////////////////////// Helper ////////////////////////
 
 const inlineKeyboardBuilder = (data, index=0) => {
+  console.log(data)
   const str = [], keyboardBuilder = []
   for( i = index; i < index + 5; i++) {
+    console.log(i)
     str.push(`${i+1}. ${data[i].name}`)
     keyboardBuilder.push({
       text: i+1,
