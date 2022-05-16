@@ -4,12 +4,13 @@ const TelegramBot = require('node-telegram-bot-api');
 const express = require('express');
 const token = process.env.TOKEN
 const PORT = process.env.PORT || 8000
-const URI = process.env.URI
+const IS_DB = process.env.IS_DB || false
 const { isTagUrl, isMainPageUrl, getPageNumber, inlineKeyboardBuilder, opts, tagHandler, deleteMessageHandler, findPromiseHandler, scrapePromiseHandler, errorHandler, dataUrl } = require('./handler');
 const { tag } = require('./utilities')
 const { search } = require('./finder');
 const { getLink } = require('./api');
 const { tagSearch } = require('./tag');
+const { main } = require('./db')
 const btn = {}
 
 // Create a bot that uses 'polling' to fetch new updates
@@ -17,6 +18,7 @@ const bot = new TelegramBot(token, {polling: true});
 const htmlParse = { parse_mode: 'HTML' }
 
 const app = express()
+if (IS_DB) main()
 
 // Matches "/find [whatever]"
 bot.onText(/\/find (.+)/, (msg, match) => {
@@ -65,6 +67,7 @@ bot.on('callback_query', callbackQuery => {
     const { reply_markup, parse_mode } = opts(true, keyboardBuild[1])
 
     btn.nextMsg = bot.editMessageText(keyboardBuild[0], { chat_id: chatId, message_id, reply_markup, parse_mode })
+    return
   } else if (query == 'prev') { // prev button
     const keyboardBuild = inlineKeyboardBuilder(data, nextIndex-10)
     const options  = opts(true, keyboardBuild[1])
@@ -77,37 +80,31 @@ bot.on('callback_query', callbackQuery => {
       const pMessageId = prevMsg._rejectionHandler0.message_id
       bot.deleteMessage(pChatId, pMessageId)
       btn.prevMsg = bot.sendMessage(pChatId, keyboardBuild[0], options)
-    } else {
-      bot.deleteMessage(nChatId, nMessageId)
-      btn.prevMsg = bot.sendMessage(nChatId, keyboardBuild[0], options)
+      return
     }
+
+    bot.deleteMessage(nChatId, nMessageId)
+    btn.prevMsg = bot.sendMessage(nChatId, keyboardBuild[0], options)
+    return
   } else if (query == 'nextPage') {
     const { url, page } = dataUrl
     const link = `${url}page/${page+1}/`
     
     bot.deleteMessage(chatId, message_id)
-    const botMsg = bot.sendMessage(chatId, '<i>Getting next page...</i>', htmlParse)
-    tagSearch(link).then(tagHandler(bot, chatId, botMsg)).catch(errorHandler(bot, chatId))
-  } else if (query == 'prevPage') {
-    const { url, page } = dataUrl
-    const link = `${url}page/${page-1}/`
-    
-    bot.deleteMessage(chatId, message_id)
-    const botMsg = bot.sendMessage(chatId, '<i>Getting previous page...</i>', htmlParse)
-    tagSearch(link).then(tagHandler(bot, chatId, botMsg)).catch(errorHandler(bot, chatId))
-  } else {
-    bot.deleteMessage(chatId, message_id)
-    const botMsg = bot.sendMessage(chatId, '<i>Getting link...</i>', htmlParse)
+    tagSearch(link).then(tagHandler(bot, chatId, null)).catch(errorHandler(bot, chatId))
+    return
+  }
   
-    if (isMainPageUrl(data[query].link)) {
-      getLink(data[query].link)
-        .then(scrapePromiseHandler(bot, chatId, botMsg, data[query].link))
-        .catch(errorHandler(bot, chatId))
-    } else if (isTagUrl(data[query].link)) {
-      tagSearch(data[query].link).then(tagHandler(bot, chatId, botMsg)).catch(errorHandler(bot, chatId))
-    } else {
-      bot.sendMessage(chatId, '<b>Can\'t continue to find</b>', htmlParse)
-    }
+  bot.deleteMessage(chatId, message_id)
+  
+  if (isMainPageUrl(data[query].link)) {
+    getLink(data[query].link)
+      .then(scrapePromiseHandler(bot, chatId, null, data[query].link))
+      .catch(errorHandler(bot, chatId))
+  } else if (isTagUrl(data[query].link)) {
+    tagSearch(data[query].link).then(tagHandler(bot, chatId, null)).catch(errorHandler(bot, chatId))
+  } else {
+    bot.sendMessage(chatId, '<b>Can\'t continue to find</b>', htmlParse)
   }
 });
 

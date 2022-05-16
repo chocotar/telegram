@@ -1,26 +1,42 @@
 const mongoose = require('mongoose');
+const { Schema } = require('mongoose');
 const URI = process.env.URI
 
-const insertData = obj => {
-  mongoose.connect(URI).then(() => {
-    console.log('Connected to Mongodb')
-    const Schema = mongoose.Schema
-
-    const LinkSchema = new Schema({ 
-      name: String, 
-      link: Schema.Types.Mixed 
-    })
-    const Link = mongoose.model('link', LinkSchema)
-    const linkDownload = new Link(obj)
-    linkDownload.save((err, result) => {
-      if (err) {
-        return console.log(err)
-      }
-      console.log(result)
-      mongoose.connection.close()
-      return
-    })
-  }).catch((err) => console.log(err))
+const connectionParams = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
 }
 
-module.exports.insertData = insertData
+const main = async () => {
+    await mongoose.connect(URI, connectionParams)
+      .then( () => console.log('Connected to Mongod'))
+      .catch((err) => console.log(err))
+    return mongoose
+}
+
+const LinkSchema = new Schema({ 
+  name: String, 
+  link: Schema.types.mixed 
+})
+
+const insertData = async obj => {
+  await main().then( async mongoose => {
+    try{
+      const Link = await mongoose.model('link', LinkSchema)
+      const linkDownload = await new Link(obj)
+      await linkDownload.save((err, result) => {
+        if (err) {
+          return console.log(err)
+        }
+        console.log(result)
+        mongoose.connection.close()
+        return
+      })
+    }
+    finally{
+        mongoose.connection.close();
+    }
+  });
+}
+
+module.exports = { main, insertData }
