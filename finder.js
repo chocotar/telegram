@@ -47,9 +47,9 @@ async function search(query) {
       return { result, reason }
     }
 
-    // find best result
+    console.log(linksArr)
     if (linksArr) {
-      return found(linksArr, 'Success')
+      found(linksArr, 'Success')
     }
     return found(undefined, `Your search <i>${query}</i> did not match any results`)
   } catch (error) {
