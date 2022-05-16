@@ -16,7 +16,7 @@ const main = async () => {
 
 const LinkSchema = new Schema({ 
   name: { type: String, index: true },
-  link: Schema.types.mixed 
+  link: Schema.Types.Mixed 
 })
 const Link = mongoose.model('link', LinkSchema)
 
