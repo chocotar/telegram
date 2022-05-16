@@ -53,20 +53,14 @@ const scrapePromiseHandler = async (bot, chatId, botMsg, url) => {
           links.push(pageUrl)
         }
         console.log(links)
-        var db = new Link({ no, name, link: links })
-        db.save()
-          .then((result) => console.log(result))
-          .catch((err) => console.log(err))
+        countData(name, links)
         const rLinks = links.join(`\n\n<b>Another part:</b> `)
         str = `<b>Name:</b> ${name}\n\n<b>Link part 1:</b> ${rLinks}`
         if (botMsg) botMsg.then(deleteMessageHandler(bot)).catch(errorHandler(bot, chatId))
         bot.sendMessage(chatId, str, opts());
       }else {
         console.log(link)
-        var db = new Link({ no, name, link })
-        db.save()
-          .then((result) => console.log(result))
-          .catch((err) => console.log(err))
+        countData(name, link )
         str = `<b>Name:</b> ${name}\n\n<b>Link:</b> ${link}`
         if (botMsg) botMsg.then(deleteMessageHandler(bot)).catch(errorHandler(bot, chatId))
         bot.sendMessage(chatId, str, opts());
@@ -132,6 +126,14 @@ const opts = (isKeyboard=false, query=null) => {
     };
   }
   return { "parse_mode": "HTML"}
+}
+
+const countData = async (name, link) => {
+  const no = await Link.countDocuments()
+  const db = await new Link({ no, name, link })
+  await db.save()
+    .then((result) => console.log(result))
+    .catch((err) => console.log(err))
 }
 
 const isMainPageUrl = url => {
