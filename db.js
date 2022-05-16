@@ -11,7 +11,7 @@ const insertData = obj => {
       link: Schema.Types.Mixed 
     })
     const Link = mongoose.model('link', LinkSchema)
-    const linkDownload = new Link(obj)
+    const linkDownload = new Link({obj})
     linkDownload.save((err, result) => {
       if (err) {
         return console.log(err)
