@@ -111,11 +111,11 @@ const deleteMessageHandler = (bot) => {
 }
 
 ////////////////////////// Helper ////////////////////////
+// I put all helper requirements in one file to avoid circular dependency error though it was messed up :( //
 
 const inlineKeyboardBuilder = (data, index=0) => {
   const str = [], keyboardBuilder = []
   for( i = index; i < index + 5; i++) {
-    console.log(data[i].name)
     str.push(`${i+1}. ${data[i].name}`)
     keyboardBuilder.push({
       text: i+1,
@@ -130,7 +130,7 @@ const inlineKeyboardBuilder = (data, index=0) => {
   if (index >= 5) keyboardBuilder.unshift({ text: '<<', callback_data: 'prev' })
   if (index < arr.length-5)keyboardBuilder.push({ text: '>>', callback_data: index+5 })
   if (index == arr.length-5 && page )keyboardBuilder.push({ text: `Page ${page+1}`, callback_data: 'nextPage' })
-  if (index >= 5 && page > 1) keyboardBuilder.unshift({ text: `$Page {page-1}`, callback_data: 'prevPage' })
+  if (index >= 5 && page > 1) keyboardBuilder.unshift({ text: `Page ${page-1}`, callback_data: 'prevPage' })
 
   return [textBuilder, keyboardBuilder]
 }
