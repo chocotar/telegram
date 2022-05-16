@@ -15,28 +15,9 @@ const main = async () => {
 }
 
 const LinkSchema = new Schema({ 
-  name: String, 
-  link: Schema.Types.Mixed 
+  name: { type: String, index: true },
+  link: Schema.types.mixed 
 })
+const Link = mongoose.model('link', LinkSchema)
 
-const insertData = async obj => {
-  await main().then( async mongoose => {
-    try{
-      const Link = await mongoose.model('link', LinkSchema)
-      const linkDownload = await new Link({name: 'tets', link: 'abcd'})
-      await linkDownload.save((err, result) => {
-        if (err) {
-          return console.log(err)
-        }
-        console.log(result)
-        mongoose.connection.close()
-        return
-      })
-    }
-    finally{
-        mongoose.connection.close();
-    }
-  });
-}
-
-module.exports = { main, insertData }
+module.exports = { main, Link }
