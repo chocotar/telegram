@@ -18,6 +18,12 @@ const LinkSchema = new Schema({
   name: { type: String, unique: true },
   link: Schema.Types.Mixed 
 })
+
+LinkSchema.statics.isDuplicate = async function(name) {
+  const result = await this.findOne(name)
+  if (result) return true
+  return false
+}
 const Link = mongoose.model('link', LinkSchema)
 
 module.exports = { main, Link }
