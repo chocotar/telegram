@@ -113,10 +113,9 @@ const deleteMessageHandler = (bot) => {
 ////////////////////////// Helper ////////////////////////
 
 const inlineKeyboardBuilder = (data, index=0) => {
-  console.log(data)
   const str = [], keyboardBuilder = []
   for( i = index; i < index + 5; i++) {
-    console.log(i)
+    console.log(data[i].name)
     str.push(`${i+1}. ${data[i].name}`)
     keyboardBuilder.push({
       text: i+1,
