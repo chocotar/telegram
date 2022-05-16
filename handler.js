@@ -53,7 +53,6 @@ const scrapePromiseHandler = async (bot, chatId, botMsg, url) => {
           links.push(pageUrl)
         }
         console.log(links)
-        var no = await Link.countDocuments()
         var db = new Link({ no, name, link: links })
         db.save()
           .then((result) => console.log(result))
@@ -64,7 +63,6 @@ const scrapePromiseHandler = async (bot, chatId, botMsg, url) => {
         bot.sendMessage(chatId, str, opts());
       }else {
         console.log(link)
-        var no = await Link.countDocuments()
         var db = new Link({ no, name, link })
         db.save()
           .then((result) => console.log(result))
