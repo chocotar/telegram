@@ -13,16 +13,9 @@ const errorHandler = (bot, chatId) => {
 const findPromiseHandler = (bot, chatId, botMsg, query) => {
   return (url => {
     if (url.result) {
-      if (url.reason == 'keyboard') {
-        const keyboardBuild = inlineKeyboardBuilder(url.result)
-        if (botMsg) botMsg.then(deleteMessageHandler(bot)).catch(errorHandler(bot, chatId))
-        bot.sendMessage(chatId, keyboardBuild[0], opts(true, keyboardBuild[1]));
-      } else {
-        console.log(`Got: ${url.result}`)
-        getLink(url.result)
-          .then(scrapePromiseHandler(bot, chatId, botMsg, url.result))
-          .catch(errorHandler(bot, chatId))
-      }
+      const keyboardBuild = inlineKeyboardBuilder(url.result)
+      if (botMsg) botMsg.then(deleteMessageHandler(bot)).catch(errorHandler(bot, chatId))
+      bot.sendMessage(chatId, keyboardBuild[0], opts(true, keyboardBuild[1]));
     } else {
       if (botMsg) botMsg.then(deleteMessageHandler(bot)).catch(errorHandler(bot, chatId))
       bot.sendMessage(chatId, url.reason, opts());
