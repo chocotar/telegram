@@ -53,20 +53,29 @@ const scrapePromiseHandler = (bot, chatId, botMsg, url) => {
           links.push(pageUrl)
         }
         console.log(links)
-        var db = new Link({ name, link: links })
-        db.save()
-          .then((result) => console.log(result))
-          .catch((err) => console.log(err))
+        
+        (async () = > {
+          await Link.countDocuments({}, (no) => {
+            var db = new Link({ no, name, link: links })
+            db.index = no
+            db.save().then((result) => console.log(result)).catch((err) => console.log(err))
+          })
+        })();
+        
         const rLinks = links.join(`\n\n<b>Another part:</b> `)
         str = `<b>Name:</b> ${name}\n\n<b>Link part 1:</b> ${rLinks}`
         if (botMsg) botMsg.then(deleteMessageHandler(bot)).catch(errorHandler(bot, chatId))
         bot.sendMessage(chatId, str, opts());
       }else {
         console.log(link)
-        var db = new Link({ name, link })
-        db.save()
-          .then((result) => console.log(result))
-          .catch((err) => console.log(err))
+        
+        (async () = > {
+          await Link.countDocuments({}, (no) => {
+            var db = new Link({ no, name, link })
+            db.save().then((result) => console.log(result)).catch((err) => console.log(err))
+          })
+        })();
+        
         str = `<b>Name:</b> ${name}\n\n<b>Link:</b> ${link}`
         if (botMsg) botMsg.then(deleteMessageHandler(bot)).catch(errorHandler(bot, chatId))
         bot.sendMessage(chatId, str, opts());
