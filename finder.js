@@ -49,7 +49,7 @@ async function search(query) {
 
     console.log(linksArr)
     if (linksArr) {
-      found(linksArr, 'Success')
+      return found(linksArr, 'Success')
     }
     return found(undefined, `Your search <i>${query}</i> did not match any results`)
   } catch (error) {
