@@ -23,7 +23,7 @@ const insertData = async obj => {
   await main().then( async mongoose => {
     try{
       const Link = await mongoose.model('link', LinkSchema)
-      const linkDownload = await new Link(obj)
+      const linkDownload = await new Link({name: 'tets', link: 'abcd'})
       await linkDownload.save((err, result) => {
         if (err) {
           return console.log(err)
