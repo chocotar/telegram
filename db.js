@@ -8,7 +8,7 @@ const insertData = (obj) => {
   const collection = client.db("mrcong").collection("links");
   // perform actions on the collection object
  const insertResult = collection.insertOne(obj)
- console.log('Inserted data =>' insertResult)
+ console.log('Inserted data =>', insertResult)
   client.close();
   });
 }
