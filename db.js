@@ -16,7 +16,7 @@ const main = async () => {
 
 const LinkSchema = new Schema({ 
   name: String, 
-  link: Schema.types.mixed 
+  link: Schema.Types.Mixed 
 })
 
 const insertData = async obj => {
