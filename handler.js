@@ -1,6 +1,5 @@
 const cheerio = require('cheerio');
 const { getLink } = require('./api');
-const { isMainPageUrl, inlineKeyboardBuilder, opts, toWriteData } = require('./helper')
 const { insertData } = require('./db')
 const dataUrl = {}
 
@@ -145,11 +144,4 @@ const getPageNumber = url => {
   return regExp
 }
 
-const toWriteData = (name, link, isCreateData) => {
-  if (isCreateData) {
-   return writeData({name, link})
-  }
-  return
-}
-
-module.exports = { dataUrl, isMainPageUrl, isTagUrl, getPageNumber, inlineKeyboardBuilder, opts, toWriteData,scrapePromiseHandler, tagHandler, deleteMessageHandler, findPromiseHandler, errorHandler };
+module.exports = { dataUrl, isMainPageUrl, isTagUrl, getPageNumber, inlineKeyboardBuilder, opts, scrapePromiseHandler, tagHandler, deleteMessageHandler, findPromiseHandler, errorHandler };
