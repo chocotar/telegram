@@ -30,7 +30,7 @@ const findPromiseHandler = (bot, chatId, botMsg, query) => {
   });
 };
 
-const scrapePromiseHandler = (bot, chatId, botMsg, url) => {
+const scrapePromiseHandler = async (bot, chatId, botMsg, url) => {
   const mainPageCheck = isMainPageUrl(url)
   const isWriteData = process.env.WRITE_DATA || false
   let str
@@ -53,7 +53,8 @@ const scrapePromiseHandler = (bot, chatId, botMsg, url) => {
           links.push(pageUrl)
         }
         console.log(links)
-        var db = new Link({ name, link: links })
+        var no = await Link.countDocuments()
+        var db = new Link({ no, name, link: links })
         db.save()
           .then((result) => console.log(result))
           .catch((err) => console.log(err))
@@ -63,7 +64,8 @@ const scrapePromiseHandler = (bot, chatId, botMsg, url) => {
         bot.sendMessage(chatId, str, opts());
       }else {
         console.log(link)
-        var db = new Link({ name, link })
+        var no = await Link.countDocuments()
+        var db = new Link({ no, name, link })
         db.save()
           .then((result) => console.log(result))
           .catch((err) => console.log(err))
