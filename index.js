@@ -2,6 +2,7 @@ require('dotenv').config()
 
 const TelegramBot = require('node-telegram-bot-api');
 const express = require('express');
+const mongoose = require('mongoose')
 const token = process.env.TOKEN
 const PORT = process.env.PORT || 8000
 const { isTagUrl, isMainPageUrl, getPageNumber, inlineKeyboardBuilder, opts, tagHandler, deleteMessageHandler, findPromiseHandler, scrapePromiseHandler, errorHandler, dataUrl } = require('./handler');
@@ -16,6 +17,11 @@ const bot = new TelegramBot(token, {polling: true});
 const htmlParse = { parse_mode: 'HTML' }
 
 const app = express()
+mongoose.connect(URI, { 
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+}, () => console.log('Connected to Mongodb'));
+
 
 // Matches "/find [whatever]"
 bot.onText(/\/find (.+)/, (msg, match) => {
