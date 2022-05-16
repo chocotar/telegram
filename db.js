@@ -2,11 +2,6 @@ const mongoose = require('mongoose');
 const URI = process.env.URI
 
 const insertData = obj => {
-  mongoose.connect(URI, { 
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  }, () => console.log('Connected to Mongodb'));
-
   (async () => {
     try {
       const Schema = mongoose.Schema
