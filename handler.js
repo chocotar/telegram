@@ -54,7 +54,7 @@ const scrapePromiseHandler = (bot, chatId, botMsg, url) => {
         }
         console.log(links)
   
-        const check = Link.isDuplicate(name)
+        var check = Link.isDuplicate(name)
         check
           .then((isDup) => {
             if (!isDup) {
@@ -71,7 +71,7 @@ const scrapePromiseHandler = (bot, chatId, botMsg, url) => {
       } else {
         console.log(link)
 
-        const check = Link.isDuplicate(name)
+        var check = Link.isDuplicate(name)
         check
           .then((isDup) => {
             if (!isDup) {
