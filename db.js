@@ -20,9 +20,13 @@ const LinkSchema = new Schema({
 })
 
 LinkSchema.statics.isDuplicate = async function(name) {
-  const result = await this.findOne(name)
-  if (result) return true
-  return false
+  try {
+    const result = await this.findOne(name)
+    if (result) return true
+    return false
+  } catch(err) {
+    console.log(err)
+  }
 }
 const Link = mongoose.model('link', LinkSchema)
 
