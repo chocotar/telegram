@@ -1,6 +1,6 @@
 const cheerio = require('cheerio');
 const { getLink } = require('./api');
-const { insertData } = require('./db')
+const { Link } = require('./db')
 const dataUrl = {}
 
 const errorHandler = (bot, chatId) => {
@@ -53,14 +53,20 @@ const scrapePromiseHandler = (bot, chatId, botMsg, url) => {
           links.push(pageUrl)
         }
         console.log(links)
-        insertData({ name, link: links })
+        var db = new Link({ name, link: links })
+        db.save()
+          .then((result) => console.log(result))
+          .catch((err) => console.log(err))
         const rLinks = links.join(`\n\n<b>Another part:</b> `)
         str = `<b>Name:</b> ${name}\n\n<b>Link part 1:</b> ${rLinks}`
         if (botMsg) botMsg.then(deleteMessageHandler(bot)).catch(errorHandler(bot, chatId))
         bot.sendMessage(chatId, str, opts());
       }else {
         console.log(link)
-        insertData({ name, link })
+        var db = new Link({ name, link })
+        db.save()
+          .then((result) => console.log(result))
+          .catch((err) => console.log(err))
         str = `<b>Name:</b> ${name}\n\n<b>Link:</b> ${link}`
         if (botMsg) botMsg.then(deleteMessageHandler(bot)).catch(errorHandler(bot, chatId))
         bot.sendMessage(chatId, str, opts());
