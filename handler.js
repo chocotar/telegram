@@ -13,6 +13,7 @@ const errorHandler = (bot, chatId) => {
 const findPromiseHandler = (bot, chatId, botMsg, query) => {
   return (url => {
     if (url.result) {
+      console.log(true)
       console.log(url.result)
       const keyboardBuild = inlineKeyboardBuilder(url.result)
       if (botMsg) botMsg.then(deleteMessageHandler(bot)).catch(errorHandler(bot, chatId))
