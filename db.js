@@ -10,7 +10,7 @@ const insertData = obj => {
     const Schema = mongoose.Schema
 
     const LinkSchema = new Schema({ 
-      name: { type: String, index: true }
+      name: { type: String, index: true },
       link: Schema.Types.Mixed 
     })
     const Link = mongoose.model('link', LinkSchema)
