@@ -54,7 +54,7 @@ const scrapePromiseHandler = (bot, chatId, botMsg, url) => {
         }
         console.log(links)
         
-        (async () = > {
+        (async () => {
           await Link.countDocuments({}, (no) => {
             var db = new Link({ no, name, link: links })
             db.index = no
@@ -69,7 +69,7 @@ const scrapePromiseHandler = (bot, chatId, botMsg, url) => {
       }else {
         console.log(link)
         
-        (async () = > {
+        (async () => {
           await Link.countDocuments({}, (no) => {
             var db = new Link({ no, name, link })
             db.save().then((result) => console.log(result)).catch((err) => console.log(err))
