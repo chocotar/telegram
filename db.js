@@ -14,10 +14,11 @@ const insertData = obj => {
     const linkDownload = new Link({obj})
     linkDownload.save((err, result) => {
       if (err) {
-        return console.log(err)
+        console.log(err)
+        return mongoose.disconnect()
       }
       console.log(result)
-      return
+      return mongoose.disconnect()
     })
   }).catch((err) => console.log(err))
   mongoose.disconnect()
