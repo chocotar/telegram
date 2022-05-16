@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const URI = process.env.URI
 
 const insertData = obj => {
-  mongoose.connect(URI).then(() => {
+  const db = mongoose.connect(URI).then(() => {
     console.log('Connected to Mongodb')
     const Schema = mongoose.Schema
 
@@ -17,10 +17,10 @@ const insertData = obj => {
         return console.log(err)
       }
       console.log(result)
-      mongoose.connection.close()
       return
     })
   }).catch((err) => console.log(err))
+  db.disconnect()
 }
 
 module.exports.insertData = insertData
