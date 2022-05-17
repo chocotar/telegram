@@ -13,7 +13,7 @@ const getLink = async url => {
     const element = $('h2.post-box-title > a')
     const arr = []
     element.each((index, el) => {
-      arr[index] = $(el).text()
+      arr[index] = { name: $(el).text(), link: $(el).attr('href') }
     })
     console.log(arr)
   } catch(err) {
