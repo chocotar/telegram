@@ -1,38 +1,25 @@
-const puppeteer = require('puppeteer');
-const { minimal_args } = require('./utilities');
+const https = require('node:https');
+const axios = require('axios');
+const cheerio = require('cheerio');
 const { dataUrl, getPageNumber } = require('./handler')
+const agent = new https.Agent({  
+  rejectUnauthorized: false
+});
+
 
 const tagSearch = async url => {
   try {
+    const { data } = await axios.get(url, {httpsAgent: agent})
     dataUrl.page = getPageNumber(url)
-    const browser = await puppeteer.launch({
-      args: minimal_args,
-      executablePath: '/usr/bin/chromium'
-    });
-    const page = await browser.newPage();
- 
-    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36')
-    await page.setDefaultNavigationTimeout(0);
-
-    await page.goto(url);
-    await page.waitForTimeout(1000)
-
-    const linksArr = await page.evaluate( () => {
-      const links = document.querySelectorAll('.post-box-title a')
-      let arr = []
-        for (const element of links) {
-          arr.push({
-            name: element.innerText,
-            link: element.href
-           })
-         }
-        return arr
+    const $ = cheerio.load(data)
+    const element = $('h2.post-box-title > a')
+    const arr = []
+    element.each((index, el) => {
+      arr[index] = { name: $(el).text(), link: $(el).attr('href') }
     })
-    return linksArr
-    // await page.screenshot({path: 'test.png', fullPage: true})
-    await browser.close();
-  } catch (error) {
-    console.log(error)
+    return arr 
+  } catch(err) {
+    console.log(err)
   }
 };
 
