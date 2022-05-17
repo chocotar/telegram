@@ -128,7 +128,7 @@ const opts = (isKeyboard=false, query=null) => {
 }
 
 const insertToDb = (obj) => {
-  const check = Link.isDuplicate(name)
+  const check = Link.isDuplicate(obj.name)
   check.then((isDup) => {
     if (!isDup) {
       var db = new Link(obj)
