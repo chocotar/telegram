@@ -9,10 +9,11 @@ const getLink = async url => {
   try {
     const res = await axios.get(url, {httpsAgent: agent})
   
-    const $ = cheerio.load(res)
-    const element = $('h2.post-box-title > a')
+    const $ = await cheerio.load(res)
+    const element = $('h2.post-box-title')
+    console.log(element.html())
     element.each((index, el) => {
-      console.log(el.text())
+      //console.log(el.text())
     })
   } catch(err) {
     console.log(err)
