@@ -11,8 +11,9 @@ const getLink = async url => {
   
     const $ = cheerio.load(data)
     const element = $('h2.post-box-title > a')
-    const arr = element.each((index, el) => {
-      return $(el).text()
+    const arr = []
+    element.each((index, el) => {
+      arr[index] = $(el).text()
     })
     console.log(arr)
   } catch(err) {
