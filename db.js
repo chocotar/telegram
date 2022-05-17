@@ -9,7 +9,7 @@ const connectionParams = {
 
 const main = async () => {
     await mongoose.connect(URI, connectionParams)
-      .then( () => console.log('Connected to Mongod'))
+      .then( () => console.log('Connected to Mongodb'))
       .catch((err) => console.log(err))
     return mongoose
 }
