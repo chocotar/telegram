@@ -19,7 +19,7 @@ async function search(query) {
     await page.type('#gsc-i-id1', query);
     await page.click('#___gcse_0 > div > div > form > table > tbody > tr > td.gsc-search-button > button');
  
-    await page.waitForTimeout(1000)
+    await page.waitForTimeout(500)
 
     const linksArr = await page.evaluate( () => {
       try {
