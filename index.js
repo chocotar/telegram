@@ -73,6 +73,7 @@ bot.on('callback_query', callbackQuery => {
     const { nextMsg, prevMsg } = btn
     const nChatId = nextMsg._rejectionHandler0.chat.id
     const nMessageId = nextMsg._rejectionHandler0.message_id
+    console.log(nChatId, nMessageId)
     
     if (btn.prevMsg) {
       const pChatId = prevMsg._rejectionHandler0.chat.id
