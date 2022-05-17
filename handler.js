@@ -13,10 +13,16 @@ const errorHandler = (bot, chatId) => {
 const findPromiseHandler = (bot, chatId, botMsg, query) => {
   return (url => {
     if (url.result) {
-      console.log(true)
-      const keyboardBuild = inlineKeyboardBuilder(url.result)
-      if (botMsg) botMsg.then(deleteMessageHandler(bot)).catch(errorHandler(bot, chatId))
-      bot.sendMessage(chatId, keyboardBuild[0], opts(true, keyboardBuild[1]));
+      if (url.reason == 'keyboard') {
+        const keyboardBuild = inlineKeyboardBuilder(url.result)
+        if (botMsg) botMsg.then(deleteMessageHandler(bot)).catch(errorHandler(bot, chatId))
+        bot.sendMessage(chatId, keyboardBuild[0], opts(true, keyboardBuild[1]));
+      } else {
+        console.log(`Got: ${url.result}`)
+        getLink(url.result)
+          .then(scrapePromiseHandler(bot, chatId, botMsg, url.result))
+          .catch(errorHandler(bot, chatId))
+      }
     } else {
       if (botMsg) botMsg.then(deleteMessageHandler(bot)).catch(errorHandler(bot, chatId))
       bot.sendMessage(chatId, url.reason, opts());
@@ -111,7 +117,6 @@ const deleteMessageHandler = (bot) => {
 }
 
 ////////////////////////// Helper ////////////////////////
-// I put all helper requirements in one file to avoid circular dependency error though it was messed up :( //
 
 const inlineKeyboardBuilder = (data, index=0) => {
   const str = [], keyboardBuilder = []
@@ -130,7 +135,7 @@ const inlineKeyboardBuilder = (data, index=0) => {
   if (index >= 5) keyboardBuilder.unshift({ text: '<<', callback_data: 'prev' })
   if (index < arr.length-5)keyboardBuilder.push({ text: '>>', callback_data: index+5 })
   if (index == arr.length-5 && page )keyboardBuilder.push({ text: `Page ${page+1}`, callback_data: 'nextPage' })
-  if (index >= 5 && page > 1) keyboardBuilder.unshift({ text: `Page ${page-1}`, callback_data: 'prevPage' })
+  if (index >= 5 && page > 1) keyboardBuilder.unshift({ text: `$Page {page-1}`, callback_data: 'prevPage' })
 
   return [textBuilder, keyboardBuilder]
 }
