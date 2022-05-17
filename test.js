@@ -10,7 +10,7 @@ const getLink = async url => {
   
   const $ = await cheerio.load(res)
   const element = await $('.post-box-title')
-  await console.log(element)
+  console.log(element)
 }
 
 getLink('https://mrcong.com')
