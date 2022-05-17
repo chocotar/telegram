@@ -1,7 +1,7 @@
 const cheerio = require('cheerio');
 const { getLink } = require('./api');
 const { Link } = require('./db')
-const IS_DB = process.env.IS_DB
+const IS_DB = process.env.IS_DB || false
 const dataUrl = {}
 
 const errorHandler = (bot, chatId) => {
