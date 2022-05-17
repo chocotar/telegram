@@ -9,8 +9,8 @@ const getLink = async url => {
   const res = await axios.get(url, {httpsAgent: agent})
   
   const $ = await cheerio.load(res)
-  const element = $('.post-box-title')
-  console.log(element)
+  const element = await $('.post-box-title')
+  await console.log(element)
 }
 
 getLink('https://mrcong.com')
