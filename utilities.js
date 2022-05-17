@@ -29,7 +29,8 @@ const tag = [
     { name: 'MF', link: 'https://mrcong.com/tag/mf/' },
     { name: 'ISHOW', link: 'https://mrcong.com/tag/ishow/' },
     { name: 'FToow', link: 'https://mrcong.com/tag/ftoow/' },
-    { name: 'Djawa', link: 'https://mrcong.com/tag/djawa/' }
+    { name: 'Djawa', link: 'https://mrcong.com/tag/djawa/' },
+    { name: 'Home', link: 'https://mrcong.com/' }
   ]
   
 const minimal_args = [
