@@ -1,6 +1,7 @@
 const cheerio = require('cheerio');
 const { getLink } = require('./api');
 const { Link } = require('./db')
+const IS_DB = process.env.IS_DB
 const dataUrl = {}
 
 const errorHandler = (bot, chatId) => {
@@ -28,6 +29,7 @@ const scrapePromiseHandler = (bot, chatId, botMsg, url) => {
   const isWriteData = process.env.WRITE_DATA || false
   let str
   if (mainPageCheck) {
+    console.log(`Got: ${url}`)
     return (response => {
       const html = response.data
       const $ = cheerio.load(html)
@@ -47,17 +49,7 @@ const scrapePromiseHandler = (bot, chatId, botMsg, url) => {
         }
         console.log(links)
   
-        var check = Link.isDuplicate(name)
-        check
-          .then((isDup) => {
-            if (!isDup) {
-              var db = new Link({ name, link: links })
-              db.save().then((result) => console.log(result)).catch((err) => console.log(err))
-            } else {
-              console.log('Data already inserted')
-            }
-          })
-          .catch((err) => console.log(err))
+        if (IS_DB) insertToDb({ name, link: links })
 
         const rLinks = links.join(`\n\n<b>Another part:</b> `)
         str = `<b>Name:</b> ${name}\n\n<b>Link part 1:</b> ${rLinks}`
@@ -66,17 +58,7 @@ const scrapePromiseHandler = (bot, chatId, botMsg, url) => {
       } else {
         console.log(link)
 
-        var check = Link.isDuplicate(name)
-        check
-          .then((isDup) => {
-            if (!isDup) {
-              var db = new Link({ name, link })
-              db.save().then((result) => console.log(result)).catch((err) => console.log(err))
-            } else {
-              console.log('Data already inserted')
-            }
-          })
-          .catch((err) => console.log(err))
+        if (IS_DB) insertToDb({ name, link })
 
         str = `<b>Name:</b> ${name}\n\n<b>Link:</b> ${link}`
         if (botMsg) botMsg.then(deleteMessageHandler(bot)).catch(errorHandler(bot, chatId))
@@ -143,6 +125,18 @@ const opts = (isKeyboard=false, query=null) => {
     };
   }
   return { "parse_mode": "HTML"}
+}
+
+const insertToDb = (obj) => {
+  const check = Link.isDuplicate(name)
+  check.then((isDup) => {
+    if (!isDup) {
+      var db = new Link(obj)
+      db.save().then((result) => console.log(result)).catch((err) => console.log(err))
+    } else {
+      console.log('Data already inserted')
+    }
+  }).catch((err) => console.log(err))
 }
 
 const isMainPageUrl = url => {
