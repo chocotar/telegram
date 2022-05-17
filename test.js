@@ -8,7 +8,7 @@ const agent = new https.Agent({
 const getLink = async url => {
   const res = await axios.get(url, {httpsAgent: agent})
   
-  const $ = await cheerio.load(res)
+  const $ = cheerio.load(res)
   const element = $('.post-box-title')
   console.log(element)
 }
