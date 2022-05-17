@@ -9,7 +9,7 @@ const getLink = async url => {
   const res = await axios.get(url, {httpsAgent: agent})
   
   const $ = await cheerio.load(res)
-  const element = await $('.post-box-title')
+  const element = $('.post-box-title')
   console.log(element)
 }
 
