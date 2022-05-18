@@ -65,6 +65,7 @@ bot.on('callback_query', callbackQuery => {
   if (query == nextIndex) {
     const keyboardBuild = inlineKeyboardBuilder(data, nextIndex)
     const { reply_markup, parse_mode } = opts(true, keyboardBuild[1])
+    console.log(`this is next btn: ${message_id}`)
 
     btn.nextMsg = bot.editMessageText(keyboardBuild[0], { chat_id: chatId, message_id, reply_markup, parse_mode })
   } else if (query == 'prev') { // prev button
@@ -73,8 +74,8 @@ bot.on('callback_query', callbackQuery => {
     const { nextMsg, prevMsg } = btn
     const nChatId = nextMsg._rejectionHandler0.chat.id
     const nMessageId = nextMsg._rejectionHandler0.message_id
-    console.log(`This is next: ${nChatId} ${message_id}`)
-    console.log(`This is default: ${chatId} ${nMessageId}`)
+    console.log(`This is next: ${nChatId} ${nMessageId}`)
+    console.log(`This is default: ${chatId} ${message_id}`)
     
     if (btn.prevMsg) { // to handle double click in prev btn
       const pChatId = prevMsg._rejectionHandler0.chat.id
