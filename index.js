@@ -69,23 +69,12 @@ bot.on('callback_query', callbackQuery => {
 
     btn.nextMsg = bot.editMessageText(keyboardBuild[0], { chat_id: chatId, message_id, reply_markup, parse_mode })
   } else if (query == 'prev') { // prev button
-    const keyboardBuild = inlineKeyboardBuilder(data, nextIndex-10)
-    const options  = opts(true, keyboardBuild[1])
-    const { nextMsg, prevMsg } = btn
-    const nChatId = nextMsg._rejectionHandler0.chat.id
-    const nMessageId = nextMsg._rejectionHandler0.message_id
-    console.log(`This is next: ${nChatId} ${nMessageId}`)
-    console.log(`This is default: ${chatId} ${message_id}`)
-    
-    if (btn.prevMsg) { // to handle double click in prev btn
-      const pChatId = prevMsg._rejectionHandler0.chat.id
-      const pMessageId = prevMsg._rejectionHandler0.message_id
-      bot.deleteMessage(pChatId, pMessageId)
-      btn.prevMsg = bot.sendMessage(pChatId, keyboardBuild[0], options)
-    } else {
-      bot.deleteMessage(chatId, message_id)
-      btn.prevMsg = bot.sendMessage(chatId, keyboardBuild[0], options)
-    }
+    const keyboardBuild = inlineKeyboardBuilder(data, nextIndex - 5)
+    const { reply_markup, parse_mode } = opts(true, keyboardBuild[1])
+    console.log(`this is next btn: ${message_id}`)
+
+    btn.nextPrev = bot.editMessageText(keyboardBuild[0], { chat_id: chatId, message_id, reply_markup, parse_mode })
+
   } else if (query == 'nextPage') {
     const { url, page } = dataUrl
     const link = `${url}page/${page+1}/`
