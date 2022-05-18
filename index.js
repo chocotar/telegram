@@ -73,8 +73,8 @@ bot.on('callback_query', callbackQuery => {
     const { nextMsg, prevMsg } = btn
     const nChatId = nextMsg._rejectionHandler0.chat.id
     const nMessageId = nextMsg._rejectionHandler0.message_id
-    console.log(`This is next: ${nChatId}`)
-    console.log(`This is default: ${chatId}`)
+    console.log(`This is next: ${nChatId} ${message_id}`)
+    console.log(`This is default: ${chatId} ${nMessageId}`)
     
     if (btn.prevMsg) { // to handle double click in prev btn
       const pChatId = prevMsg._rejectionHandler0.chat.id
