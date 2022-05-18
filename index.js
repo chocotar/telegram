@@ -82,8 +82,8 @@ bot.on('callback_query', callbackQuery => {
       bot.deleteMessage(pChatId, pMessageId)
       btn.prevMsg = bot.sendMessage(pChatId, keyboardBuild[0], options)
     } else {
-      bot.deleteMessage(nChatId, nMessageId)
-      btn.prevMsg = bot.sendMessage(nChatId, keyboardBuild[0], options)
+      bot.deleteMessage(chatId, message_id)
+      btn.prevMsg = bot.sendMessage(chatId, keyboardBuild[0], options)
     }
   } else if (query == 'nextPage') {
     const { url, page } = dataUrl
