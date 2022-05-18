@@ -59,15 +59,16 @@ bot.on('callback_query', callbackQuery => {
   const { message_id } = callbackQuery.message
   const query = callbackQuery.data
   const { data, nextIndex } = dataUrl
-  const { reply_markup, parse_mode } = opts(true, keyboardBuild[1])
 
   // Next button
   if (query == nextIndex) {
     const keyboardBuild = inlineKeyboardBuilder(data, nextIndex)
+    const { reply_markup, parse_mode } = opts(true, keyboardBuild[1])
     bot.editMessageText(keyboardBuild[0], { chat_id: chatId, message_id, reply_markup, parse_mode })
-
+    
   } else if (query == 'prev') { // prev button
     const keyboardBuild = inlineKeyboardBuilder(data, nextIndex - 10)
+    const { reply_markup, parse_mode } = opts(true, keyboardBuild[1])
     bot.editMessageText(keyboardBuild[0], { chat_id: chatId, message_id, reply_markup, parse_mode })
 
   } else if (query == 'nextPage') {
