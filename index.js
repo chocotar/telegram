@@ -11,7 +11,6 @@ const { search } = require('./finder');
 const { getLink } = require('./api');
 const { tagSearch } = require('./tag');
 const { main } = require('./db')
-const btn = {}
 
 // Create a bot that uses 'polling' to fetch new updates
 const bot = new TelegramBot(token, {polling: true});
@@ -67,13 +66,13 @@ bot.on('callback_query', callbackQuery => {
     const { reply_markup, parse_mode } = opts(true, keyboardBuild[1])
     console.log(`this is next btn: ${message_id}`)
 
-    btn.nextMsg = bot.editMessageText(keyboardBuild[0], { chat_id: chatId, message_id, reply_markup, parse_mode })
+    bot.editMessageText(keyboardBuild[0], { chat_id: chatId, message_id, reply_markup, parse_mode })
   } else if (query == 'prev') { // prev button
-    const keyboardBuild = inlineKeyboardBuilder(data, nextIndex - 5)
+    const keyboardBuild = inlineKeyboardBuilder(data, nextIndex - 10)
     const { reply_markup, parse_mode } = opts(true, keyboardBuild[1])
     console.log(`this is next btn: ${message_id}`)
 
-    btn.nextPrev = bot.editMessageText(keyboardBuild[0], { chat_id: chatId, message_id, reply_markup, parse_mode })
+    bot.editMessageText(keyboardBuild[0], { chat_id: chatId, message_id, reply_markup, parse_mode })
 
   } else if (query == 'nextPage') {
     const { url, page } = dataUrl
