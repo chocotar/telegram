@@ -19,6 +19,7 @@ const tagSearch = async url => {
         arr[index] = { name: $(el).text(), link: $(el).attr('href') }
       }
     })
+    console.log(arr)
     return arr 
   } catch(err) {
     console.log(err)
