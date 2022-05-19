@@ -94,8 +94,12 @@ const deleteMessageHandler = (bot) => {
 ////////////////////////// Helper ////////////////////////
 
 const inlineKeyboardBuilder = (data, index=0) => {
+  const lastPageRoll = data.length % 5
+  const totalPageRoll = data.length - lastPageRoll
+  let pageRoll = index + 5
+  if (index >= totalPageRoll) pageRoll = data.length
   const str = [], keyboardBuilder = []
-  for( i = index; i < index + 5; i++) {
+  for( i = index; i < pageRoll; i++) {
     str.push(`${i+1}. ${data[i].name}`)
     keyboardBuilder.push({
       text: i+1,
