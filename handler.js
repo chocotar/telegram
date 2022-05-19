@@ -108,7 +108,7 @@ const inlineKeyboardBuilder = (data, index=0) => {
   dataUrl.nextIndex = index+5
   const arr = dataUrl.data
   const { page } = dataUrl
-  str.push(`\n<div style="display:none;">${hours}:${minutes}:${seconds}</div>`)
+  str.push(`\n<i style="display:none;">${hours}:${minutes}:${seconds}</i>`)
   const textBuilder = str.join('\n\n')
 
   if (index >= 5) keyboardBuilder.unshift({ text: '<<', callback_data: 'prev' })
