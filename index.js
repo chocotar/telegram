@@ -94,7 +94,9 @@ bot.on('callback_query', callbackQuery => {
         .then(scrapePromiseHandler(bot, chatId, botMsg, data[query].link))
         .catch(errorHandler(bot, chatId))
     } else if (isTagUrl(data[query].link)) {
-      tagSearch(data[query].link).then(tagHandler(bot, chatId, botMsg)).catch(errorHandler(bot, chatId))
+      dataUrl.url = data[query].link
+      const addPage = `${data[query].link}page/1/`
+      tagSearch(addPage).then(tagHandler(bot, chatId, botMsg)).catch(errorHandler(bot, chatId))
     } else {
       bot.sendMessage(chatId, '<b>Can\'t continue to find</b>', htmlParse)
     }
