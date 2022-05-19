@@ -30,8 +30,10 @@ bot.onText(/\/find (.+)/, (msg, match) => {
   
   if (args.length == 1) {
     for (const element of tag) {
+      dataUrl.url = element.link
+      const addPage = `${element.link}page/1/`
       if (element.name.toLowerCase() == args[0].toLowerCase()) {
-        tagSearch(element.link).then(tagHandler(bot, chatId, botMsg)).catch(errorHandler(bot, chatId))
+        tagSearch(addPage).then(tagHandler(bot, chatId, botMsg)).catch(errorHandler(bot, chatId))
         return
       }
     }
