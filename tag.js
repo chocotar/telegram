@@ -15,7 +15,9 @@ const tagSearch = async url => {
     const element = $('h2.post-box-title > a')
     const arr = []
     element.each((index, el) => {
-      arr[index] = { name: $(el).text(), link: $(el).attr('href') }
+      if ($(el).text() && $(el).attr('href')) {
+        arr[index] = { name: $(el).text(), link: $(el).attr('href') }
+      }
     })
     return arr 
   } catch(err) {
