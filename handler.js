@@ -97,7 +97,6 @@ const deleteMessageHandler = (bot) => {
 const grabber = async (bot, chatId, botMsg, baseUrl, page) => {
   let pageNum = 1 
   try {
-    console.log(botMsg)
     const { message_id } = botMsg
     while (pageNum <= page) {
       const url = `${baseUrl}/page/${pageNum}`
@@ -107,7 +106,11 @@ const grabber = async (bot, chatId, botMsg, baseUrl, page) => {
         if (!check) {
           const db = new Link({ name: element.name, link: element.link })
           const save = await db.save()
-          bot.editMessageText(save.name, { chat_id: chatId, message_id })
+          if (!dataUrl.msg) dataUrl.msg = bot.editMessageText(`<i>${save.name}</i> <b>Grabbed</b>`, { chat_id: chatId, message_id, parse_mode: 'HTML' })
+          if (dataUrl.msg) {
+            const { message_id } = dataUrl.msg
+            dataUrl.msg = bot.editMessageText(`<i>${save.name}</i> <b>Grabbed</b>`, { chat_id: chatId, message_id, parse_mode: 'HTML' })
+          }
           console.log(save.name)
         } else {
           console.log("Data already inserted")
