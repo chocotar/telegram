@@ -5,7 +5,7 @@ const express = require('express');
 const token = process.env.TOKEN
 const PORT = process.env.PORT || 8000
 const IS_DB = process.env.IS_DB || false
-const { isTagUrl, isMainPageUrl, getPageNumber, inlineKeyboardBuilder, opts, tagHandler, deleteMessageHandler, findPromiseHandler, scrapePromiseHandler, errorHandler, dataUrl } = require('./handler');
+const { isTagUrl, isMainPageUrl, getPageNumber, inlineKeyboardBuilder, opts, tagHandler, deleteMessageHandler, findPromiseHandler, scrapePromiseHandler, errorHandler, dataUrl, grabber } = require('./handler');
 const { tag } = require('./utilities')
 const { search } = require('./finder');
 const { getLink } = require('./api');
@@ -53,6 +53,31 @@ bot.onText(/\/scrape (.+)/, (msg, match) => {
     .then(scrapePromiseHandler(bot, chatId, botMsg, resp))
     .catch(errorHandler(bot, chatId))
 });
+
+const grabberHandler = async (msg, match) => {
+  try {
+    const chatId = msg.chat.id;
+    const resp = match[1];
+    const args = resp.split(' ')
+    const query = args[0]
+    const page = Number(args[1])
+    
+   const botMsg = await bot.sendMessage(chatId, `<b>Grabbing:</b> ${query}`, htmlParse)
+    
+    for (const element of tag) {
+      if (element.name.toLowerCase() == query.toLowerCase()) {
+        const res = await grabber(bot, chatId, botMsg, element.link, page)
+        if (res) bot.sendMessage(chatId, `Done Grabbing`, htmlParse)
+      } else {
+        bot.sendMessage(chatId, `can't grab ${queey}/not found`, htmlParse)
+      }
+    }
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+bot.onText(/\/grab (.+)/, grabberHandler)
 
 bot.on('callback_query', callbackQuery => {
   const chatId = callbackQuery.message.chat.id

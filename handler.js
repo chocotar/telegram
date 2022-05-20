@@ -91,13 +91,40 @@ const deleteMessageHandler = (bot) => {
   })
 }
 
+
+const grabber = async (bot, chatId, botMsg, baseUrl, page) => {
+  const pageNum = 1 
+  try {
+    const { message_id } = botMsg
+    while (pageNum <= page) {
+      const url = `${baseUrl}/page/${pageNum}`
+      const data = await tagSearch(url)
+      for (const element of data) {
+        const check = await Link.isDuplicate(element.name)
+        if (!check) {
+          const db = new Link({ name: element.name, link: element.link })
+          const save = await db.save()
+          bot.editMessageText(save.name, { chat_id: chatId, message_id })
+          console.log(save.name)
+        } else {
+          console.log("Data already inserted")
+        }
+      }
+    pageNum++
+    }
+    return 'done'
+  } catch (err) {
+    console.log(err)
+  }
+}
+
 ////////////////////////// Helper ////////////////////////
 
 const inlineKeyboardBuilder = (data, index=0) => {
   const lastPageRoll = data.length % 5
-  const fivePageRoll = data.length - lastPageRoll
+  const totalPageRoll = data.length - lastPageRoll
   let pageRoll = index + 5
-  if (index == fivePageRoll) pageRoll = data.length
+  if (index >= totalPageRoll) pageRoll = data.length
   const str = [], keyboardBuilder = []
   for( i = index; i < pageRoll; i++) {
     str.push(`${i+1}. ${data[i].name}`)
