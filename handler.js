@@ -95,7 +95,7 @@ const deleteMessageHandler = (bot) => {
 
 
 const grabber = async (bot, chatId, botMsg, baseUrl, page) => {
-  const pageNum = 1 
+  let pageNum = 1 
   try {
     const { message_id } = botMsg
     while (pageNum <= page) {
