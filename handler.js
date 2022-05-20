@@ -190,4 +190,4 @@ const getPageNumber = url => {
   return regExp
 }
 
-module.exports = { dataUrl, isMainPageUrl, isTagUrl, getPageNumber, inlineKeyboardBuilder, opts, scrapePromiseHandler, tagHandler, deleteMessageHandler, findPromiseHandler, errorHandler };
+module.exports = { grabber, dataUrl, isMainPageUrl, isTagUrl, getPageNumber, inlineKeyboardBuilder, opts, scrapePromiseHandler, tagHandler, deleteMessageHandler, findPromiseHandler, errorHandler };
