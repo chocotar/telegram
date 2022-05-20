@@ -96,6 +96,7 @@ const deleteMessageHandler = (bot) => {
 
 const grabber = async (bot, chatId, botMsg, baseUrl, page) => {
   let pageNum = 1 
+  let totalGrabbed = 0
   try {
     const { message_id } = botMsg
     while (pageNum <= page) {
@@ -111,6 +112,7 @@ const grabber = async (bot, chatId, botMsg, baseUrl, page) => {
             const { message_id } = dataUrl.msg
             dataUrl.msg = bot.editMessageText(`<i>${save.name}</i> <b>Grabbed</b>`, { chat_id: chatId, message_id, parse_mode: 'HTML' })
           }
+          totalGrabbed++
           console.log(save.name)
         } else {
           console.log(`${element.name} already inserted`)
@@ -118,7 +120,7 @@ const grabber = async (bot, chatId, botMsg, baseUrl, page) => {
       }
     pageNum++
     }
-    return 'done'
+    return totalGrabbed
   } catch (err) {
     console.log(err)
   }
