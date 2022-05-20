@@ -69,7 +69,7 @@ const grabberHandler = async (msg, match) => {
         const res = await grabber(bot, chatId, botMsg, element.link, page)
         if (res) bot.sendMessage(chatId, `Done Grabbing`, htmlParse)
       } else {
-        bot.sendMessage(chatId, `can't grab ${queey}/not found`, htmlParse)
+        bot.sendMessage(chatId, `can't grab ${query}/not found`, htmlParse)
       }
     }
   } catch (err) {
