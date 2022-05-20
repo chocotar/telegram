@@ -67,7 +67,7 @@ const grabberHandler = async (msg, match) => {
     for (const element of tag) {
       if (element.name.toLowerCase() == query.toLowerCase()) {
         const res = await grabber(bot, chatId, botMsg, element.link, page)
-        if (res) bot.sendMessage(chatId, `Done Grabbing`, htmlParse)
+        if (res) bot.sendMessage(chatId, `Done, <i>${res}</i> Grabbed`, htmlParse)
       }
     }
   } catch (err) {
