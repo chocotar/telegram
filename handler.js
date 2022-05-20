@@ -1,5 +1,6 @@
 const cheerio = require('cheerio');
 const { getLink } = require('./api');
+const { tagSearch } = require('./tag')
 const { Link } = require('./db')
 const IS_DB = process.env.IS_DB || false
 const dataUrl = {}
