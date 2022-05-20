@@ -113,7 +113,7 @@ const grabber = async (bot, chatId, botMsg, baseUrl, page) => {
           }
           console.log(save.name)
         } else {
-          console.log("Data already inserted")
+          console.log(`${element.name} already inserted`)
         }
       }
     pageNum++
