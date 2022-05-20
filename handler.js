@@ -1,6 +1,7 @@
 const cheerio = require('cheerio');
+const https = require('node:https');
+const axios = require('axios');
 const { getLink } = require('./api');
-const { tagSearch } = require('./tag')
 const { Link } = require('./db')
 const IS_DB = process.env.IS_DB || false
 const dataUrl = {}
@@ -120,6 +121,25 @@ const grabber = async (bot, chatId, botMsg, baseUrl, page) => {
 }
 
 ////////////////////////// Helper ////////////////////////
+
+const tagSearch = async url => {
+  try {
+    const agent = new https.Agent({ rejectUnauthorized: false });
+    const { data } = await axios.get(url, {httpsAgent: agent})
+    dataUrl.page = getPageNumber(url)
+    const $ = cheerio.load(data)
+    const element = $('h2.post-box-title > a')
+    const arr = []
+    element.each((index, el) => {
+      if ($(el).text() && $(el).attr('href')) {
+        arr[index] = { name: $(el).text(), link: $(el).attr('href') }
+      }
+    })
+    return arr 
+  } catch(err) {
+    console.log(err)
+  }
+};
 
 const inlineKeyboardBuilder = (data, index=0) => {
   const lastPageRoll = data.length % 5
