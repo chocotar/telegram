@@ -110,10 +110,10 @@ const grabber = async (bot, chatId, botMsg, baseUrl, page) => {
         if (!check) {
           const db = new Link({ name: element.name, link: element.link })
           const save = await db.save()
-          if (!dataUrl.msg) dataUrl.msg = bot.editMessageText(`<i>${save.name}</i> <b>Grabbed</b>\n\n<i>${minutes}:${seconds}</i>`, { chat_id: chatId, message_id, parse_mode: 'HTML' })
+          if (!dataUrl.msg) dataUrl.msg = bot.editMessageText(`<i>${save.name}</i> <b>Grabbed</b>\n\n<i>${time}</i>`, { chat_id: chatId, message_id, parse_mode: 'HTML' })
           if (dataUrl.msg) {
             const { message_id } = await dataUrl.msg
-            dataUrl.msg = bot.editMessageText(`<i>${save.name}</i> <b>Grabbed</b>\n\n<i>${minutes}:${seconds}</i>`, { chat_id: chatId, message_id, parse_mode: 'HTML' })
+            dataUrl.msg = bot.editMessageText(`<i>${save.name}</i> <b>Grabbed</b>\n\n<i>${time}</i>`, { chat_id: chatId, message_id, parse_mode: 'HTML' })
           }
           totalGrabbed++
           console.log(save.name)
