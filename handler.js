@@ -6,6 +6,9 @@ const { Link } = require('./db')
 const IS_DB = process.env.IS_DB || false
 const dataUrl = {}
 
+const time = new Date()
+const minutes = time.getMinutes(), seconds = time.getSeconds()
+
 const errorHandler = (bot, chatId) => {
   return (err => {
     console.log(err)
@@ -160,8 +163,6 @@ const inlineKeyboardBuilder = (data, index=0) => {
       callback_data: i
     })
   }
-  const time = new Date()
-  const minutes = time.getMinutes(), seconds = time.getSeconds()
 
   dataUrl.nextIndex = index+5
   const arr = dataUrl.data
