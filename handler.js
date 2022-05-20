@@ -117,10 +117,10 @@ const grabber = async (bot, chatId, botMsg, baseUrl, page) => {
         }
       }
     if (!dataUrl.msg) {
-      dataUrl.msg = bot.editMessageText(`<i>${totalGrabbed}</i><b>Data grabbed from page: </b><i>${pageNum}</i>`, { chat_id: chatId, message_id, parse_mode: 'HTML' })
+      dataUrl.msg = bot.editMessageText(`<i>${totalGrabbed}</i><b> Data grabbed from page: </b><i>${pageNum}</i>`, { chat_id: chatId, message_id, parse_mode: 'HTML' })
     } else {
       var { message_id } = dataUrl.msg
-      dataUrl.msg = bot.editMessageText(`<i>${totalGrabbed}</i> <b>Grabbed From Page: </b><i>${pageNum}</i>`, { chat_id: chatId, message_id, parse_mode: 'HTML' })
+      dataUrl.msg = bot.editMessageText(`<i>${totalGrabbed}</i><b> Data grabbed from page: </b><i>${pageNum}</i>`, { chat_id: chatId, message_id, parse_mode: 'HTML' })
     }
     pageNum++
     }
