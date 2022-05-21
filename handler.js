@@ -135,8 +135,8 @@ const grabber = async (bot, chatId, botMsg, baseUrl, page) => {
 const tagSearch = async url => {
   try {
     const agent = new https.Agent({ rejectUnauthorized: false });
-    const { data, status } = await axios.get(url, {httpsAgent: agent})
-    if (!status) return false
+    const { data } = await axios.get(url, {httpsAgent: agent})
+    if (!data) return false
     dataUrl.page = getPageNumber(url)
     const $ = cheerio.load(data)
     const element = $('h2.post-box-title > a')
