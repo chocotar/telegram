@@ -137,7 +137,8 @@ const tagSearch = async url => {
   try {
     const agent = new https.Agent({ rejectUnauthorized: false });
     const { data, response } = await axios.get(url, {httpsAgent: agent})
-    if (response.status == 404) return false
+    console.log(response)
+    //if (response.status == 404) return false
     dataUrl.page = getPageNumber(url)
     const $ = cheerio.load(data)
     const element = $('h2.post-box-title > a')
