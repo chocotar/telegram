@@ -9,7 +9,8 @@ const agent = new https.Agent({
 
 const tagSearch = async url => {
   try {
-    const { data } = await axios.get(url, {httpsAgent: agent})
+    const { data, response } = await axios.get(url, {httpsAgent: agent})
+    console.log(response)
     dataUrl.page = getPageNumber(url)
     const $ = cheerio.load(data)
     const element = $('h2.post-box-title > a')
@@ -27,3 +28,5 @@ const tagSearch = async url => {
 };
 
 module.exports.tagSearch = tagSearch
+
+tagSearch('https://mrcong.com/tag/djawa/page/10/')
