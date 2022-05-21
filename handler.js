@@ -146,7 +146,7 @@ const tagSearch = async url => {
     const arr = []
     element.each((index, el) => {
       if ($(el).text() && $(el).attr('href')) {
-        arr[index] = { name: $(el).text(), link: $(el).attr('href') }
+        arr[index] = { name: $(el).text(), link: $(el).attribs.href
       }
     })
     return arr 
