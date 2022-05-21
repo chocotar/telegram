@@ -10,7 +10,7 @@ const agent = new https.Agent({
 const tagSearch = async url => {
   try {
     const res = await axios.get(url, {httpsAgent: agent})
-    console.log(res)
+    console.log(res.status)
     console.log(response)
     dataUrl.page = getPageNumber(url)
     const $ = cheerio.load(data)
@@ -30,4 +30,4 @@ const tagSearch = async url => {
 
 module.exports.tagSearch = tagSearch
 
-tagSearch('https://mrcong.com/tag/djawa/page/10/')
+tagSearch('https://mrcong.com/tag/djawa/page/11/')
