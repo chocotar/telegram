@@ -21,6 +21,7 @@ const tagSearch = async url => {
     })
     return arr 
   } catch(err) {
+    return false
     console.log(err)
   }
 };
