@@ -67,11 +67,13 @@ const grabberHandler = async (msg, match) => {
     for (const element of tag) {
       if (element.name.toLowerCase() == query.toLowerCase()) {
         const { total, msg } = await grabber(bot, chatId, botMsg, element.link, page)
+        console.log(msg)
         const { message_id } = msg
         bot.editMessageText(`Done, <i>${total}</i> Data grabbed`, { chat_id: chatId, message_id, parse_mode: 'HTML' })
       } else notFound.push(undefined)
     }
-    if (notFound.every( e => !e)) bot.sendMessage(chatId, `can't grab ${query}/not found`, htmlParse)
+    console.log(notFound.every( e => !e))
+    //if (notFound.every( e => !e)) bot.sendMessage(chatId, `can't grab ${query}/not found`, htmlParse)
   } catch (err) {
     console.log(err)
   }
