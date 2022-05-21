@@ -98,10 +98,13 @@ const grabber = async (bot, chatId, botMsg, baseUrl, page) => {
   let pageNum = 1 
   let totalGrabbed = 0
   let msg = null
+  let toEnd
+  if (page == 'end') toEnd == true
+
   try {
     var { message_id } = botMsg
 
-    while (pageNum <= page) {
+    while (pageNum <= page || toEnd ) {
       const url = `${baseUrl}/page/${pageNum}`
       const data = await tagSearch(url)
       if (!data) break
@@ -117,10 +120,10 @@ const grabber = async (bot, chatId, botMsg, baseUrl, page) => {
         }
       }
     if (!msg) {
-      msg = bot.editMessageText(`<i>${totalGrabbed}</i> Data grabbed from page <i>${pageNum}</i>`, { chat_id: chatId, message_id, parse_mode: 'HTML' })
+      msg = bot.editMessageText(`<i>${totalGrabbed}</i> Data grabbed from page 1 to <i>${pageNum}</i>`, { chat_id: chatId, message_id, parse_mode: 'HTML' })
     } else {
       var { message_id } = await msg
-      msg = bot.editMessageText(`<i>${totalGrabbed}</i> Data grabbed from page <i>${pageNum}</i>`, { chat_id: chatId, message_id, parse_mode: 'HTML' })
+      msg = bot.editMessageText(`<i>${totalGrabbed}</i> Data grabbed from page 1 to <i>${pageNum}</i>`, { chat_id: chatId, message_id, parse_mode: 'HTML' })
     }
     pageNum++
     }
