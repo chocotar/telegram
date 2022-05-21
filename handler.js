@@ -99,7 +99,7 @@ const grabber = async (bot, chatId, botMsg, baseUrl, page) => {
   let totalGrabbed = 0
   let msg = null
   let toEnd
-  if (page == 0) toEnd == true
+  if (page == 'end') toEnd = true
 
   try {
     var { message_id } = botMsg
