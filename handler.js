@@ -98,14 +98,13 @@ const grabber = async (bot, chatId, botMsg, baseUrl, page) => {
   let pageNum = 1 
   let totalGrabbed = 0
   let msg = null
-  let maxPage = true
   try {
     var { message_id } = botMsg
 
-    while (pageNum <= page || maxPage) {
+    while (pageNum <= page) {
       const url = `${baseUrl}/page/${pageNum}`
       const data = await tagSearch(url)
-      if (!data) maxPage = data
+      if (!data) break
       for (const element of data) {
         const check = await Link.isDuplicate(element.name)
         if (!check) {
