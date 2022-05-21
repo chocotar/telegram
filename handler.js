@@ -100,6 +100,7 @@ const deleteMessageHandler = (bot) => {
 const grabber = async (bot, chatId, botMsg, baseUrl, page) => {
   let pageNum = 1 
   let totalGrabbed = 0
+  let msg = null
   try {
     var { message_id } = botMsg
     while (pageNum <= page) {
@@ -116,11 +117,11 @@ const grabber = async (bot, chatId, botMsg, baseUrl, page) => {
           console.log(`${element.name} already inserted`)
         }
       }
-    if (!dataUrl.msg) {
-      dataUrl.msg = bot.editMessageText(`<i>${totalGrabbed}</i><b> Data grabbed from page: </b><i>${pageNum}</i>`, { chat_id: chatId, message_id, parse_mode: 'HTML' })
+    if (!msg) {
+      msg = bot.editMessageText(`<i>${totalGrabbed}</i> Data grabbed from page <i>${pageNum}</i>`, { chat_id: chatId, message_id, parse_mode: 'HTML' })
     } else {
-      var { message_id } = await dataUrl.msg
-      dataUrl.msg = bot.editMessageText(`<i>${totalGrabbed}</i><b> Data grabbed from page: </b><i>${pageNum}</i>`, { chat_id: chatId, message_id, parse_mode: 'HTML' })
+      var { message_id } = await msg
+      msg = bot.editMessageText(`<i>${totalGrabbed}</i> Data grabbed from page <i>${pageNum}</i>`, { chat_id: chatId, message_id, parse_mode: 'HTML' })
     }
     pageNum++
     }
