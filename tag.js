@@ -11,7 +11,6 @@ const tagSearch = async url => {
   try {
     const res = await axios.get(url, {httpsAgent: agent})
     console.log(res)
-    console.log(response)
     dataUrl.page = getPageNumber(url)
     const $ = cheerio.load(data)
     const element = $('h2.post-box-title > a')
