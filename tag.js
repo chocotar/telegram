@@ -29,4 +29,4 @@ const tagSearch = async url => {
 
 module.exports.tagSearch = tagSearch
 
-tagSearch('https://mrcong.com/tag/djawa/page/11/')
+tagSearch('https://mrcong.com/tag/djawa/page/10/')
