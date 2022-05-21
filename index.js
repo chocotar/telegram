@@ -5,11 +5,10 @@ const express = require('express');
 const token = process.env.TOKEN
 const PORT = process.env.PORT || 8000
 const IS_DB = process.env.IS_DB || false
-const { isTagUrl, isMainPageUrl, getPageNumber, inlineKeyboardBuilder, opts, tagHandler, deleteMessageHandler, findPromiseHandler, scrapePromiseHandler, errorHandler, dataUrl, grabber } = require('./handler');
+const { tagSearch, isTagUrl, isMainPageUrl, getPageNumber, inlineKeyboardBuilder, opts, tagHandler, deleteMessageHandler, findPromiseHandler, scrapePromiseHandler, errorHandler, dataUrl, grabber } = require('./handler');
 const { tag } = require('./utilities')
 const { search } = require('./finder');
 const { getLink } = require('./api');
-const { tagSearch } = require('./tag');
 const { main } = require('./db')
 
 // Create a bot that uses 'polling' to fetch new updates
