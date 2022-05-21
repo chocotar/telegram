@@ -9,7 +9,8 @@ const agent = new https.Agent({
 
 const tagSearch = async url => {
   try {
-    const { data, response } = await axios.get(url, {httpsAgent: agent})
+    const res = await axios.get(url, {httpsAgent: agent})
+    console.log(res)
     console.log(response)
     dataUrl.page = getPageNumber(url)
     const $ = cheerio.load(data)
