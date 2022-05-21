@@ -58,20 +58,21 @@ const grabberHandler = async (msg, match) => {
   try {
     const chatId = msg.chat.id;
     const resp = match[1];
-    const args = resp.split(' ')
+    const args = resp.split(' page: ')
     const query = args[0]
     const page = Number(args[1])
     
    const botMsg = await bot.sendMessage(chatId, `<b>Grabbing:</b> ${query}`, htmlParse)
-    
+    const notFound = []
     for (const element of tag) {
       if (element.name.toLowerCase() == query.toLowerCase()) {
-        const res = await grabber(bot, chatId, botMsg, element.link, page)
-        if (res) bot.sendMessage(chatId, `Done, <i>${res}</i> Grabbed`, htmlParse)
-      }
+        const { total, msg } = await grabber(bot, chatId, botMsg, element.link, page)
+        const { message_id } = msg
+        bot.editMessageText(`Done, <i>${total}</i> Data grabbed`, { chat_id: chatId, message_id, parse_mode: 'HTML' })
+      } else notFound.push(undefined)
     }
+    if (!notFound.every(Boolean)) bot.sendMessage(chatId, `can't grab ${query}/not found`, htmlParse)
   } catch (err) {
-    bot.sendMessage(chatId, `can't grab ${query}/not found`, htmlParse)
     console.log(err)
   }
 }
