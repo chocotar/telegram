@@ -7,7 +7,7 @@ const dataUrl = {}
 const deleteMessageHandler = async (bot, msg) => {
   try {
     const { message_id } = await msg
-    const chatId = msg.chat.id
+    const chatId = await msg.chat.id
     bot.deleteMessage(chatId, message_id)
   } catch (err) {
     console.log(err)
@@ -141,6 +141,7 @@ const tagSearch = async url => {
 const tagSearchHelper = async (bot, msg, context) => {
   try {
     const response = await context
+    console.log(await msg)
     const chatId = await msg.chat.id
     dataUrl.data = response
     const res = inlineKeyboardBuilder(response)
