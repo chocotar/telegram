@@ -66,7 +66,7 @@ const tagHandler = async (msg, match) => {
 }
 bot.onText(/\/tag (.+)/, tagHandler)
 
-const scrapeHandler = async (msg, match) => {
+bot.onText(/\/scrape (.+)/, async (msg, match) => {
   try {
     const chatId = msg.chat.id;
     const resp = match[1]
@@ -78,7 +78,7 @@ const scrapeHandler = async (msg, match) => {
   } catch (err) {
     console.log(err)
   }
-}
+});
 
 const grabberHandler = async (msg, match) => {
   try {
