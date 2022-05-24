@@ -100,19 +100,20 @@ const scrape = async (mainPageUrl) => {
 
 ////////////////////////// Helper ////////////////////////
 
-const messageBuilder = async (bot, msg, context) => {
-  const chat_id = await msg.chat.id;
+const messageBuilder = async (bot, botMsg, context) => {
+  const msg = await botMsg
+  const chat_id = msg.chat.id;
   const { name, link } = context
   let str
   try {
     if (Array.isArray(link)) {
       const rLinks = context.join(`\n\n<b>Another part:</b> `)
       str = `<b>Name:</b> ${name}\n\n<b>Link part 1:</b> ${rLinks}`
-      deleteMessageHandler(bot, msg)
+      deleteMessageHandler(bot, botMsg)
       bot.sendMessage(chatId, str, opts());
     } else {
       str = `<b>Name:</b> ${name}\n\n<b>Link: </b> ${link}`
-      deleteMessageHandler(bot, msg)
+      deleteMessageHandler(bot, botMsg)
       bot.sendMessage(chatId, str, opts());
     }
   } catch (err) {
