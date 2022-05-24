@@ -229,4 +229,4 @@ const getPageNumber = url => {
   return regExp
 }
 
-module.exports = { grabber, dataUrl, isMainPageUrl, isTagUrl, tagSearch, tagSearchHelper, getPageNumber, inlineKeyboardBuilder, opts ,deleteMessageHandler, messageBuilder };
+module.exports = { grabber, scrape, dataUrl, isMainPageUrl, isTagUrl, tagSearch, tagSearchHelper, getPageNumber, inlineKeyboardBuilder, opts ,deleteMessageHandler, messageBuilder };
