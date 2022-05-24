@@ -138,16 +138,16 @@ const tagSearch = async url => {
   }
 };
 
-const tagSearchHelper = async (bot, msg, context) => {
+const tagSearchHelper = async (bot, botMsg, context) => {
   try {
     const response = await context
-    console.log(await msg)
-    const chatId = await msg.chat.id
+    const msg = await botMsg
+    const chatId = msg.chat.id
     dataUrl.data = response
     const res = inlineKeyboardBuilder(response)
     const options = opts(true, res[1])
     
-    deleteMessageHandler(bot, msg)
+    deleteMessageHandler(bot, botMsg)
     bot.sendMessage(chatId, res[0], options)
   } catch (err) {
     console.log(err)
