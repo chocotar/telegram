@@ -122,7 +122,7 @@ const messageBuilder = async (bot, msg, context) => {
 
 const tagSearch = async url => {
   try {
-    const { data } = getLink(url)
+    const { data } = await getLink(url)
     dataUrl.page = getPageNumber(url)
     const $ = cheerio.load(data)
     const element = $('h2.post-box-title > a')
@@ -226,4 +226,4 @@ const getPageNumber = url => {
   return regExp
 }
 
-module.exports = { grabber, dataUrl, isMainPageUrl, isTagUrl, tagSearch, tagSearchHelper, getPageNumber, inlineKeyboardBuilder, opts ,deleteMessageHandler, messageBuilder };
+module.exports = { grabber, dataUrl, isMainPageUrl, isTagUrl, tagSearch, tagSearchHelper, getPageNumber, inlineKeyboardBuilder, opts deleteMessageHandler, messageBuilder };
