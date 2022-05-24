@@ -4,10 +4,11 @@ const { Link } = require('./db')
 const IS_DB = process.env.IS_DB || false
 const dataUrl = {}
 
-const deleteMessageHandler = async (bot, msg) => {
+const deleteMessageHandler = async (bot, botMsg) => {
   try {
-    const { message_id } = await msg
-    const chatId = await msg.chat.id
+    const { message_id } = await botMsg
+    const msg = await botMsg
+    const chatId = msg.chat.id
     bot.deleteMessage(chatId, message_id)
   } catch (err) {
     console.log(err)
