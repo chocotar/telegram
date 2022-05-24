@@ -1,161 +1,140 @@
 const cheerio = require('cheerio');
-const https = require('node:https');
-const axios = require('axios');
 const { getLink } = require('./api');
 const { Link } = require('./db')
 const IS_DB = process.env.IS_DB || false
 const dataUrl = {}
 
-const errorHandler = (bot, chatId) => {
-  return (err => {
-    console.log(err)
-    bot.sendMessage(chatId, err.code, opts())
-  });
-};
+const deleteMessageHandler = (bot, msg) => {
+  const { message_id } = await msg
+  const chatId = msg.chat.id
+  bot.deleteMessage(chatId, message_id)
+}
 
-const findPromiseHandler = (bot, chatId, botMsg, query) => {
-  return (url => {
-    if (url.result) {
-      const keyboardBuild = inlineKeyboardBuilder(url.result)
-      if (botMsg) botMsg.then(deleteMessageHandler(bot)).catch(errorHandler(bot, chatId))
-      bot.sendMessage(chatId, keyboardBuild[0], opts(true, keyboardBuild[1]));
-    } else {
-      if (botMsg) botMsg.then(deleteMessageHandler(bot)).catch(errorHandler(bot, chatId))
-      bot.sendMessage(chatId, url.reason, opts());
+const grabber = async (bot, chatId, botMsg, baseUrl, page) => {
+  const arr = []
+  const totalGrabbed = arr.length
+  let pageNum = 1
+  let msg
+  let toEnd = false
+  if (page == 'end') toEnd = true
+
+  try {
+    var { message_id } = botMsg
+    while (pageNum <= page || toEnd) {
+      const url = `${baseUrl}/page/${pageNum}`
+      const data = await tagSearch(url)
+      if (!data) break
+      arr.push(data)
+      if (!msg) {
+        msg = bot.editMessageText(`<i>${totalGrabbed}</i> Data grabbed from page <i>1</i> to <i>${page}</i>`, { chat_id: chatId, message_id, parse_mode: 'HTML' })
+      } else {
+        var { message_id } = await msg
+        msg = bot.editMessageText(`<i>${totalGrabbed}</i> Data grabbed from page <i>1</i> to <i>${page}</i>`, { chat_id: chatId, message_id, parse_mode: 'HTML' })
+      }
+      pageNum++
     }
-  });
-};
+    return { data: arr, msg }
+  } catch (err) {
+    console.log(err)
+  }
+}
 
-const scrapePromiseHandler = (bot, chatId, botMsg, url) => {
-  const mainPageCheck = isMainPageUrl(url)
-  const isWriteData = process.env.WRITE_DATA || false
-  let str
-  if (mainPageCheck) {
-    console.log(`Got: ${url}`)
-    return (response => {
-      const html = response.data
+const scrape = async (mainPageUrl) => {
+  const btnSelector = 'a.shortc-button.medium.green'
+  const titleSelector = 'h1.name.post-title.entry-title'
+  if (Array.isArray(mainPageUrl)) {
+    for (const link of mainPageUrl) {
+      const { data } = await getLink(link)
+      const html = data
       const $ = cheerio.load(html)
     
-      const isParts = $('a.shortc-button.medium.green').length
-    
-      const name = $('h1.name.post-title.entry-title').text()
-      const link = $('a.shortc-button.medium.green').attr('href')
+      const isParts = $(btnSelector).length
+      const name = $(titleSelector).text()
+      const link = $(btnSelector).attr('href')
       
       if (isParts > 1) {
-        const linkNodeList = $('a.shortc-button.medium.green')
+        const linkNodeList = $(btnSelector)
         const links = []
     
         for (let i = 0; i < isParts; i++) {
           const pageUrl = linkNodeList[i].attribs.href
           links.push(pageUrl)
         }
-        console.log(links)
-  
-        if (IS_DB) insertToDb({ name, link: links })
-
-        const rLinks = links.join(`\n\n<b>Another part:</b> `)
-        str = `<b>Name:</b> ${name}\n\n<b>Link part 1:</b> ${rLinks}`
-        if (botMsg) botMsg.then(deleteMessageHandler(bot)).catch(errorHandler(bot, chatId))
-        bot.sendMessage(chatId, str, opts());
+        return { name, link: links }
       } else {
-        console.log(link)
-
-        if (IS_DB) insertToDb({ name, link })
-
-        str = `<b>Name:</b> ${name}\n\n<b>Link:</b> ${link}`
-        if (botMsg) botMsg.then(deleteMessageHandler(bot)).catch(errorHandler(bot, chatId))
-        bot.sendMessage(chatId, str, opts());
+        return { name, link }
       }
-    })
+    }
   } else {
-    str = `<i>${url}</i> is not main page`
-    if (botMsg) botMsg.then(deleteMessageHandler(bot)).catch(errorHandler(bot, chatId))
-    bot.sendMessage(chatId, str, opts());
-  }
-};
-
-const tagHandler = (bot, chatId, botMsg) => {
-  return ( response => {
-    dataUrl.data = response
-    const res = inlineKeyboardBuilder(response)
-    const options = opts(true, res[1])
-    if (botMsg) botMsg.then(deleteMessageHandler(bot)).catch(errorHandler(bot, chatId))
-    const msg = bot.sendMessage(chatId, res[0], options)
-    }
-  )
-}
-
-const deleteMessageHandler = (bot) => {
-  return ( msg => {
-    const messageId = msg.message_id
-    const chatId = msg.chat.id
-    bot.deleteMessage(chatId, messageId)
-  })
-}
-
-
-const grabber = async (bot, chatId, botMsg, baseUrl, page) => {
-  let pageNum = 1 
-  let totalGrabbed = 0
-  let msg = null
-  let toEnd
-  if (page == 'end') toEnd = true
-
-  try {
-    var { message_id } = botMsg
-
-    while (pageNum <= page || toEnd ) {
-      const url = `${baseUrl}/page/${pageNum}`
-      const data = await tagSearch(url)
-      if (!data) break
-      for (const element of data) {
-        const check = await Link.isDuplicate(element.name)
-        if (!check) {
-          const db = new Link({ name: element.name, link: element.link })
-          const save = await db.save()
-          totalGrabbed++
-          console.log(save.name)
-        } else {
-          console.log(`${element.name} already inserted`)
-        }
+    const { data } = await getLink(mainPageUrl)
+    const html = data
+    const $ = cheerio.load(html)
+  
+    const isParts = $(btnSelector).length
+    const name = $(titleSelector).text()
+    const link = $(btnSelector).attr('href')
+    
+    if (isParts > 1) {
+      const linkNodeList = $(btnSelector)
+      const links = []
+  
+      for (let i = 0; i < isParts; i++) {
+        const pageUrl = linkNodeList[i].attribs.href
+        links.push(pageUrl)
       }
-    if (!msg) {
-      msg = bot.editMessageText(`<i>${totalGrabbed}</i> Data grabbed from page 1 to <i>${pageNum}</i>`, { chat_id: chatId, message_id, parse_mode: 'HTML' })
+      return { name, link: links }
     } else {
-      var { message_id } = await msg
-      msg = bot.editMessageText(`<i>${totalGrabbed}</i> Data grabbed from page 1 to <i>${pageNum}</i>`, { chat_id: chatId, message_id, parse_mode: 'HTML' })
+      return { name, link }
     }
-    pageNum++
-    }
-    return { total: totalGrabbed, msg }
-  } catch (err) {
-    console.log(err)
   }
 }
 
 ////////////////////////// Helper ////////////////////////
 
+const messageBuilder = async (bot, msg, context) => {
+  const chat_id = await msg.chat.id;
+  const { name, link } = context
+  let str
+  if (Array.isArray(link)) {
+    const rLinks = context.join(`\n\n<b>Another part:</b> `)
+    str = `<b>Name:</b> ${name}\n\n<b>Link part 1:</b> ${rLinks}`
+    deleteMessageHandler(bot, msg)
+    bot.sendMessage(chatId, str, opts());
+  } else {
+    str = `<b>Name:</b> ${name}\n\n<b>Link: </b> ${link}`
+    deleteMessageHandler(bot, msg)
+    bot.sendMessage(chatId, str, opts());
+  }
+}
+
+
 const tagSearch = async url => {
   try {
-    const agent = new https.Agent({ rejectUnauthorized: false });
-    const { data } = await axios.get(url, {httpsAgent: agent})
-    if (!data) return false
+    const { data } = getLink(url)
     dataUrl.page = getPageNumber(url)
     const $ = cheerio.load(data)
     const element = $('h2.post-box-title > a')
     const arr = []
     element.each((index, el) => {
       if ($(el).text() && $(el).attr('href')) {
-        console.log($(el))
         arr[index] = { name: $(el).text(), link: $(el).attr('href') }
       }
     })
     return arr 
   } catch(err) {
-    return false
-    console.log(err.code)
+    console.log(err)
   }
 };
+
+const tagSearchHelper = async (bot, msg, context) => {
+  const response = await context
+  dataUrl.data = response
+  const res = inlineKeyboardBuilder(response)
+  const options = opts(true, res[1])
+  
+  deleteMessageHandler(bot, msg)
+  bot.sendMessage(chatId, res[0], options)
+}
 
 const inlineKeyboardBuilder = (data, index=0) => {
   const lastPageRoll = data.length % 5
@@ -200,16 +179,19 @@ const opts = (isKeyboard=false, query=null) => {
   return { "parse_mode": "HTML"}
 }
 
-const insertToDb = (obj) => {
-  const check = Link.isDuplicate(obj.name)
-  check.then((isDup) => {
-    if (!isDup) {
-      var db = new Link(obj)
-      db.save().then((result) => console.log(result)).catch((err) => console.log(err))
+const insertToDb = async (obj) => {
+  try {
+    const check = await Link.isDuplicate(obj.name)
+    if (!check) {
+      const db = new Link(obj)
+      const save = await db.save()
+      console.log(save.name)
     } else {
-      console.log('Data already inserted')
+      console.log(`${obj.name} already inserted`)
     }
-  }).catch((err) => console.log(err))
+  } catch (err) {
+    console.log(err)
+  }
 }
 
 const isMainPageUrl = url => {
@@ -228,4 +210,4 @@ const getPageNumber = url => {
   return regExp
 }
 
-module.exports = { grabber, dataUrl, isMainPageUrl, isTagUrl, getPageNumber, inlineKeyboardBuilder, opts, scrapePromiseHandler, tagHandler, deleteMessageHandler, findPromiseHandler, errorHandler };
+module.exports = { grabber, dataUrl, isMainPageUrl, isTagUrl, tagSearch, tagSearchHelper, getPageNumber, inlineKeyboardBuilder, opts deleteMessageHandler, messageBuilder };
