@@ -40,12 +40,12 @@ const findHandler = async (msg, match) => {
 }
 
 const tagHandler = async (msg, match) => {
+  const chatId = msg.chat.id;
+  const resp = match[1];
+
+  const botMsg = bot.sendMessage(chatId, `Getting data of <i>${resp}</i>`, htmlParse)
+    
   try {
-    const chatId = msg.chat.id;
-    const resp = match[1];
-    
-    const botMsg = bot.sendMessage(chatId, `Getting data of <i>${resp}</i>`, htmlParse)
-    
     const isFound = []
     for (const element of tag) {
       if (element.name.toLowerCase() == resp.toLowerCase()) {
@@ -187,4 +187,3 @@ bot.onText(/\/grab (.+)/, grabberHandler)
 bot.onText(/\/tag (.+)/, tagHandler)
 bot.onText(/\/scrape (.+)/, scrapeHandler)
 bot.on('callback_query', callbackQueryHandler)
-
