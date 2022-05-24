@@ -37,7 +37,7 @@ const findHandler = async (msg, match) => {
   } catch (err) {
     console.log(err)
   }
-});
+}
 
 const tagHandler = async (msg, match) => {
   try {
@@ -78,7 +78,7 @@ const scrapeHandler = async (msg, match) => {
   } catch (err) {
     console.log(err)
   }
-});
+}
 
 const grabberHandler = async (msg, match) => {
   try {
@@ -167,19 +167,18 @@ const callbackQueryHandler = async callbackQuery => {
   }
 }
 
+// Error handling
 bot.on('polling_error', (error) => {
   console.log(error);  // => 'EFATAL'
 });
-
-// Error  handling
 bot.on('error', (error) => {
   console.log(error.code);  // => 'EFATAL'
 });
+
 // Server
 app.get('/', (req, res) => {
   res.send("It's Running")
 })
-
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`)
 })
