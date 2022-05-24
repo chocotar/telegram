@@ -141,6 +141,7 @@ const tagSearch = async url => {
 const tagSearchHelper = async (bot, msg, context) => {
   try {
     const response = await context
+    const chatId = await msg.chat.id
     dataUrl.data = response
     const res = inlineKeyboardBuilder(response)
     const options = opts(true, res[1])
