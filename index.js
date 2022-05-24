@@ -147,7 +147,7 @@ const callbackQueryHandler = async callbackQuery => {
       const botMsg = bot.sendMessage(chatId, '<i>Getting link...</i>', htmlParse)
     
       if (isMainPageUrl(data[query].link)) {
-        const response  = await scrape(resp)
+        const response  = await scrape(data[query].link)
         messageBuilder(bot, botMsg, response )
         
       } else if (isTagUrl(data[query].link)) {
