@@ -64,6 +64,7 @@ const tagHandler = async (msg, match) => {
     console.log(err)
   }
 }
+bot.onText(/\/tag (.+)/, tagHandler)
 
 const scrapeHandler = async (msg, match) => {
   try {
@@ -184,6 +185,5 @@ app.listen(PORT, () => {
 
 bot.onText(/\/find (.+)/, findHandler)
 bot.onText(/\/grab (.+)/, grabberHandler)
-bot.onText(/\/tag (.+)/, tagHandler)
 bot.onText(/\/scrape (.+)/, scrapeHandler)
 bot.on('callback_query', callbackQueryHandler)
