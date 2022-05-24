@@ -52,7 +52,7 @@ const tagHandler = async (msg, match) => {
         isFound.push(true)
         dataUrl.url = element.link
         const addPage = `${element.link}page/1/`
-        const response = await tagSearch(addPage)
+        const response = tagSearch(addPage)
         tagSearchHander(bot, botMsg, response)
       } else {
         isFound.push(undefined)
@@ -130,7 +130,7 @@ const callbackQueryHandler = async callbackQuery => {
       
       bot.deleteMessage(chatId, message_id)
       const botMsg = bot.sendMessage(chatId, '<i>Getting next page...</i>', htmlParse)
-      const response = await tagSearch(link)
+      const response = tagSearch(link)
       tagSearchHander(bot, botMsg, response)
       
     } else if (query == 'prevPage') {
@@ -139,7 +139,7 @@ const callbackQueryHandler = async callbackQuery => {
       
       bot.deleteMessage(chatId, message_id)
       const botMsg = bot.sendMessage(chatId, '<i>Getting previous page...</i>', htmlParse)
-      const response = await tagSearch(link)
+      const response = tagSearch(link)
       tagSearchHander(bot, botMsg, response)
       
     } else {
@@ -153,7 +153,7 @@ const callbackQueryHandler = async callbackQuery => {
       } else if (isTagUrl(data[query].link)) {
         dataUrl.url = data[query].link
         const addPage = `${data[query].link}page/1/`
-        const response = await tagSearch(addPage)
+        const response = tagSearch(addPage)
         tagSearchHander(bot, botMsg, response)
         
       } else {
