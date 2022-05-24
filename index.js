@@ -140,7 +140,7 @@ const callbackQueryHandler = async callbackQuery => {
       bot.deleteMessage(chatId, message_id)
       const botMsg = bot.sendMessage(chatId, '<i>Getting previous page...</i>', htmlParse)
       const response = tagSearch(link)
-      tagSearchHander(bot, botMsg, response)
+      tagSearchHelper(bot, botMsg, response)
       
     } else {
       bot.deleteMessage(chatId, message_id)
