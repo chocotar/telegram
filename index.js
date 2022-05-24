@@ -52,7 +52,7 @@ const tagHandler = async (msg, match) => {
         isFound.push(true)
         dataUrl.url = element.link
         const addPage = `${element.link}page/1/`
-        const response = tagSearch(addPage)
+        const response = await tagSearch(addPage)
         tagSearchHander(bot, botMsg, response)
       } else {
         isFound.push(undefined)
@@ -101,7 +101,6 @@ const grabberHandler = async (msg, match) => {
       } else isFound.push(undefined)
     }
     if (!isFound.every(Boolean)) bot.sendMessage(chatId, `Can't grab ${query}/not found`, htmlParse)
-    if (!isFound.every(Boolean)) bot.sendMessage(chatId, `Can't grab ${query}/not found`, htmlParse)
   } catch (err) {
     console.log(err)
   }
@@ -131,7 +130,7 @@ const callbackQueryHandler = async callbackQuery => {
       
       bot.deleteMessage(chatId, message_id)
       const botMsg = bot.sendMessage(chatId, '<i>Getting next page...</i>', htmlParse)
-      const response = tagSearch(link)
+      const response = await tagSearch(link)
       tagSearchHander(bot, botMsg, response)
       
     } else if (query == 'prevPage') {
@@ -140,7 +139,7 @@ const callbackQueryHandler = async callbackQuery => {
       
       bot.deleteMessage(chatId, message_id)
       const botMsg = bot.sendMessage(chatId, '<i>Getting previous page...</i>', htmlParse)
-      const response = tagSearch(link)
+      const response = await tagSearch(link)
       tagSearchHander(bot, botMsg, response)
       
     } else {
@@ -148,13 +147,13 @@ const callbackQueryHandler = async callbackQuery => {
       const botMsg = bot.sendMessage(chatId, '<i>Getting link...</i>', htmlParse)
     
       if (isMainPageUrl(data[query].link)) {
-        const response  = scrape(resp)
+        const response  = await scrape(resp)
         messageBuilder(bot, botMsg, response )
         
       } else if (isTagUrl(data[query].link)) {
         dataUrl.url = data[query].link
         const addPage = `${data[query].link}page/1/`
-        const response = tagSearch(addPage)
+        const response = await tagSearch(addPage)
         tagSearchHander(bot, botMsg, response)
         
       } else {
