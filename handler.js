@@ -102,7 +102,7 @@ const scrape = async (mainPageUrl) => {
 
 const messageBuilder = async (bot, botMsg, context) => {
   const msg = await botMsg
-  const chat_id = msg.chat.id;
+  const chatId = msg.chat.id;
   const { name, link } = context
   let str
   try {
