@@ -5,7 +5,7 @@ const express = require('express');
 const token = process.env.TOKEN
 const PORT = process.env.PORT || 8000
 const IS_DB = process.env.IS_DB || false
-const { isTagUrl, isMainPageUrl, getPageNumber, inlineKeyboardBuilder, opts, messageBuilder, deleteMessageHandler, tagSearch, tagSearchHander, scrape, dataUrl, grabber } = require('./handler');
+const { isTagUrl, isMainPageUrl, getPageNumber, inlineKeyboardBuilder, opts, messageBuilder, deleteMessageHandler, tagSearch, tagSearchHandler, scrape, dataUrl, grabber } = require('./handler');
 const { tag } = require('./utilities')
 const { search } = require('./finder');
 const { getLink } = require('./api');
@@ -53,7 +53,7 @@ const tagHandler = async (msg, match) => {
         dataUrl.url = element.link
         const addPage = `${element.link}page/1/`
         const response = tagSearch(addPage)
-        tagSearchHander(bot, botMsg, response)
+        tagSearchHandler(bot, botMsg, response)
       } else {
         isFound.push(undefined)
       }
@@ -131,7 +131,7 @@ const callbackQueryHandler = async callbackQuery => {
       bot.deleteMessage(chatId, message_id)
       const botMsg = bot.sendMessage(chatId, '<i>Getting next page...</i>', htmlParse)
       const response = tagSearch(link)
-      tagSearchHander(bot, botMsg, response)
+      tagSearchHandler(bot, botMsg, response)
       
     } else if (query == 'prevPage') {
       const { url, page } = dataUrl
@@ -154,7 +154,7 @@ const callbackQueryHandler = async callbackQuery => {
         dataUrl.url = data[query].link
         const addPage = `${data[query].link}page/1/`
         const response = tagSearch(addPage)
-        tagSearchHander(bot, botMsg, response)
+        tagSearchHandler(bot, botMsg, response)
         
       } else {
         bot.sendMessage(chatId, '<b>Can\'t continue to find</b>', htmlParse)
