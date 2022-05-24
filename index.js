@@ -64,9 +64,8 @@ const tagHandler = async (msg, match) => {
     console.log(err)
   }
 }
-bot.onText(/\/tag (.+)/, tagHandler)
 
-bot.onText(/\/scrape (.+)/, async (msg, match) => {
+const scrapeHandler = async (msg, match) => {
   try {
     const chatId = msg.chat.id;
     const resp = match[1]
@@ -78,7 +77,7 @@ bot.onText(/\/scrape (.+)/, async (msg, match) => {
   } catch (err) {
     console.log(err)
   }
-});
+}
 
 const grabberHandler = async (msg, match) => {
   try {
@@ -185,5 +184,6 @@ app.listen(PORT, () => {
 
 bot.onText(/\/find (.+)/, findHandler)
 bot.onText(/\/grab (.+)/, grabberHandler)
-//bot.onText(/\/scrape (.+)/, scrapeHandler)
+bot.onText(/\/tag (.+)/, tagHandler)
+bot.onText(/\/scrape (.+)/, scrapeHandler)
 bot.on('callback_query', callbackQueryHandler)
