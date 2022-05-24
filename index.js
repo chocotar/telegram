@@ -41,7 +41,6 @@ const findHandler = async (msg, match) => {
 
 const tagHandler = async (msg, match) => {
   try {
-    const { message_id } = msg
     const chatId = msg.chat.id;
     const resp = match[1];
     
