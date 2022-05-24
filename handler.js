@@ -4,10 +4,14 @@ const { Link } = require('./db')
 const IS_DB = process.env.IS_DB || false
 const dataUrl = {}
 
-const deleteMessageHandler = (bot, msg) => {
-  const { message_id } = await msg
-  const chatId = msg.chat.id
-  bot.deleteMessage(chatId, message_id)
+const deleteMessageHandler = async (bot, msg) => {
+  try {
+    const { message_id } = await msg
+    const chatId = msg.chat.id
+    bot.deleteMessage(chatId, message_id)
+  } catch (err) {
+    console.log(err)
+  }
 }
 
 const grabber = async (bot, chatId, botMsg, baseUrl, page) => {
@@ -42,9 +46,32 @@ const grabber = async (bot, chatId, botMsg, baseUrl, page) => {
 const scrape = async (mainPageUrl) => {
   const btnSelector = 'a.shortc-button.medium.green'
   const titleSelector = 'h1.name.post-title.entry-title'
-  if (Array.isArray(mainPageUrl)) {
-    for (const link of mainPageUrl) {
-      const { data } = await getLink(link)
+  try {
+    if (Array.isArray(mainPageUrl)) {
+      for (const link of mainPageUrl) {
+        const { data } = await getLink(link)
+        const html = data
+        const $ = cheerio.load(html)
+      
+        const isParts = $(btnSelector).length
+        const name = $(titleSelector).text()
+        const link = $(btnSelector).attr('href')
+        
+        if (isParts > 1) {
+          const linkNodeList = $(btnSelector)
+          const links = []
+      
+          for (let i = 0; i < isParts; i++) {
+            const pageUrl = linkNodeList[i].attribs.href
+            links.push(pageUrl)
+          }
+          return { name, link: links }
+        } else {
+          return { name, link }
+        }
+      }
+    } else {
+      const { data } = await getLink(mainPageUrl)
       const html = data
       const $ = cheerio.load(html)
     
@@ -65,27 +92,8 @@ const scrape = async (mainPageUrl) => {
         return { name, link }
       }
     }
-  } else {
-    const { data } = await getLink(mainPageUrl)
-    const html = data
-    const $ = cheerio.load(html)
-  
-    const isParts = $(btnSelector).length
-    const name = $(titleSelector).text()
-    const link = $(btnSelector).attr('href')
-    
-    if (isParts > 1) {
-      const linkNodeList = $(btnSelector)
-      const links = []
-  
-      for (let i = 0; i < isParts; i++) {
-        const pageUrl = linkNodeList[i].attribs.href
-        links.push(pageUrl)
-      }
-      return { name, link: links }
-    } else {
-      return { name, link }
-    }
+  } catch (err) {
+    console.log(err)
   }
 }
 
@@ -95,15 +103,19 @@ const messageBuilder = async (bot, msg, context) => {
   const chat_id = await msg.chat.id;
   const { name, link } = context
   let str
-  if (Array.isArray(link)) {
-    const rLinks = context.join(`\n\n<b>Another part:</b> `)
-    str = `<b>Name:</b> ${name}\n\n<b>Link part 1:</b> ${rLinks}`
-    deleteMessageHandler(bot, msg)
-    bot.sendMessage(chatId, str, opts());
-  } else {
-    str = `<b>Name:</b> ${name}\n\n<b>Link: </b> ${link}`
-    deleteMessageHandler(bot, msg)
-    bot.sendMessage(chatId, str, opts());
+  try {
+    if (Array.isArray(link)) {
+      const rLinks = context.join(`\n\n<b>Another part:</b> `)
+      str = `<b>Name:</b> ${name}\n\n<b>Link part 1:</b> ${rLinks}`
+      deleteMessageHandler(bot, msg)
+      bot.sendMessage(chatId, str, opts());
+    } else {
+      str = `<b>Name:</b> ${name}\n\n<b>Link: </b> ${link}`
+      deleteMessageHandler(bot, msg)
+      bot.sendMessage(chatId, str, opts());
+    }
+  } catch (err) {
+    console.log(err)
   }
 }
 
@@ -127,13 +139,17 @@ const tagSearch = async url => {
 };
 
 const tagSearchHelper = async (bot, msg, context) => {
-  const response = await context
-  dataUrl.data = response
-  const res = inlineKeyboardBuilder(response)
-  const options = opts(true, res[1])
-  
-  deleteMessageHandler(bot, msg)
-  bot.sendMessage(chatId, res[0], options)
+  try {
+    const response = await context
+    dataUrl.data = response
+    const res = inlineKeyboardBuilder(response)
+    const options = opts(true, res[1])
+    
+    deleteMessageHandler(bot, msg)
+    bot.sendMessage(chatId, res[0], options)
+  } catch (err) {
+    console.log(err)
+  }
 }
 
 const inlineKeyboardBuilder = (data, index=0) => {
