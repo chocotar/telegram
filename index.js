@@ -60,7 +60,7 @@ const tagHandler = async (msg, match) => {
     }
     const { message_id } = await botMsg
     console.log(isFound)
-    if (!isFound.every(Boolean)) bot.editMessageText('Not Found', { chat_id: chatId, message_id })
+    if (isFound.every( (isFalse) => !isFalse )) bot.editMessageText('Not Found', { chat_id: chatId, message_id })
   } catch (err) {
     console.log(err)
   }
@@ -101,7 +101,7 @@ const grabberHandler = async (msg, match) => {
         }
       } else isFound.push(undefined)
     }
-    if (!isFound.every(Boolean)) bot.sendMessage(chatId, `Can't grab ${query}/not found`, htmlParse)
+    if (!isFound.every((isFalse) => !isFalse)) bot.sendMessage(chatId, `Can't grab ${query}/not found`, htmlParse)
   } catch (err) {
     console.log(err)
   }
