@@ -59,7 +59,6 @@ const tagHandler = async (msg, match) => {
       }
     }
     const { message_id } = await botMsg
-    console.log(isFound)
     if (isFound.every( (isFalse) => !isFalse )) bot.editMessageText('Not Found', { chat_id: chatId, message_id })
   } catch (err) {
     console.log(err)
