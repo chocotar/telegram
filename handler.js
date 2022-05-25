@@ -107,7 +107,7 @@ const messageBuilder = async (bot, botMsg, context) => {
   let str
   try {
     if (Array.isArray(link)) {
-      const rLinks = context.join(`\n\n<b>Another part:</b> `)
+      const rLinks = await context.join(`\n\n<b>Another part:</b> `)
       str = `<b>Name:</b> ${name}\n\n<b>Link part 1:</b> ${rLinks}`
       deleteMessageHandler(bot, botMsg)
       bot.sendMessage(chatId, str, opts());
