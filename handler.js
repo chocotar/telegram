@@ -44,15 +44,14 @@ const grabber = async (bot, chatId, botMsg, baseUrl, page) => {
   }
 }
 
-const scrape = async (context) => {
+const scrape = async (mainPageUrl) => {
   const btnSelector = 'a.shortc-button.medium.green'
   const titleSelector = 'h1.name.post-title.entry-title'
   try {
-    const arrayLink = await context
-    console.log(arrayLink.data)
-    if (Array.isArray(arrayLink.data)) {
-      for (const element of arrayLink.data) {
-        const { data } = await getLink(element.link)
+    if (Array.isArray(mainPageUrl)) {
+      for (const element of mainPageUrl) {
+        console.log(element)
+        const { data } = await getLink(element)
         const $ = cheerio.load(data)
       
         const isParts = $(btnSelector).length
