@@ -48,10 +48,9 @@ const scrape = async (mainPageUrl) => {
   const btnSelector = 'a.shortc-button.medium.green'
   const titleSelector = 'h1.name.post-title.entry-title'
   try {
-    console.log(mainPageUrl)
     if (Array.isArray(mainPageUrl)) {
       for (const element of mainPageUrl) {
-        const { data } = await getLink(element)
+        const { data } = await getLink(element.link)
         const $ = cheerio.load(data)
       
         const isParts = $(btnSelector).length
