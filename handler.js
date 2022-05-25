@@ -50,8 +50,8 @@ const scrape = async (mainPageUrl) => {
   try {
     if (Array.isArray(mainPageUrl)) {
       for (const element of mainPageUrl) {
-        console.log(element)
-        const { data } = await getLink(element)
+        console.log(mainPageUrl)
+        const { data } = await getLink(element.link)
         const $ = cheerio.load(data)
       
         const isParts = $(btnSelector).length
