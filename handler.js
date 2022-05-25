@@ -50,6 +50,7 @@ const scrape = async (mainPageUrl) => {
   try {
     if (Array.isArray(mainPageUrl)) {
       for (const element of mainPageUrl) {
+        console.log(element.link)
         const { data } = await getLink(element.link)
         const $ = cheerio.load(data)
       
