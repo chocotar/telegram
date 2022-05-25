@@ -49,9 +49,9 @@ const scrape = async (context) => {
   const titleSelector = 'h1.name.post-title.entry-title'
   try {
     const arrayLink = await context
+    console.log(arrayLink.data)
     if (Array.isArray(arrayLink.data)) {
       for (const element of arrayLink.data) {
-        console.log(element.link)
         const { data } = await getLink(element.link)
         const $ = cheerio.load(data)
       
