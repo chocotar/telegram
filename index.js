@@ -92,7 +92,7 @@ const grabberHandler = async (msg, match) => {
     for (const element of tag) {
       if (element.name.toLowerCase() == query.toLowerCase()) {
         isFound.push(true)
-        const { data, msg: grbMsg } = await grabber(bot, chatId, botMsg, element.link, page)
+        const { data, msg: grbMsg } = grabber(bot, chatId, botMsg, element.link, page)
         const result = await scrape(data)
         for (const link of result) {
           const { message_id } = await grbMsg
