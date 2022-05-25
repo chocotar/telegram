@@ -29,7 +29,7 @@ const grabber = async (bot, chatId, botMsg, baseUrl, page) => {
       const url = `${baseUrl}/page/${pageNum}`
       const data = await tagSearch(url)
       if (!data) break
-      arr.push(data)
+      arr.push(...data)
       if (!msg) {
         msg = bot.editMessageText(`<i>${totalGrabbed}</i> Data grabbed from page <i>1</i> to <i>${page}</i>`, { chat_id: chatId, message_id, parse_mode: 'HTML' })
       } else {
