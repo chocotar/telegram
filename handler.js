@@ -49,10 +49,9 @@ const scrape = async (mainPageUrl) => {
   const titleSelector = 'h1.name.post-title.entry-title'
   try {
     if (Array.isArray(mainPageUrl)) {
-      for (const link of mainPageUrl) {
-        const { data } = await getLink(link)
-        const html = data
-        const $ = cheerio.load(html)
+      for (const element of mainPageUrl) {
+        const { data } = await getLink(element)
+        const $ = cheerio.load(data)
       
         const isParts = $(btnSelector).length
         const name = $(titleSelector).text()
@@ -73,8 +72,7 @@ const scrape = async (mainPageUrl) => {
       }
     } else {
       const { data } = await getLink(mainPageUrl)
-      const html = data
-      const $ = cheerio.load(html)
+      const $ = cheerio.load(data)
     
       const isParts = $(btnSelector).length
       const name = $(titleSelector).text()
