@@ -24,7 +24,7 @@ const grabber = async (bot, chatId, botMsg, baseUrl, page) => {
   if (page == 'end') toEnd = true
 
   try {
-    var { message_id } = botMsg
+    var { message_id } = await botMsg
     while (pageNum <= page || toEnd) {
       const url = `${baseUrl}/page/${pageNum}`
       const data = await tagSearch(url)
