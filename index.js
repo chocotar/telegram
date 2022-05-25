@@ -152,7 +152,7 @@ const callbackQueryHandler = async callbackQuery => {
         
       } else if (isTagUrl(data[query].link)) {
         dataUrl.url = data[query].link
-        const addPage = `${data[query].link}page/1/`
+        const addPage = getPageNumber(data[query].link) ? data[query].link : `${data[query].link}page/1/`
         const response = tagSearch(addPage)
         tagSearchHelper(bot, botMsg, response)
         
