@@ -48,9 +48,9 @@ const scrape = async (mainPageUrl) => {
   const btnSelector = 'a.shortc-button.medium.green'
   const titleSelector = 'h1.name.post-title.entry-title'
   try {
+    console.log(mainPageUrl)
     if (Array.isArray(mainPageUrl)) {
       for (const element of mainPageUrl) {
-        console.log(element)
         const { data } = await getLink(element)
         const $ = cheerio.load(data)
       
