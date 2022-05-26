@@ -5,7 +5,7 @@ const express = require('express');
 const token = process.env.TOKEN
 const PORT = process.env.PORT || 8000
 const IS_DB = process.env.IS_DB || false
-const { isTagUrl, isMainPageUrl, isMediafire, getPageNumber, inlineKeyboardBuilder, opts, messageBuilder, deleteMessageHandler, tagSearch, tagSearchHelper, scrape, dataUrl, grabber } = require('./handler');
+const { isTagUrl, isMainPageUrl, getPageNumber, inlineKeyboardBuilder, opts, messageBuilder, deleteMessageHandler, tagSearch, tagSearchHelper, scrape, dataUrl, grabber } = require('./handler');
 const { tag } = require('./utilities')
 const { search } = require('./finder');
 const { getLink } = require('./api');
@@ -93,10 +93,10 @@ const grabberHandler = async (msg, match) => {
       if (element.name.toLowerCase() == query.toLowerCase()) {
         isFound.push(true)
         const { data, msg: grbMsg } = await grabber(bot, chatId, botMsg, element.link, page)
-        const { link } = await scrape(data)
-        for (const download of link) {
+        const result = await scrape(data)
+        for (const link of result) {
           const { message_id } = grbMsg
-          bot.editMessageText(`Done, <i>${data.length}</i> Data grabbed`, { chat_id: chatId, message_id, parse_mode: 'HTML' })
+          bot.editMessageText(`Done, <i>${total}</i> Data grabbed`, { chat_id: chatId, message_id, parse_mode: 'HTML' })
         }
       } else isFound.push(undefined)
     }
@@ -145,10 +145,9 @@ const callbackQueryHandler = async callbackQuery => {
     } else {
       bot.deleteMessage(chatId, message_id)
       const botMsg = bot.sendMessage(chatId, '<i>Getting link...</i>', htmlParse)
-      console.log(data[query].link)
-      if (isMediafire(data[query].link)) {
-        const response  = data[query].link
-        console.log(response)
+    
+      if (isMainPageUrl(data[query].link)) {
+        const response  = await scrape(data[query].link)
         messageBuilder(bot, botMsg, response )
         
       } else if (isTagUrl(data[query].link)) {
