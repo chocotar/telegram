@@ -85,7 +85,7 @@ const grabberHandler = async (msg, match) => {
     const resp = match[1];
     const args = resp.split(' page ')
     const query = args[0]
-    const page = args[1] == 'end' ? 'end' : Number(args[1])
+    const page = !args[1] ? 'end' : Number(args[1])
     
    const botMsg = bot.sendMessage(chatId, `<b>Grabbing:</b> ${query}`, htmlParse)
     const isFound = []
