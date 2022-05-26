@@ -16,8 +16,7 @@ const deleteMessageHandler = async (bot, botMsg) => {
 }
 
 const grabber = async (bot, chatId, botMsg, baseUrl, page) => {
-  const arr = []
-  const totalGrabbed = arr.length
+  let totalGrabbed = 0
   let pageNum = 1
   let msg
   let toEnd = false
@@ -29,7 +28,11 @@ const grabber = async (bot, chatId, botMsg, baseUrl, page) => {
       const url = `${baseUrl}/page/${pageNum}`
       const data = await tagSearch(url)
       if (!data) break
-      arr.push(...data)
+      const res = await scrape(data)
+      for (const link of res) {
+        insertToDb(link)
+      }
+      totalGrabbed += res.length
       if (!msg) {
         msg = bot.editMessageText(`<i>${totalGrabbed}</i> Data grabbed from page <i>1</i> to <i>${page}</i>`, { chat_id: chatId, message_id, parse_mode: 'HTML' })
       } else {
@@ -38,7 +41,7 @@ const grabber = async (bot, chatId, botMsg, baseUrl, page) => {
       }
       pageNum++
     }
-    return { data: arr, msg }
+    return { totalGrabbed, msg }
   } catch (err) {
     console.log(err)
   }
@@ -49,8 +52,8 @@ const scrape = async (mainPageUrl) => {
   const titleSelector = 'h1.name.post-title.entry-title'
   try {
     if (Array.isArray(mainPageUrl)) {
+      const arr = []
       for (const element of mainPageUrl) {
-        console.log(mainPageUrl)
         const { data } = await getLink(element.link)
         const $ = cheerio.load(data)
       
@@ -66,11 +69,12 @@ const scrape = async (mainPageUrl) => {
             const pageUrl = linkNodeList[i].attribs.href
             links.push(pageUrl)
           }
-          return { name, link: links }
+          arr.push({ name, link: links })
         } else {
-          return { name, link }
+          arr.push({ name, link })
         }
       }
+      return arr
     } else {
       const { data } = await getLink(mainPageUrl)
       const $ = cheerio.load(data)
