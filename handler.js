@@ -21,6 +21,8 @@ const grabber = async (bot, chatId, botMsg, baseUrl, page) => {
   let msg
   let toEnd = false
   if (page == 'end') toEnd = true
+ 
+  if (!IS_DB) return { totalGrabbed, msg: botMsg }
 
   try {
     var { message_id } = await botMsg
