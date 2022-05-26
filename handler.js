@@ -19,8 +19,7 @@ const grabber = async (bot, chatId, botMsg, baseUrl, page) => {
   let totalGrabbed = 0
   let pageNum = 1
   let msg
-  let toEnd = false
-  if (page == 'end') toEnd = true
+  let toEnd = page == 'end' ? true : false
  
   if (!IS_DB) return { totalGrabbed, msg: botMsg }
 
