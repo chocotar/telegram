@@ -24,7 +24,7 @@ const grabber = async (bot, chatId, botMsg, baseUrl, page) => {
   if (page == 'end') toEnd = true
 
   try {
-    var { message_id } = botMsg
+    var { message_id } = await botMsg
     while (pageNum <= page || toEnd) {
       const url = `${baseUrl}/page/${pageNum}`
       const data = await tagSearch(url)
@@ -38,7 +38,7 @@ const grabber = async (bot, chatId, botMsg, baseUrl, page) => {
       }
       pageNum++
     }
-    return { totalGrabbed, msg }
+    return { data: arr, msg }
   } catch (err) {
     console.log(err)
   }
@@ -126,13 +126,13 @@ const tagSearch = async url => {
     const { data } = await getLink(url)
     dataUrl.page = getPageNumber(url)
     const $ = cheerio.load(data)
-    const element = $('h2.post-box-title > a').toArray()
+    const element = $('h2.post-box-title > a')
     const arr = []
-    for(let i = 0; i < element.length; i++){
-        const el = element[i];
-        const { link } = await scrape($(el).attr('href'))
-        arr.push({ name: $(el).text(), link });
-    }
+    element.each((index, el) => {
+      if ($(el).text() && $(el).attr('href')) {
+        arr[index] = { name: $(el).text(), link: $(el).attr('href') }
+      }
+    })
     return arr 
   } catch(err) {
     console.log(err)
@@ -221,10 +221,6 @@ const isTagUrl = url => {
   return url.match(/.+(\/tag\/).+/)
 }
 
-const isMediafire = url => {
- return url.match(/^(https:\/\/www.mediafire.com\/file\/).+/)
-}
-
 const getPageNumber = url => {
   const regExp = url.match(/(\/\d\/)$/)
   if (regExp) {
@@ -233,4 +229,4 @@ const getPageNumber = url => {
   return regExp
 }
 
-module.exports = { grabber, scrape, dataUrl, isMainPageUrl, isTagUrl, isMediafire, tagSearch, tagSearchHelper, getPageNumber, inlineKeyboardBuilder, opts ,deleteMessageHandler, messageBuilder };
+module.exports = { grabber, scrape, dataUrl, isMainPageUrl, isTagUrl, tagSearch, tagSearchHelper, getPageNumber, inlineKeyboardBuilder, opts ,deleteMessageHandler, messageBuilder };
