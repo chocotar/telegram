@@ -36,10 +36,10 @@ const grabber = async (bot, chatId, botMsg, baseUrl, page) => {
       }
       totalGrabbed += res.length
       if (!msg) {
-        msg = bot.editMessageText(`<i>${totalGrabbed}</i> Data grabbed from page <i>1</i> to <i>${page}</i>`, { chat_id: chatId, message_id, parse_mode: 'HTML' })
+        msg = bot.editMessageText(`<i>${totalGrabbed}</i> Data grabbed from page <i>1</i> to <i>${pageNum}</i>`, { chat_id: chatId, message_id, parse_mode: 'HTML' })
       } else {
         var { message_id } = await msg
-        msg = bot.editMessageText(`<i>${totalGrabbed}</i> Data grabbed from page <i>1</i> to <i>${page}</i>`, { chat_id: chatId, message_id, parse_mode: 'HTML' })
+        msg = bot.editMessageText(`<i>${totalGrabbed}</i> Data grabbed from page <i>1</i> to <i>${pageNum}</i>`, { chat_id: chatId, message_id, parse_mode: 'HTML' })
       }
       pageNum++
     }
