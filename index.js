@@ -97,7 +97,7 @@ const grabberHandler = async (msg, match) => {
         bot.editMessageText(`Done, <i>${totalGrabbed}</i> Data grabbed`, { chat_id: chatId, message_id, parse_mode: 'HTML' })
       } else isFound.push(undefined)
     }
-    if (!isFound.every((isFalse) => !isFalse)) bot.sendMessage(chatId, `Can't grab ${query}/not found`, htmlParse)
+    if (isFound.every( (isFalse) => !isFalse) ) bot.sendMessage(chatId, `Can't grab ${query}/not found`, htmlParse)
   } catch (err) {
     console.log(err)
   }
